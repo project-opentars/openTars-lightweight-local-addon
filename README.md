@@ -9,7 +9,7 @@
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.
 
-[![Versão 3.0 Miller](https://img.shields.io/badge/vers%C3%A3o-3.0%20Miller-5FD97A?style=flat-square)](#instalação)
+[![Versão 3.1 Miller](https://img.shields.io/badge/vers%C3%A3o-3.1%20Miller-5FD97A?style=flat-square)](#instalação)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
 [![Ollama](https://img.shields.io/badge/roda%20com-Ollama-1A2446?style=flat-square)](https://ollama.com)
@@ -69,7 +69,8 @@ Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que voc�
 - um ambiente Python isolado
 - o modelo de embeddings `granite-embedding:278m` (~560 MB), que entende o pedido em milissegundos
 - o leitor de texto da tela (OCR `tesseract`), pra clicar em apps que não mostram os botões pra acessibilidade
-- **um modelo de conversa escolhido pelo seu hardware**, se você ainda não tiver nenhum: `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
+- **as IAs que você já tem em outros programas (3.1)**: LM Studio, llama.cpp, Jan ou GPT4All ligados são usados direto, e os modelos `.gguf` que eles já baixaram podem entrar no Ollama (veja [IAs de outros programas](#ias-de-outros-programas-31))
+- **um modelo de conversa escolhido pelo seu hardware**, se você ainda não tiver nenhum (nem no Ollama, nem em outro programa): `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
 - o atalho no menu de aplicativos
 
 Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote (3.0.5). O antigo `qwen2.5:0.5b` saiu do download; se você já tiver ele, só desempata enquanto acertar mais que a Murph no `--avaliar-classificador`. A **voz** também é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
@@ -188,6 +189,18 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
 - **vLLM, LM Studio, llama.cpp, LocalAI...:** `opentars --servidor http://localhost:1234/v1` e os modelos desse servidor aparecem na escolha de IA como `api:<nome>`, com ferramentas, streaming e tudo. Junto com os do Ollama. `opentars --servidor off` desliga.
 - **Wayland de verdade (experimental):** com o `ydotool` 1.0+ e o serviço `ydotoold` rodando, mouse e teclado alcançam qualquer janela, não só as XWayland. Deixe a aceleração do mouse desligada pra mais precisão.
 
+### IAs de outros programas (3.1)
+
+Já baixou modelos no **LM Studio**, **GPT4All**, **Jan**, **llama.cpp** ou pelo **Hugging Face**? O openTARS acha e usa:
+
+- **Servidor ligado, sem copiar nada.** Com o servidor do LM Studio ligado (aba *Developer* → *Start Server*), ou um llama-server, Jan, GPT4All, KoboldCpp ou vLLM nas portas padrão (1234, 8080, 1337, 4891, 5001, 8000), os modelos dele aparecem sozinhos na escolha de IA como `api:<nome>`. Fechou o programa, eles somem; abriu de novo, voltam (confere a cada minuto). Um endereço fixo (`opentars --servidor <url>`) tem prioridade; `opentars --servidor off` desliga a procura e `opentars --servidor auto` religa.
+- **Arquivos `.gguf` importados no Ollama.** Funcionam sem o outro programa aberto. Na janela: escolha de IA → **＋ Importar de outros programas…**, marque os modelos e clique em **Importar selecionados**. No terminal: `opentars --procurar-modelos` (lista numerada; responda `1,3`, `2-4` ou `todos`).
+
+  Onde ele procura: `~/.lmstudio/models` (ou a pasta que você escolheu no LM Studio), `~/.cache/lm-studio`, `~/.local/share/nomic.ai/GPT4All`, `~/jan` e `~/.local/share/Jan`, `~/.cache/huggingface/hub`, `~/.cache/llama.cpp`, `~/models` e a pasta de Downloads. Outras pastas: `TARS_PASTAS_MODELOS=/mnt/hd/modelos:/outra/pasta`.
+
+  **Importar copia o arquivo** pra pasta do Ollama (um modelo de 5 GB passa a ocupar 10 GB). Por isso é sempre você quem escolhe, o espaço livre aparece antes, e o openTARS não importa se o disco for ficar com menos de 2 GB livres. Depois de importar, dá pra apagar o original no outro programa. Modelos com visão levam junto o `mmproj` da mesma pasta (se o Ollama não aceitar, entra só o texto). Arquivos divididos em partes (`-00001-of-00003.gguf`) o Ollama não importa.
+- **Na instalação:** se você não tem nenhum modelo de conversa no Ollama mas tem IA em outro programa, o instalador pergunta quais importar (no terminal) e **não baixa** o `qwen3` à toa.
+
 ### 8. Uma conversa só
 
 Todos os modelos compartilham a mesma conversa: trocar de IA no meio não faz ela esquecer o que você pediu antes.
@@ -250,7 +263,8 @@ Outros comandos:
 | `opentars --avaliar-classificador` | mede o quanto cada camada (e o modo AUTO) acerta no seu PC |
 | `opentars --explicar "pedido"` | mostra, camada por camada, como a tarefa e o modelo são escolhidos |
 | `opentars --instalar-voz` | instala a voz (Whisper + Piper, ~700 MB, tudo local, na sua pasta) |
-| `opentars --servidor <url>` | usa também um servidor vLLM / LM Studio / llama.cpp (`off` desliga) |
+| `opentars --servidor <url>` | usa um servidor vLLM / LM Studio / llama.cpp fixo (`auto` procura sozinho, o padrão; `off` desliga) |
+| `opentars --procurar-modelos` | acha os `.gguf` do LM Studio, GPT4All, Jan... e importa os que você escolher no Ollama |
 | `opentars --setup` | instala o que estiver faltando (Ollama, modelos...) |
 | `opentars --help` | todos os comandos |
 
@@ -293,6 +307,8 @@ A IA responde no idioma escolhido, e entende pedidos em qualquer um deles: as pa
 | `OLLAMA_HOST` | endereço do Ollama | `127.0.0.1:11434` |
 | `TARS_MODELO_AJUDANTE` | nome do ajudante antigo, se você tiver um instalado (não é baixado desde a 3.0.5) | `qwen2.5:0.5b` |
 | `TARS_SERVIDOR_API` / `TARS_CHAVE_API` | servidor compatível com a OpenAI e a chave dele | o de `opentars --servidor` |
+| `TARS_AUTODETECTAR=off` | não procura LM Studio / llama.cpp / Jan ligados | procura |
+| `TARS_PASTAS_MODELOS` | pastas a mais onde procurar `.gguf` (separadas por `:`) | só as dos programas conhecidos |
 | `TARS_WHISPER` / `TARS_WHISPER_ATIVACAO` | modelos do Whisper pro pedido e pro "TARS" | `base` / `tiny` |
 | `TARS_YDOTOOL=0` | não usa o ydotool no Wayland | ligado se disponível |
 | `TARS_MURPH=off` | usa o classificador antigo (Naive Bayes) no lugar da Murph, pra comparar | Murph ligada |
@@ -419,6 +435,7 @@ tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta d
 tars_voz.py             voz: microfone em trechos, "TARS", Whisper, Piper
 tars_rotinas.py         rotinas agendadas e memória de preferências
 tars_openai.py          servidores compatíveis com a OpenAI (vLLM, LM Studio, llama.cpp)
+tars_descoberta.py      3.1: acha servidores ligados e .gguf de outros programas; importa no Ollama
 tars_wayland.py         mouse e teclado pelo ydotool no Wayland
 tars_atalho.py          atalho global (GNOME, Cinnamon, MATE, XFCE)
 tars_instancia.py       instância única (a barra abre na hora)
