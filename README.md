@@ -4,26 +4,28 @@
 
 # openTARS
 
-**O assistente de IA local pro Linux que escolhe a IA certa pra cada pedido.**
+**O assistente de IA local pro Linux, agora com uma IA treinada só pra ele.**
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
-Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.
+Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
+**4.0 Endurance:** chega o **Gargantua**, a IA oficial do openTARS.
 
-[![Versão 3.1 Miller](https://img.shields.io/badge/vers%C3%A3o-3.1%20Miller-5FD97A?style=flat-square)](#instalação)
+[![Versão 4.0 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance-5FD97A?style=flat-square)](#instalação)
+[![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
 [![Ollama](https://img.shields.io/badge/roda%20com-Ollama-1A2446?style=flat-square)](https://ollama.com)
-[![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN%20%C2%B7%20ES%20%C2%B7%20FR%20%C2%B7%20DE-1A2446?style=flat-square)](#idiomas)
+[![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Instalar](#instalação) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da 4.0](#novidades-da-40-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
 <img src="janela.png" width="820" alt="Janela do openTARS: o pedido, a IA escolhida, os botões da calculadora clicados pelo nome e a resposta">
 
 <sub>As imagens mostram a janela e a calculadora de verdade; nelas, as respostas do modelo foram roteirizadas pra demonstração.</sub><br>
-<sub>🇺🇸 <i>English:</i> openTARS is a 100% local AI assistant for Linux. The interface speaks English, Spanish, French and German too — pick it in the language menu.</sub>
+<sub>🇺🇸 <i>English:</i> openTARS is a 100% local AI assistant for Linux. The interface speaks English too — pick it in the language menu. Its official AI is Gargantua (`ollama pull ProjectOpenTARS/Gargantua`).</sub>
 
 </div>
 
@@ -33,19 +35,27 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.
 
 <table>
 <tr>
-<td width="33%" valign="top">
+<td width="50%" valign="top">
+
+### Tem a própria IA
+O **Gargantua** foi treinado com milhares de pedidos resolvidos de verdade no openTARS, conferidos um a um. Ele já sabe as ferramentas: abre, clica, calcula e cria arquivos de primeira, rápido, numa placa de 6 GB.
+
+</td>
+<td width="50%" valign="top">
 
 ### Escolhe a IA sozinho
 Várias camadas leem cada pedido em milissegundos, sem gastar IA nenhuma, e mandam pro modelo mais adequado entre os que você já tem: o que enxerga a tela, o de programação, o geral ou o mais rápido. E só liga o "raciocínio" quando ele ajuda: abrir e fechar programas sai na hora.
 
 </td>
-<td width="33%" valign="top">
+</tr>
+<tr>
+<td width="50%" valign="top">
 
 ### Clica pelo nome, não pela posição
 Ele aperta os botões pelo texto que aparece neles ("7", "=", "Salvar"), pela acessibilidade do Linux: sem print, sem coordenada, em milissegundos, até no Wayland. O print continua como plano B.
 
 </td>
-<td width="33%" valign="top">
+<td width="50%" valign="top">
 
 ### Fica no seu PC
 Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem confirmação, e ele nunca fecha um programa com trabalho não salvo.
@@ -53,6 +63,20 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </td>
 </tr>
 </table>
+
+## Novidades da 4.0 Endurance
+
+| | |
+|---|---|
+| 🌀 **Gargantua, a IA oficial** | Um Qwen3 4B treinado pra usar o openTARS. O instalador baixa sozinho (`ProjectOpenTARS/Gargantua`, ~2,5 GB) e o modo AUTO usa ele primeiro nas ações e buscas. [Saiba mais](#gargantua-a-ia-oficial) |
+| ⚡ **Formato curto** | O Gargantua recebe um prompt pequeno, as ferramentas resumidas e nenhum "raciocínio": responde mais rápido e sobra memória na placa |
+| 🧪 **Kit de treino aberto** | `gargantua/gargantua.py` coleta exemplos numa tela virtual, treina numa placa de 6 GB e exporta o GGUF. [Tutorial passo a passo](gargantua/TUTORIAL.md) |
+| 📁 **Conhece as suas pastas** | A IA recebe o nome real da Área de Trabalho, Documentos e Downloads (lidos do `user-dirs.dirs`): "cria uma pasta na área de trabalho" acerta de primeira |
+| 📝 **"Editor de texto" certo** | Abre um editor de janela, não mais o Vim num terminal |
+| 📦 **Flatpak** | Acha os modelos do LM Studio, GPT4All e Jan instalados pelo Flatpak |
+| 🌎 **Português e inglês** | A interface ficou só nas duas línguas mais usadas; espanhol, francês e alemão saíram |
+
+Quem já usa: rode o mesmo comando de instalação. O histórico, as rotinas, a memória e os seus modelos continuam, e o Gargantua é baixado se ainda não estiver no Ollama.
 
 ## Instalação
 
@@ -70,7 +94,8 @@ Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que voc�
 - o modelo de embeddings `granite-embedding:278m` (~560 MB), que entende o pedido em milissegundos
 - o leitor de texto da tela (OCR `tesseract`), pra clicar em apps que não mostram os botões pra acessibilidade
 - **as IAs que você já tem em outros programas (3.1)**: LM Studio, llama.cpp, Jan ou GPT4All ligados são usados direto, e os modelos `.gguf` que eles já baixaram podem entrar no Ollama (veja [IAs de outros programas](#ias-de-outros-programas-31))
-- **um modelo de conversa escolhido pelo seu hardware**, se você ainda não tiver nenhum (nem no Ollama, nem em outro programa): `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
+- **o Gargantua (4.0)**, a IA oficial do openTARS (~2,5 GB, `ProjectOpenTARS/Gargantua`), treinada pra usar as ferramentas dele. Veja [Gargantua](#gargantua-a-ia-oficial)
+- **um modelo de conversa escolhido pelo seu hardware**, só se o Gargantua não tiver baixado e você ainda não tiver nenhum outro: `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
 - o atalho no menu de aplicativos
 
 Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote (3.0.5). O antigo `qwen2.5:0.5b` saiu do download; se você já tiver ele, só desempata enquanto acertar mais que a Murph no `--avaliar-classificador`. A **voz** também é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
@@ -88,7 +113,7 @@ Quanto mais modelos diferentes você tiver, mais o openTARS consegue adaptar a I
 ollama pull qwen3-vl:8b
 ```
 
-Pra escolher outro modelo de conversa na instalação, coloque `TARS_MODELO_CONVERSA=qwen3:14b` antes do `apt install` (ex: `sudo TARS_MODELO_CONVERSA=qwen3:14b apt install -y --reinstall /tmp/opentars.deb`). Pra não baixar nenhum: `TARS_SEM_MODELO=1`.
+Pra escolher outro modelo de conversa na instalação, coloque `TARS_MODELO_CONVERSA=qwen3:14b` antes do `apt install` (ex: `sudo TARS_MODELO_CONVERSA=qwen3:14b apt install -y --reinstall /tmp/opentars.deb`). Pra não baixar nenhum: `TARS_SEM_MODELO=1`. Pra não baixar o Gargantua: `TARS_SEM_GARGANTUA=1`.
 
 </details>
 
@@ -103,13 +128,37 @@ sudo apt install -y --reinstall ./opentars_all.deb
 
 </details>
 
+## Gargantua, a IA oficial
+
+O **Gargantua** é a IA feita pro openTARS: um Qwen3 4B treinado em milhares de pedidos resolvidos de verdade no openTARS (abrir e fechar apps, calculadora, pastas e arquivos, pesquisas, editor de texto, memória, recusar comandos perigosos). Só entraram no treino as conversas que um conferidor automático aprovou: o visor da calculadora mostrava a conta certa, a pasta existia, nada foi apagado.
+
+```bash
+ollama pull ProjectOpenTARS/Gargantua
+```
+
+O instalador já faz isso. Com ele:
+
+- **Nas ações e buscas, o modo AUTO usa o Gargantua primeiro.** Pra conversar, programar ou explicar, a fila continua escolhendo o melhor modelo que você tiver. Se ele errar muito no seu PC, o placar de acertos manda ele pro fim da fila, como qualquer outro.
+- **Formato curto.** Como ele já aprendeu as regras no treino, recebe um prompt pequeno, as ferramentas com descrições de uma frase e nenhum "raciocínio": responde mais rápido e cabe numa placa de 4–6 GB.
+- **Pra escolher ele na mão:** `/modelo gargantua` (ou na escolha de IA da janela).
+- **Pra ver se está instalado:** `opentars --version` ou `opentars --diagnostico`.
+- **Pra desligar a preferência:** `TARS_SEM_GARGANTUA=1`.
+
+| | Gargantua | Um modelo comum (ex: `qwen3:4b`) |
+|---|---|---|
+| Prompt de sistema + ferramentas | ~1.200 tokens | ~4.000 tokens |
+| Raciocínio antes de agir | não precisa | liga nos pedidos difíceis |
+| Aprendeu as ferramentas do openTARS | sim, com exemplos conferidos | não, só lê as instruções |
+
+**Quer treinar o seu?** O kit (`gargantua/gargantua.py`) coleta os exemplos numa tela virtual, treina com Unsloth numa placa de 6 GB e exporta o GGUF, tudo no seu PC. Qualquer modelo com "gargantua" no nome é tratado como ele. Veja o **[tutorial do kit de treino](gargantua/TUTORIAL.md)**.
+
 ## Como funciona
 
 ```mermaid
 flowchart LR
     P([Seu pedido]) --> L{{"Camadas<br/>palavras · contexto · formato<br/>helper Murph · apps · embeddings"}}
     L -- "empate" --> A{{"Ajudante antigo<br/>só se já instalado"}}
-    L & A --> M["Fila de modelos<br/>tamanho · VRAM · acertos no seu PC"]
+    L & A --> M["Fila de modelos<br/>Gargantua primeiro nas ações<br/>tamanho · VRAM · acertos no seu PC"]
     M --> IA["IA de conversa<br/>pensa antes se tiver várias etapas"]
     IA --> F["Ferramentas<br/>acessibilidade · OCR · visão · teclado · terminal · web"]
     F -- "nada funcionou" --> M
@@ -141,7 +190,7 @@ opentars --explicar "abre o claude e faz uma pergunta simples"
 
 ### 2. A fila de modelos aprende com o seu PC
 
-O openTARS escolhe entre os modelos que você tem, pelo tamanho e pelo que cabe na VRAM. Especialistas em programação (`qwen2.5-coder` e parecidos) **só** atendem código. E ele anota, por tarefa, se cada modelo deu certo ou falhou nas últimas vezes: quem falha a maioria das vezes numa tarefa desce na fila **daquela** tarefa, e volta a subir se passar a acertar.
+O openTARS escolhe entre os modelos que você tem, pelo tamanho e pelo que cabe na VRAM. Nas ações e buscas, o **Gargantua** vai na frente (se roda bem no seu PC). Especialistas em programação (`qwen2.5-coder` e parecidos) **só** atendem código. E ele anota, por tarefa, se cada modelo deu certo ou falhou nas últimas vezes: quem falha a maioria das vezes numa tarefa desce na fila **daquela** tarefa, e volta a subir se passar a acertar.
 
 ### 3. A IA trabalha com rede de segurança
 
@@ -164,7 +213,7 @@ O clique pelo nome tenta, nesta ordem:
 3. **Visão, em grade:** ícone sem texto ("ícone de enviar")? Um modelo com visão, se você tiver um, aponta o lugar numa grade (A1, B2…) em rodadas de zoom (mais rodadas enquanto a célula ainda for grande, até achar um X de aba de 14 px), e o openTARS mira no centro do ícone. Funciona com qualquer modelo com visão, porque ele só precisa dizer a célula, não coordenadas.
 4. **Teclado:** sem nada disso, a IA escreve no campo que tem o foco.
 
-### Mouse preciso
+#### Mouse preciso
 
 - **Arrastar de verdade:** `drag_mouse` segura o botão, sai devagar do lugar (o Chrome/Brave só entende que é arrasto depois de uns pixels) e solta no destino: um lugar da tela ("top-left", "direita", "centro", "metade esquerda"), outro elemento ("Lixeira") ou um ponto. A origem pode ser descrita ("aba do YouTube"): o openTARS acha sozinho.
 - **Mira com zoom:** o `click_mouse` recebe o que se quer clicar (`target="X da aba do YouTube"`). A coordenada que a IA chuta costuma errar por 10–40 px; o openTARS dá zoom em volta dela e acha o alvo exato com a visão em grade. Sem modelo de visão, um clique que caiu do lado de um botão encaixa nele.
@@ -189,7 +238,7 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
 - **vLLM, LM Studio, llama.cpp, LocalAI...:** `opentars --servidor http://localhost:1234/v1` e os modelos desse servidor aparecem na escolha de IA como `api:<nome>`, com ferramentas, streaming e tudo. Junto com os do Ollama. `opentars --servidor off` desliga.
 - **Wayland de verdade (experimental):** com o `ydotool` 1.0+ e o serviço `ydotoold` rodando, mouse e teclado alcançam qualquer janela, não só as XWayland. Deixe a aceleração do mouse desligada pra mais precisão.
 
-### IAs de outros programas (3.1)
+### 8. IAs de outros programas (3.1)
 
 Já baixou modelos no **LM Studio**, **GPT4All**, **Jan**, **llama.cpp** ou pelo **Hugging Face**? O openTARS acha e usa:
 
@@ -199,11 +248,13 @@ Já baixou modelos no **LM Studio**, **GPT4All**, **Jan**, **llama.cpp** ou pelo
   Onde ele procura: `~/.lmstudio/models` (ou a pasta que você escolheu no LM Studio), `~/.cache/lm-studio`, `~/.local/share/nomic.ai/GPT4All`, `~/jan` e `~/.local/share/Jan`, `~/.cache/huggingface/hub`, `~/.cache/llama.cpp`, `~/models` e a pasta de Downloads. Outras pastas: `TARS_PASTAS_MODELOS=/mnt/hd/modelos:/outra/pasta`.
 
   **Importar copia o arquivo** pra pasta do Ollama (um modelo de 5 GB passa a ocupar 10 GB). Por isso é sempre você quem escolhe, o espaço livre aparece antes, e o openTARS não importa se o disco for ficar com menos de 2 GB livres. Depois de importar, dá pra apagar o original no outro programa. Modelos com visão levam junto o `mmproj` da mesma pasta (se o Ollama não aceitar, entra só o texto). Arquivos divididos em partes (`-00001-of-00003.gguf`) o Ollama não importa.
-- **Na instalação:** se você não tem nenhum modelo de conversa no Ollama mas tem IA em outro programa, o instalador pergunta quais importar (no terminal) e **não baixa** o `qwen3` à toa.
+- **Na instalação:** se você não tem nenhum modelo de conversa no Ollama (nem o Gargantua, por exemplo com `TARS_SEM_GARGANTUA=1`) mas tem IA em outro programa, o instalador pergunta quais importar (no terminal) e **não baixa** o `qwen3` à toa.
 
-### 8. Uma conversa só
+  Versões **Flatpak** (4.0) também contam: `~/.var/app/ai.lmstudio.LMStudio`, `~/.var/app/io.gpt4all.gpt4all` e `~/.var/app/ai.jan.Jan`.
 
-Todos os modelos compartilham a mesma conversa: trocar de IA no meio não faz ela esquecer o que você pediu antes.
+### 9. Uma conversa só
+
+Todos os modelos compartilham a mesma conversa: trocar de IA no meio não faz ela esquecer o que você pediu antes. Quando o pedido passa do Gargantua pra outro modelo (ou volta), o formato troca junto.
 
 ## Uso
 
@@ -270,9 +321,9 @@ Outros comandos:
 
 ## Idiomas
 
-A janela, a linha de comando, o instalador e o menu de aplicativos falam **português, inglês, espanhol, francês e alemão**. Troque no menu do topo da janela (ou com `/idioma en` / `opentars --idioma es`); a escolha fica salva. Sem escolha, vale o idioma do sistema.
+A janela, a linha de comando, o instalador e o menu de aplicativos falam **português e inglês**. Troque no menu do topo da janela (ou com `/idioma en` / `opentars --idioma pt_BR`); a escolha fica salva. Sem escolha, vale o idioma do sistema (e inglês, se o sistema estiver em outra língua).
 
-A IA responde no idioma escolhido, e entende pedidos em qualquer um deles: as palavras-chave consideram o idioma escolhido, o do sistema e o inglês.
+A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da interface; pedidos escritos neles ainda costumam ser entendidos (a helper Murph aprendeu com frases nas 5 línguas), mas a resposta vem em português ou inglês.
 
 **Quer o openTARS no seu idioma?** Todos os textos ficam em `idiomas/<código>.json`. Copie o `en.json`, traduza os valores e salve como, por exemplo, `it.json`: o idioma novo aparece no menu sozinho, sem mexer no código. Mande um pull request!
 
@@ -286,6 +337,7 @@ A IA responde no idioma escolhido, e entende pedidos em qualquer um deles: as pa
 | **Sessão Wayland** | conversa, abrir apps e sites, comandos, prints e **clique pelo nome** | clique e digitação por coordenada só chegam a alguns apps (limitação do Wayland) |
 | **Clique pelo nome** | apps GTK (GNOME), Qt/KDE, Firefox, LibreOffice e, lendo a tela, qualquer app que mostre o texto (Electron, jogos, Java) | ícone sem texto: precisa de um modelo com visão (ex: `qwen3-vl:8b`); o clique lendo a tela precisa de sessão X11 |
 | **GPU** | NVIDIA, AMD ou só CPU | sem GPU, o modo automático evita modelos grandes demais |
+| **Gargantua** | placa com ~3 GB livres, ou CPU com 8 GB de RAM | na CPU ele funciona, só que mais devagar; treinar o seu precisa de NVIDIA com 6 GB |
 | **Ollama** | local, Docker ou outra máquina | outro endereço: variável `OLLAMA_HOST` |
 
 ## Segurança e privacidade
@@ -305,6 +357,8 @@ A IA responde no idioma escolhido, e entende pedidos em qualquer um deles: as pa
 | Variável | Pra quê | Padrão |
 |---|---|---|
 | `OLLAMA_HOST` | endereço do Ollama | `127.0.0.1:11434` |
+| `TARS_SEM_GARGANTUA=1` | não baixa o Gargantua na instalação e o AUTO não dá preferência pra ele | Gargantua ligado |
+| `TARS_MODELO_GARGANTUA` | outro nome pro Gargantua (ex: um que você treinou) | `ProjectOpenTARS/Gargantua` |
 | `TARS_MODELO_AJUDANTE` | nome do ajudante antigo, se você tiver um instalado (não é baixado desde a 3.0.5) | `qwen2.5:0.5b` |
 | `TARS_SERVIDOR_API` / `TARS_CHAVE_API` | servidor compatível com a OpenAI e a chave dele | o de `opentars --servidor` |
 | `TARS_AUTODETECTAR=off` | não procura LM Studio / llama.cpp / Jan ligados | procura |
@@ -330,9 +384,19 @@ Exemplo: `TARS_CONTEXTO=32768 opentars-gui`
 ## Problemas comuns
 
 <details>
+<summary><b>O Gargantua não aparece ou não é usado</b></summary>
+
+- `opentars --version` diz se ele está instalado. Se não estiver: `ollama pull ProjectOpenTARS/Gargantua` (a instalação pode ter ficado sem internet).
+- Ele só vai na frente nas **ações e buscas**. Conversa, código e perguntas técnicas continuam indo pro maior modelo que roda bem.
+- Se a placa de vídeo não comporta ele (menos de ~3 GB livres), outro modelo menor pode passar na frente. Feche programas que usam a placa.
+- Se ele errou muito num tipo de pedido no seu PC, o placar manda ele pro fim da fila daquele tipo. `opentars --explicar "o pedido"` mostra o placar. Apague `~/.cache/opentars/historico_modelos.json` pra zerar.
+- Veja se `TARS_SEM_GARGANTUA` não está definido no seu ambiente.
+</details>
+
+<details>
 <summary><b>A IA diz que "não consegue" abrir ou fechar um programa</b></summary>
 
-O openTARS lembra ela das ferramentas e, se ela recusar de novo, passa o pedido pro próximo modelo. Modelos só de programação, como o `qwen2.5-coder`, nunca são escolhidos pra controlar o desktop no modo automático. Se você fixou um deles no seletor **IA**, volte pro **Automático**. Pra isso funcionar, tenha pelo menos um modelo geral (ex: `qwen3:8b`).
+O openTARS lembra ela das ferramentas e, se ela recusar de novo, passa o pedido pro próximo modelo. Modelos só de programação, como o `qwen2.5-coder`, nunca são escolhidos pra controlar o desktop no modo automático. Se você fixou um deles no seletor **IA**, volte pro **Automático**. O melhor pra controlar o PC é o Gargantua: `ollama pull ProjectOpenTARS/Gargantua`.
 </details>
 
 <details>
@@ -418,8 +482,11 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        elementos, ferramentas, selecao, prompt, chat, rotinas, voz, terminal), todas no
+                        elementos, ferramentas, selecao, prompt, chat, rotinas, gargantua, voz, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
+nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
+gargantua/              kit de treino do Gargantua (coleta numa tela virtual, treino QLoRA, GGUF, prova);
+                        comece pelo gargantua/TUTORIAL.md
 tars_gui.py             janela e barra rápida (Tkinter), usa o tars.py por baixo
 tars_i18n.py            idiomas: carrega idiomas/*.json e guarda a escolha
 tars_acessibilidade.py  clique pelo nome (AT-SPI)
@@ -454,6 +521,8 @@ bash empacotamento/build.sh     # gera o .deb em dist/
 ```
 
 A versão fica na constante `VERSAO` do `tars.py` (o `build.sh` lê de lá) e no topo de `empacotamento/doc/changelog`.
+
+**Atenção ao formato do Gargantua:** `SISTEMA_GARGANTUA`, `DESCRICOES_CURTAS`, o `contexto_sistema()` e as ferramentas são exatamente o que ele viu no treino. O `tests/test_gargantua_v40.py` compara o openTARS com o kit byte a byte; mudar qualquer um deles pede um treino novo.
 
 ## Acompanhe
 
