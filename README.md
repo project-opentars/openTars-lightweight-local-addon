@@ -8,7 +8,7 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.0 Endurance:** chega o **Gargantua**, a IA oficial, e a voz em segundo plano: diga "TARS" a qualquer hora.
+**4.0 Endurance:** chega o **Gargantua**, a IA oficial do openTARS, e uma voz natural em português.
 
 [![Versão 4.0 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
@@ -70,7 +70,6 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 |---|---|
 | 🌀 **Gargantua, a IA oficial** | Um Qwen3 4B treinado pra usar o openTARS. O instalador baixa sozinho (`ProjectOpenTARS/Gargantua`, ~2,5 GB) e o modo AUTO usa ele primeiro nas ações e buscas. [Saiba mais](#gargantua-a-ia-oficial) |
 | 🪪 **Ele sabe o próprio nome** | Pergunte "quem é você?" e ele responde que é o Gargantua, a IA do openTARS (o openTARS é o programa; o Gargantua é a IA) |
-| 🎙️ **Voz em segundo plano** | O openTARS fica ouvindo "TARS" o tempo todo, sem janela aberta, com um ícone na bandeja pra pausar o microfone, falar sem dizer "TARS", parar uma tarefa ou abrir a janela. Liga sozinho quando você entra no computador. [Como ligar](#voz-em-segundo-plano) |
 | 🗣️ **Voz natural em português** | A fala agora é do **Kokoro**: vozes pt-BR que soam como gente (Dora, feminina, a padrão; Alex e Santa, masculinas), velocidade ajustável e a resposta falada frase a frase, começando na hora. Roda no processador, sem disputar a placa com o Gargantua |
 | 👂 **Entende melhor** | O Whisper escolhe sozinho: o **large-v3-turbo** na placa quando sobra memória, o **small** no processador (antes era o base). Usa os nomes dos seus apps como vocabulário, reconhece "TARS" em mais jeitos de falar e descarta as frases que o Whisper inventa no silêncio |
 | 🔢 **Fala como gente** | "12 x 8 = 96" vira "12 vezes 8 igual a 96"; "8.148", "14h30", "R$ 10,50", "2026-10-01", "3,5 GB" e caminhos de pasta são lidos do jeito certo |
@@ -239,27 +238,9 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
 - **Rotinas:** "todo dia às 8h abre o gmail e o spotify", "dias úteis às 18h fecha o discord", "daqui a 10 minutos me lembra de tirar o bolo". Na hora, o pedido entra sozinho (com notificação do sistema), enquanto o openTARS estiver aberto (janela, barra rápida ou `opentars --voz`). Ficam em `~/.config/opentars/rotinas.json`.
 - **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`.
 
-### Voz em segundo plano
+### Voz natural e ouvir melhor (4.0)
 
-```bash
-opentars --instalar-voz          # uma vez (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, +1 GB)
-opentars --voz-servico on        # liga agora e em todo login
-```
-
-Ou na janela: **Voz ▾ → Serviço de voz em segundo plano**. A partir daí, diga **"TARS, abre o Firefox"** com a janela fechada. O ícone na bandeja mostra o que ele está fazendo e tem o menu:
-
-| No menu do ícone | O que faz |
-|---|---|
-| ● Ouvindo "TARS" / Fazendo: … | o estado agora |
-| Pausar / Retomar microfone | para de ouvir até você mandar voltar |
-| Falar agora | o próximo trecho de fala é o pedido, sem dizer "TARS" |
-| Parar tarefa | interrompe o que ele estiver fazendo |
-| Abrir janela do openTARS | abre a janela completa |
-| Desligar serviço de voz | desliga (liga de novo no próximo login, se o início automático estiver ligado) |
-
-No terminal: `opentars --voz-servico status`, `pausar`, `retomar` e `off` (desliga e tira do início automático). O ícone usa o AppIndicator (já vem no Ubuntu, Zorin e Pop!_OS); sem ele, o serviço funciona igual, só sem o ícone, avisando por notificação. Pra ter o ícone: `sudo apt install gir1.2-ayatanaappindicator3-0.1`.
-
-Com o serviço ligado, a janela não liga o próprio "Ouvir TARS" (os dois responderiam) e as rotinas rodam no serviço. A conversa do serviço fica separada da janela (`~/.tars_sessoes_voz.json`).
+A fala agora é do **Kokoro**, com vozes em português que soam como gente, e o Whisper que ouve você ficou maior. Instale uma vez com `opentars --instalar-voz` (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, mais ~1 GB) e ligue no botão **Voz** da janela, ou use `opentars --voz` sem janela.
 
 **Escolher a voz e a velocidade:**
 
@@ -355,7 +336,6 @@ Outros comandos:
 | `opentars --avaliar-classificador` | mede o quanto cada camada (e o modo AUTO) acerta no seu PC |
 | `opentars --explicar "pedido"` | mostra, camada por camada, como a tarefa e o modelo são escolhidos |
 | `opentars --instalar-voz` | instala a voz (Whisper + Kokoro, ~1 GB, tudo local, na sua pasta) |
-| `opentars --voz-servico on\|off\|status` | voz em segundo plano, com ícone na bandeja e início automático |
 | `opentars --voz-escolher [nome]` | lista ou troca a voz (Dora, Alex, Santa); `--voz-velocidade 1.1` muda a velocidade |
 | `opentars --servidor <url>` | usa um servidor vLLM / LM Studio / llama.cpp fixo (`auto` procura sozinho, o padrão; `off` desliga) |
 | `opentars --procurar-modelos` | acha os `.gguf` do LM Studio, GPT4All, Jan... e importa os que você escolher no Ollama |
@@ -393,7 +373,6 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 - A leitura da tela (OCR) e a visão rodam no seu PC, como todo o resto.
 - O histórico de acertos dos modelos fica em `~/.cache/opentars/historico_modelos.json` (apague pra zerar).
 - Tudo que ele executa fica registrado em `~/.tars_log/tars.log`.
-- O serviço de voz só ouve o microfone enquanto está ligado, e o áudio nunca sai do PC: o Whisper roda na sua máquina. Pausar pelo ícone da bandeja desliga o microfone de verdade.
 
 <details>
 <summary><b>Configuração avançada</b> (variáveis de ambiente)</summary>
@@ -413,7 +392,6 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | `TARS_MODELO_EMBEDDING` | trocar o modelo de embeddings (`off` desliga) | `granite-embedding:278m`, ou outro instalado |
 | `TARS_LIMITE_ETAPAS` | teto de etapas de um pedido longo (o fôlego extra para aqui) | `120` |
 | `TARS_WHISPER_DISPOSITIVO` | onde o Whisper roda: `auto`, `cuda` ou `cpu` | `auto` |
-| `TARS_BANDEJA=0` | serviço de voz sem ícone na bandeja | com ícone, se houver AppIndicator |
 | `TARS_PENSAR` | `sempre` ou `nunca` força o raciocínio da IA | automático, por tipo de pedido |
 | `TARS_IDIOMA` | idioma só desta vez, sem salvar | o escolhido no menu |
 | `TARS_CONTEXTO` | memória da IA, em tokens | 16384 com GPU de 16 GB+, senão 8192 |
@@ -547,8 +525,6 @@ tars_exemplos_mais.py   mais frases por idioma (2.9.1)
 tars_ocr.py             lê a tela (tesseract) e acha ícones com um modelo de visão em grade
 tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta do clique, confere se a tela mudou
 tars_voz.py             voz: microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
-tars_servico.py         serviço de voz em segundo plano (cadeado, comandos, início automático)
-tars_bandeja.py         ícone na bandeja do serviço de voz
 tars_rotinas.py         rotinas agendadas e memória de preferências
 tars_openai.py          servidores compatíveis com a OpenAI (vLLM, LM Studio, llama.cpp)
 tars_descoberta.py      3.1: acha servidores ligados e .gguf de outros programas; importa no Ollama
