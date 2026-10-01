@@ -8,9 +8,9 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.0 Endurance:** chega o **Gargantua**, a IA oficial do openTARS.
+**4.1 Endurance:** o **Gargantua**, a IA oficial, agora também ouve em segundo plano: diga "TARS" a qualquer hora.
 
-[![Versão 4.0 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance-5FD97A?style=flat-square)](#instalação)
+[![Versão 4.1 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.1%20Endurance-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
@@ -18,7 +18,7 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Novidades da 4.0](#novidades-da-40-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da 4.1](#novidades-da-41-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -63,6 +63,15 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </td>
 </tr>
 </table>
+
+## Novidades da 4.1 Endurance
+
+| | |
+|---|---|
+| 🎙️ **Voz em segundo plano** | O openTARS fica ouvindo "TARS" o tempo todo, sem janela aberta, com um ícone na bandeja pra pausar o microfone, falar sem dizer "TARS", parar uma tarefa ou abrir a janela. Liga sozinho quando você entra no computador. [Como ligar](#voz-em-segundo-plano-41) |
+| 🗣️ **Voz mais natural em português** | Quatro vozes pt-BR pra escolher (Faber, Cadu, Jeff, Edresson), velocidade ajustável e a resposta falada frase a frase: começa a falar na hora, sem esperar o texto todo virar áudio |
+| 🔢 **Fala como gente** | "12 x 8 = 96" vira "12 vezes 8 igual a 96"; "8.148", "14h30", "R$ 10,50", "2026-10-01", "3,5 GB" e caminhos de pasta são lidos do jeito certo |
+| 🧭 **Tarefas mais longas** | Pedido com plano começa com mais etapas, e enquanto a IA estiver fazendo progresso de verdade ela ganha fôlego extra (até 120 etapas). Os resultados antigos são resumidos pra não estourar a memória da IA no meio |
 
 ## Novidades da 4.0 Endurance
 
@@ -234,6 +243,39 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
 - **Rotinas:** "todo dia às 8h abre o gmail e o spotify", "dias úteis às 18h fecha o discord", "daqui a 10 minutos me lembra de tirar o bolo". Na hora, o pedido entra sozinho (com notificação do sistema), enquanto o openTARS estiver aberto (janela, barra rápida ou `opentars --voz`). Ficam em `~/.config/opentars/rotinas.json`.
 - **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`.
 
+### Voz em segundo plano (4.1)
+
+```bash
+opentars --instalar-voz          # uma vez (Whisper + Piper, tudo local)
+opentars --voz-servico on        # liga agora e em todo login
+```
+
+Ou na janela: **Voz ▾ → Serviço de voz em segundo plano**. A partir daí, diga **"TARS, abre o Firefox"** com a janela fechada. O ícone na bandeja mostra o que ele está fazendo e tem o menu:
+
+| No menu do ícone | O que faz |
+|---|---|
+| ● Ouvindo "TARS" / Fazendo: … | o estado agora |
+| Pausar / Retomar microfone | para de ouvir até você mandar voltar |
+| Falar agora | o próximo trecho de fala é o pedido, sem dizer "TARS" |
+| Parar tarefa | interrompe o que ele estiver fazendo |
+| Abrir janela do openTARS | abre a janela completa |
+| Desligar serviço de voz | desliga (liga de novo no próximo login, se o início automático estiver ligado) |
+
+No terminal: `opentars --voz-servico status`, `pausar`, `retomar` e `off` (desliga e tira do início automático). O ícone usa o AppIndicator (já vem no Ubuntu, Zorin e Pop!_OS); sem ele, o serviço funciona igual, só sem o ícone, avisando por notificação. Pra ter o ícone: `sudo apt install gir1.2-ayatanaappindicator3-0.1`.
+
+Com o serviço ligado, a janela não liga o próprio "Ouvir TARS" (os dois responderiam) e as rotinas rodam no serviço. A conversa do serviço fica separada da janela (`~/.tars_sessoes_voz.json`).
+
+**Escolher a voz e a velocidade:**
+
+```bash
+opentars --voz-escolher            # lista as vozes
+opentars --voz-escolher cadu       # troca (baixa ~60 MB na primeira vez) e fala um exemplo
+opentars --voz-velocidade 1.15     # 0.7 a 1.6 (1.0 = normal)
+opentars --voz-testar              # ouvir um exemplo
+```
+
+Na janela: **Voz ▾ → Voz** e **Voz ▾ → Velocidade da fala**. As vozes em português: **Faber** (clara, a padrão), **Cadu** (jovem), **Jeff** (grave) e **Edresson** (mais leve e rápida). O Piper ainda não tem voz feminina oficial em português do Brasil.
+
 ### 7. Outros servidores e Wayland (3.0)
 
 - **vLLM, LM Studio, llama.cpp, LocalAI...:** `opentars --servidor http://localhost:1234/v1` e os modelos desse servidor aparecem na escolha de IA como `api:<nome>`, com ferramentas, streaming e tudo. Junto com os do Ollama. `opentars --servidor off` desliga.
@@ -315,6 +357,8 @@ Outros comandos:
 | `opentars --avaliar-classificador` | mede o quanto cada camada (e o modo AUTO) acerta no seu PC |
 | `opentars --explicar "pedido"` | mostra, camada por camada, como a tarefa e o modelo são escolhidos |
 | `opentars --instalar-voz` | instala a voz (Whisper + Piper, ~700 MB, tudo local, na sua pasta) |
+| `opentars --voz-servico on\|off\|status` | voz em segundo plano, com ícone na bandeja e início automático (4.1) |
+| `opentars --voz-escolher [nome]` | lista ou troca a voz; `--voz-velocidade 1.1` muda a velocidade (4.1) |
 | `opentars --servidor <url>` | usa um servidor vLLM / LM Studio / llama.cpp fixo (`auto` procura sozinho, o padrão; `off` desliga) |
 | `opentars --procurar-modelos` | acha os `.gguf` do LM Studio, GPT4All, Jan... e importa os que você escolher no Ollama |
 | `opentars --setup` | instala o que estiver faltando (Ollama, modelos...) |
@@ -351,6 +395,7 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 - A leitura da tela (OCR) e a visão rodam no seu PC, como todo o resto.
 - O histórico de acertos dos modelos fica em `~/.cache/opentars/historico_modelos.json` (apague pra zerar).
 - Tudo que ele executa fica registrado em `~/.tars_log/tars.log`.
+- O serviço de voz (4.1) só ouve o microfone enquanto está ligado, e o áudio nunca sai do PC: o Whisper roda na sua máquina. Pausar pelo ícone da bandeja desliga o microfone de verdade.
 
 <details>
 <summary><b>Configuração avançada</b> (variáveis de ambiente)</summary>
@@ -368,6 +413,8 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | `TARS_YDOTOOL=0` | não usa o ydotool no Wayland | ligado se disponível |
 | `TARS_MURPH=off` | usa o classificador antigo (Naive Bayes) no lugar da Murph, pra comparar | Murph ligada |
 | `TARS_MODELO_EMBEDDING` | trocar o modelo de embeddings (`off` desliga) | `granite-embedding:278m`, ou outro instalado |
+| `TARS_LIMITE_ETAPAS` | teto de etapas de um pedido longo (o fôlego extra para aqui) | `120` |
+| `TARS_BANDEJA=0` | serviço de voz sem ícone na bandeja | com ícone, se houver AppIndicator |
 | `TARS_PENSAR` | `sempre` ou `nunca` força o raciocínio da IA | automático, por tipo de pedido |
 | `TARS_IDIOMA` | idioma só desta vez, sem salvar | o escolhido no menu |
 | `TARS_CONTEXTO` | memória da IA, em tokens | 16384 com GPU de 16 GB+, senão 8192 |
