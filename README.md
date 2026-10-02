@@ -8,9 +8,9 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.0 Endurance:** chega o **Gargantua**, a IA oficial do openTARS, e uma voz natural em português.
+**4.0 Endurance Neo:** o **Gargantua** é a IA oficial, nada some de vez (lixeira e **desfazer**), ele lê e escreve a área de transferência e avisa quando sai versão nova.
 
-[![Versão 4.0 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance-5FD97A?style=flat-square)](#instalação)
+[![Versão 4.0 Endurance Neo](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance%20Neo-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
@@ -18,7 +18,7 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Novidades da 4.0](#novidades-da-40-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da Neo](#novidades-da-40-endurance-neo) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -64,15 +64,29 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </tr>
 </table>
 
+## Novidades da 4.0 Endurance Neo
+
+| | |
+|---|---|
+| 🗑️ **Nada some de vez** | Quando a IA apaga arquivos da sua pasta pessoal (pela ferramenta nova `move_to_trash` ou com um `rm` no terminal), eles vão pra **lixeira**: a mesma do gerenciador de arquivos, dá pra recuperar por lá. Comandos perigosos continuam pedindo confirmação antes |
+| ↩️ **Desfazer** | Diga **"desfaz"** (ou `/desfazer`) e a última mudança em arquivos volta na hora, sem passar pela IA: o que foi pra lixeira volta pro lugar, o que foi movido/renomeado volta, pasta e arquivo criados saem (pra lixeira). Vale pra `rm`, `mv`, `mkdir`, `cp` e `touch`, um de cada vez, do mais novo pro mais antigo (guarda as últimas 30) |
+| 📋 **Área de transferência** | "resume o texto que eu copiei", "o que tem no meu ctrl+c?", "copia esse comando pra mim": ferramentas novas `read_clipboard` e `write_clipboard` (xclip, xsel ou wl-clipboard). Só entram quando o pedido fala de copiar/colar, pra não confundir os modelos pequenos |
+| 🔔 **Aviso de versão nova** | Uma vez por dia, no máximo, ele confere no GitHub se saiu openTARS mais novo e avisa na janela e no `--diagnostico`. Só lê o `tars.py` publicado, não manda nada do seu PC. `TARS_SEM_AVISO_VERSAO=1` desliga |
+| 🪶 **Mais leve** | Saíram o modelo de embeddings (`granite-embedding:278m`, ~560 MB a menos pra baixar), o classificador antigo (Naive Bayes) e o ajudante `qwen2.5:0.5b`: quem decide o tipo do pedido são as palavras-chave, o contexto, o formato, a **helper Murph** e os seus apps. Saíram também as **rotinas agendadas** (a **memória** continua) |
+| 🇺🇸 **Voz só em inglês** | A voz (Kokoro + Whisper) fica só em inglês, onde ela acerta de verdade: com a interface em português, o botão **Voz** some e o `--voz` explica como trocar (`/idioma en`) |
+| 🌀 **Gargantua: treino novo recomendado** | A lista de ferramentas mudou (saíram as 3 de rotina, entraram as 4 novas, 28 no total). O Gargantua publicado continua funcionando, mas um treino novo com o kit atualizado deixa ele usar as ferramentas novas sem tropeçar |
+
+Quem já usa: rode o mesmo comando de instalação. O histórico, a memória e os seus modelos continuam. As rotinas que você tinha ficam guardadas em `~/.config/opentars/rotinas.json`, mas não rodam mais. O `granite-embedding:278m` não é apagado do Ollama; se quiser o espaço de volta: `ollama rm granite-embedding:278m`.
+
 ## Novidades da 4.0 Endurance
 
 | | |
 |---|---|
 | 🌀 **Gargantua, a IA oficial** | Um Qwen3 4B treinado pra usar o openTARS. O instalador baixa sozinho (`ProjectOpenTARS/Gargantua`, ~2,5 GB) e o modo AUTO usa ele primeiro nas ações e buscas. [Saiba mais](#gargantua-a-ia-oficial) |
 | 🪪 **Ele sabe o próprio nome** | Pergunte "quem é você?" e ele responde que é o Gargantua, a IA do openTARS (o openTARS é o programa; o Gargantua é a IA) |
-| 🗣️ **Voz natural em português** | A fala agora é do **Kokoro**: vozes pt-BR que soam como gente (Dora, feminina, a padrão; Alex e Santa, masculinas), velocidade ajustável e a resposta falada frase a frase, começando na hora. Roda no processador, sem disputar a placa com o Gargantua |
-| 👂 **Entende melhor** | O Whisper escolhe sozinho: o **large-v3-turbo** na placa quando sobra memória, o **small** no processador (antes era o base). Usa os nomes dos seus apps como vocabulário, reconhece "TARS" em mais jeitos de falar e descarta as frases que o Whisper inventa no silêncio |
-| 🔢 **Fala como gente** | "12 x 8 = 96" vira "12 vezes 8 igual a 96"; "8.148", "14h30", "R$ 10,50", "2026-10-01", "3,5 GB" e caminhos de pasta são lidos do jeito certo |
+| 🗣️ **Voz natural** | A fala agora é do **Kokoro**: vozes que soam como gente (na Neo, só em inglês: Heart, Bella, Michael e Emma), velocidade ajustável e a resposta falada frase a frase, começando na hora. Roda no processador, sem disputar a placa com o Gargantua |
+| 👂 **Entende melhor** | O Whisper escolhe sozinho: o **large-v3-turbo** na placa quando sobra memória, o **small.en** no processador (antes era o base). Usa os nomes dos seus apps como vocabulário, reconhece "TARS" em mais jeitos de falar e descarta as frases que o Whisper inventa no silêncio |
+| 🔢 **Fala como gente** | "12 x 8 = 96" vira "12 times 8 equals 96"; "8,148", "2026-10-01", "3.5 GB" e caminhos de pasta são lidos do jeito certo |
 | 🧭 **Tarefas mais longas** | Pedido com plano começa com mais etapas, e enquanto a IA estiver fazendo progresso de verdade ela ganha fôlego extra (até 120 etapas). Os resultados antigos são resumidos pra não estourar a memória da IA no meio |
 | ⚡ **Formato curto** | O Gargantua recebe um prompt pequeno, as ferramentas resumidas e nenhum "raciocínio": responde mais rápido e sobra memória na placa |
 | 🧪 **Kit de treino aberto** | `gargantua/gargantua.py` coleta exemplos numa tela virtual, treina numa placa de 6 GB e exporta o GGUF. [Tutorial passo a passo](gargantua/TUTORIAL.md) |
@@ -81,7 +95,7 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 | 📦 **Flatpak** | Acha os modelos do LM Studio, GPT4All e Jan instalados pelo Flatpak |
 | 🌎 **Português e inglês** | A interface ficou só nas duas línguas mais usadas; espanhol, francês e alemão saíram |
 
-Quem já usa: rode o mesmo comando de instalação. O histórico, as rotinas, a memória e os seus modelos continuam, e o Gargantua é baixado se ainda não estiver no Ollama.
+O Gargantua é baixado na instalação se ainda não estiver no Ollama.
 
 ## Instalação
 
@@ -96,14 +110,13 @@ Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que voc�
 - todas as dependências do sistema, pelo apt (inclusive a de acessibilidade, pro clique pelo nome)
 - o Ollama (ou usa o que já estiver rodando, inclusive em Docker)
 - um ambiente Python isolado
-- o modelo de embeddings `granite-embedding:278m` (~560 MB), que entende o pedido em milissegundos
 - o leitor de texto da tela (OCR `tesseract`), pra clicar em apps que não mostram os botões pra acessibilidade
 - **as IAs que você já tem em outros programas (3.1)**: LM Studio, llama.cpp, Jan ou GPT4All ligados são usados direto, e os modelos `.gguf` que eles já baixaram podem entrar no Ollama (veja [IAs de outros programas](#ias-de-outros-programas-31))
 - **o Gargantua (4.0)**, a IA oficial do openTARS (~2,5 GB, `ProjectOpenTARS/Gargantua`), treinada pra usar as ferramentas dele. Veja [Gargantua](#gargantua-a-ia-oficial)
 - **um modelo de conversa escolhido pelo seu hardware**, só se o Gargantua não tiver baixado e você ainda não tiver nenhum outro: `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
 - o atalho no menu de aplicativos
 
-Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote (3.0.5). O antigo `qwen2.5:0.5b` saiu do download; se você já tiver ele, só desempata enquanto acertar mais que a Murph no `--avaliar-classificador`. A **voz** também é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
+Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote. A **voz** (só em inglês) é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
 
 O instalador fala o idioma do seu sistema. Pra **atualizar**, rode o mesmo comando: o histórico de conversas e as suas escolhas são mantidos.
 
@@ -161,9 +174,8 @@ O instalador já faz isso. Com ele:
 
 ```mermaid
 flowchart LR
-    P([Seu pedido]) --> L{{"Camadas<br/>palavras · contexto · formato<br/>helper Murph · apps · embeddings"}}
-    L -- "empate" --> A{{"Ajudante antigo<br/>só se já instalado"}}
-    L & A --> M["Fila de modelos<br/>Gargantua primeiro nas ações<br/>tamanho · VRAM · acertos no seu PC"]
+    P([Seu pedido]) --> L{{"Camadas<br/>palavras · contexto · formato<br/>helper Murph · apps"}}
+    L --> M["Fila de modelos<br/>Gargantua primeiro nas ações<br/>tamanho · VRAM · acertos no seu PC"]
     M --> IA["IA de conversa<br/>pensa antes se tiver várias etapas"]
     IA --> F["Ferramentas<br/>acessibilidade · OCR · visão · teclado · terminal · web"]
     F -- "nada funcionou" --> M
@@ -179,10 +191,8 @@ Cada camada olha o pedido de um jeito e dá votos. Quando uma delas é clara, as
 | **Palavras-chave** | verbo ou alvo explícito | "**feche** o Firefox" → ação, na hora |
 | **Contexto** | continuação do pedido anterior | "agora clica no =" depois de abrir a calculadora → ação |
 | **Formato** | código colado, erro, comando, link, pergunta, cumprimento | um `Traceback` → código; `E: dpkg...` → Linux/sistema |
-| **helper Murph 1.0** | a ajudante local, que já vem no pacote (aparece na barra de status da janela e no `opentars --version`): um modelo pequeno treinado com ~2.900 frases nos 5 idiomas (os exemplos do openTARS mais frases novas escritas por um modelo grande, a receita do TinyStories). Roda em ~0,2 ms, sem Ollama. Num teste cego, com pedidos bagunçados que ela nunca viu, acertou 93% sozinha (o classificador antigo: 84%); quando diz que está segura, acerta 99%. Pedido estranho (letras aleatórias, outra língua) fica em dúvida e passa pras camadas seguintes | "abaixa um pouquinho o som" → ação |
+| **helper Murph 1.0** | a ajudante local, que já vem no pacote (aparece na barra de status da janela e no `opentars --version`): um modelo pequeno treinado com ~2.900 frases nos 5 idiomas (os exemplos do openTARS mais frases novas escritas por um modelo grande, a receita do TinyStories). Roda em ~0,2 ms, sem Ollama. Num teste cego, com pedidos bagunçados que ela nunca viu, acertou 93% sozinha (o classificador antigo, que saiu na Neo: 84%); quando diz que está segura, acerta 99%. Em dúvida, as duas mais prováveis ganham um voto pequeno e os apps desempatam | "abaixa um pouquinho o som" → ação |
 | **Apps** | cita um app instalado | "o spotify tá mudo" → ação |
-| **Embeddings** | o *sentido*, comparado com frases de exemplo, em qualquer idioma (~20 ms) | "minha tela ficou preta depois do update" → Linux/sistema |
-| **Ajudante antigo** | não é mais baixado (3.0.5). Se o `qwen2.5:0.5b` já estiver instalado, só entra se as camadas empatarem, escolhendo entre as 2–3 finalistas; se ele acertar menos que a Murph no `--avaliar-classificador`, deixa de ser consultado | "quero umas receitas de lasanha pra assistir" → busca |
 | **Coerência** | corrige resultado sem sentido | "conversa simples" num pedido de 20 palavras → geral |
 
 A camada também percebe **pedidos com várias etapas** ("abre o Claude **e** faz uma pergunta"). Nesses, a IA pensa antes de agir, recebe um lembrete de fazer tudo e o pedido vai pro maior modelo que roda bem no seu PC.
@@ -231,29 +241,33 @@ Apps Electron (Claude, Discord, VS Code…) abertos **pelo openTARS** já saem c
 
 Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** numerado, que aparece na tela e vai pra IA. Se ela tentar encerrar antes de fazer todas as etapas, recebe o plano de volta com o que falta. Clique que não mudou nada na tela seguido de "Pronto!" é cobrado, e cliques no nada em sequência contam como andar em círculos: outro modelo assume ou a IA explica o que travou.
 
-### 6. Voz, rotinas e memória (3.0)
+### 6. Voz e memória
 
-- **Voz, 100% local:** diga **"TARS, abre o Firefox"**. Um Whisper pequeno fica ouvindo só o nome; o pedido é transcrito por um maior (faster-whisper: large-v3-turbo na placa ou small no processador), e a resposta sai falada pelo Kokoro. `Ctrl+M` (ou **Voz ▾ → Falar agora**) fala sem precisar dizer "TARS". Liga no botão **Voz** da janela, ou com `opentars --voz` pra usar só a voz, sem janela.
+- **Voz, 100% local:** diga **"TARS, open Firefox"**. Um Whisper pequeno fica ouvindo só o nome; o pedido é transcrito por um maior (faster-whisper: large-v3-turbo na placa ou small.en no processador). **Na Neo, a voz é só em inglês:** com a interface em português o botão **Voz** some; troque com `/idioma en`, e a resposta sai falada pelo Kokoro. `Ctrl+M` (ou **Voz ▾ → Falar agora**) fala sem precisar dizer "TARS". Liga no botão **Voz** da janela, ou com `opentars --voz` pra usar só a voz, sem janela.
   - **Responde rápido (3.0 Miller):** os modelos já ficam carregados; o nome é conferido enquanto você ainda fala (a tela mostra na hora que ouviu); no fim da frase só falta entender o pedido. "TARS" sozinho: ele responde **"Sim?"** e espera o pedido. Depois de responder falando, dá pra continuar a conversa **sem dizer "TARS"** por alguns segundos.
-- **Rotinas:** "todo dia às 8h abre o gmail e o spotify", "dias úteis às 18h fecha o discord", "daqui a 10 minutos me lembra de tirar o bolo". Na hora, o pedido entra sozinho (com notificação do sistema), enquanto o openTARS estiver aberto (janela, barra rápida ou `opentars --voz`). Ficam em `~/.config/opentars/rotinas.json`.
-- **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`.
+- **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`. (As rotinas agendadas saíram na Neo.)
 
-### Voz natural e ouvir melhor (4.0)
+### Lixeira, desfazer e área de transferência (Neo)
 
-A fala agora é do **Kokoro**, com vozes em português que soam como gente, e o Whisper que ouve você ficou maior. Instale uma vez com `opentars --instalar-voz` (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, mais ~1 GB) e ligue no botão **Voz** da janela, ou use `opentars --voz` sem janela.
+- **Lixeira:** apagar arquivo da pasta pessoal vira "mandar pra lixeira" (`~/.local/share/Trash`, a mesma do Nautilus/Nemo). Funciona tanto pela ferramenta `move_to_trash` quanto por um `rm` que a IA rode no terminal (`rm`, `rm -r`, `rmdir`, juntos com `&&`). Fora da pasta pessoal, o comando roda como sempre (com a confirmação de perigo).
+- **Desfazer:** `mv`, `mkdir`, `cp` e `touch` simples ficam anotados em `~/.cache/opentars/desfazer.json` com o que mudou de verdade. **"desfaz"**, **"desfaz isso"** ou `/desfazer` voltam a última mudança na hora, sem chamar a IA; a IA também pode desfazer com `undo_last_action`. Comando com pipe, `;`, `$()` ou redirecionamento roda normalmente, só que sem desfazer.
+- **Área de transferência:** `read_clipboard` lê o texto que você copiou (até 6.000 caracteres) e `write_clipboard` copia um texto pra você colar com `Ctrl+V`.
+### Voz natural e ouvir melhor (4.0, só em inglês)
+
+A fala é do **Kokoro**, com vozes que soam como gente, e o Whisper que ouve você ficou maior. Na Neo, ouvir e falar é só em inglês (a interface precisa estar em inglês). Instale uma vez com `opentars --instalar-voz` (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, mais ~1 GB) e ligue no botão **Voz** da janela, ou use `opentars --voz` sem janela.
 
 **Escolher a voz e a velocidade:**
 
 ```bash
 opentars --voz-escolher            # lista as vozes
-opentars --voz-escolher alex       # troca e fala um exemplo (todas as vozes vêm no mesmo arquivo)
+opentars --voz-escolher michael    # troca e fala um exemplo (todas as vozes vêm no mesmo arquivo)
 opentars --voz-velocidade 1.15     # 0.7 a 1.6 (1.0 = normal)
 opentars --voz-testar              # ouvir um exemplo
 ```
 
-Na janela: **Voz ▾ → Voz** e **Voz ▾ → Velocidade da fala**. As vozes em português (Kokoro): **Dora** (feminina, a padrão), **Alex** e **Santa** (masculinas). Em inglês: Heart, Bella, Michael e Emma.
+Na janela: **Voz ▾ → Voz** e **Voz ▾ → Velocidade da fala**. As vozes (Kokoro): **Heart** (feminina, a padrão), **Bella** (feminina), **Michael** (masculina) e **Emma** (feminina, britânica).
 
-**Ouvir:** o Whisper é escolhido pelo seu hardware. Com placa NVIDIA e memória sobrando (uns 4,5 GB livres numa placa de 6 GB), usa o **large-v3-turbo** na placa (~1 GB); senão, o **small** no processador. Pra forçar: `TARS_WHISPER_DISPOSITIVO=cpu` ou `cuda`. Os nomes dos apps instalados entram como vocabulário (ele erra menos "Steam", "Discord", "Spotify"), e se o "TARS" sair parecido ("Taz"), o modelo bom confere antes de ignorar.
+**Ouvir:** o Whisper é escolhido pelo seu hardware. Com placa NVIDIA e memória sobrando (uns 4,5 GB livres numa placa de 6 GB), usa o **large-v3-turbo** na placa (~1 GB); senão, o **small.en** no processador (os modelos `.en` acertam mais em inglês). Pra forçar: `TARS_WHISPER_DISPOSITIVO=cpu` ou `cuda`. Os nomes dos apps instalados entram como vocabulário (ele erra menos "Steam", "Discord", "Spotify"), e se o "TARS" sair parecido ("Taz"), o modelo bom confere antes de ignorar.
 
 ### 7. Outros servidores e Wayland (3.0)
 
@@ -325,7 +339,8 @@ No KDE e em outros ambientes, cadastre à mão um atalho com o comando `opentars
 | seletor **IA** no topo | `/modelo <nome>` · `/modelo auto` | fixa um modelo ou volta pro automático |
 | menu **PT-BR ▾** no topo | `/idioma <código>` | troca o idioma |
 | **Nova conversa** | `/limpar` | começa do zero (a conversa fica salva entre usos) |
-| **Voz ▾** · `Ctrl+M` | | fala o pedido; liga "Ouvir TARS" e "Responder falando" |
+| **Voz ▾** · `Ctrl+M` | | fala o pedido; liga "Ouvir TARS" e "Responder falando" (só com a interface em inglês) |
+| | `desfaz` · `/desfazer` | volta a última mudança em arquivos (lixeira, mover, criar) |
 
 Outros comandos:
 
@@ -336,7 +351,7 @@ Outros comandos:
 | `opentars --avaliar-classificador` | mede o quanto cada camada (e o modo AUTO) acerta no seu PC |
 | `opentars --explicar "pedido"` | mostra, camada por camada, como a tarefa e o modelo são escolhidos |
 | `opentars --instalar-voz` | instala a voz (Whisper + Kokoro, ~1 GB, tudo local, na sua pasta) |
-| `opentars --voz-escolher [nome]` | lista ou troca a voz (Dora, Alex, Santa); `--voz-velocidade 1.1` muda a velocidade |
+| `opentars --voz-escolher [nome]` | lista ou troca a voz (Heart, Bella, Michael, Emma; só em inglês); `--voz-velocidade 1.1` muda a velocidade |
 | `opentars --servidor <url>` | usa um servidor vLLM / LM Studio / llama.cpp fixo (`auto` procura sozinho, o padrão; `off` desliga) |
 | `opentars --procurar-modelos` | acha os `.gguf` do LM Studio, GPT4All, Jan... e importa os que você escolher no Ollama |
 | `opentars --setup` | instala o que estiver faltando (Ollama, modelos...) |
@@ -365,8 +380,10 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 
 ## Segurança e privacidade
 
-- Tudo roda localmente. O openTARS não manda dados pra nenhum servidor.
+- Tudo roda localmente. O openTARS não manda dados pra nenhum servidor (a única conexão própria é o aviso de versão nova, que só baixa).
 - Comandos que apagam dados ou mexem no sistema (`rm -r`, `mkfs`, `dd`, `git reset --hard`, desligar o PC...) só rodam depois da sua confirmação.
+- Arquivos apagados da pasta pessoal vão pra lixeira, e "desfaz" volta a última mudança (Neo).
+- O aviso de versão nova só lê o `tars.py` publicado no GitHub, uma vez por dia; não manda nada. `TARS_SEM_AVISO_VERSAO=1` desliga.
 - Comandos que pedem senha (`sudo`) não travam: falham na hora, e a IA mostra o comando pra você rodar.
 - Fechar um programa é como clicar no X: se ele perguntar "salvar alterações?", o openTARS não força.
 - Pro clique pelo nome, o openTARS liga a acessibilidade da sessão (a mesma que um leitor de tela usa) só quando precisa, e ela volta ao normal ao sair da sessão.
@@ -382,14 +399,13 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | `OLLAMA_HOST` | endereço do Ollama | `127.0.0.1:11434` |
 | `TARS_SEM_GARGANTUA=1` | não baixa o Gargantua na instalação e o AUTO não dá preferência pra ele | Gargantua ligado |
 | `TARS_MODELO_GARGANTUA` | outro nome pro Gargantua (ex: um que você treinou) | `ProjectOpenTARS/Gargantua` |
-| `TARS_MODELO_AJUDANTE` | nome do ajudante antigo, se você tiver um instalado (não é baixado desde a 3.0.5) | `qwen2.5:0.5b` |
 | `TARS_SERVIDOR_API` / `TARS_CHAVE_API` | servidor compatível com a OpenAI e a chave dele | o de `opentars --servidor` |
 | `TARS_AUTODETECTAR=off` | não procura LM Studio / llama.cpp / Jan ligados | procura |
 | `TARS_PASTAS_MODELOS` | pastas a mais onde procurar `.gguf` (separadas por `:`) | só as dos programas conhecidos |
-| `TARS_WHISPER` / `TARS_WHISPER_ATIVACAO` | modelos do Whisper pro pedido e pro "TARS" | escolhidos pelo hardware: `large-v3-turbo`/`base` na placa, `small`/`base` no processador |
+| `TARS_WHISPER` / `TARS_WHISPER_ATIVACAO` | modelos do Whisper pro pedido e pro "TARS" | escolhidos pelo hardware: `large-v3-turbo`/`base.en` na placa, `small.en`/`base.en` no processador |
 | `TARS_YDOTOOL=0` | não usa o ydotool no Wayland | ligado se disponível |
-| `TARS_MURPH=off` | usa o classificador antigo (Naive Bayes) no lugar da Murph, pra comparar | Murph ligada |
-| `TARS_MODELO_EMBEDDING` | trocar o modelo de embeddings (`off` desliga) | `granite-embedding:278m`, ou outro instalado |
+| `TARS_MURPH=off` | desliga a Murph (só palavras-chave, contexto, formato e apps decidem), pra comparar | Murph ligada |
+| `TARS_SEM_AVISO_VERSAO=1` | não confere se saiu versão nova | confere 1x por dia |
 | `TARS_LIMITE_ETAPAS` | teto de etapas de um pedido longo (o fôlego extra para aqui) | `120` |
 | `TARS_WHISPER_DISPOSITIVO` | onde o Whisper roda: `auto`, `cuda` ou `cpu` | `auto` |
 | `TARS_PENSAR` | `sempre` ou `nunca` força o raciocínio da IA | automático, por tipo de pedido |
@@ -462,7 +478,7 @@ Inicie o serviço com `sudo systemctl start ollama`. Se ele roda em Docker ou em
 <details>
 <summary><b>A voz não ouve nada</b></summary>
 
-Confira se o microfone certo está como padrão nas configurações de som e se o `arecord` existe (`sudo apt install alsa-utils`). Fale o nome no começo: "TARS, abre o Firefox". Num lugar com barulho, prefira o `Ctrl+M`, que não depende do nome.
+Confira se o microfone certo está como padrão nas configurações de som e se o `arecord` existe (`sudo apt install alsa-utils`). A voz é só em inglês: a interface precisa estar em inglês (`/idioma en`). Fale o nome no começo: "TARS, open Firefox". Num lugar com barulho, prefira o `Ctrl+M`, que não depende do nome.
 </details>
 
 <details>
@@ -470,7 +486,7 @@ Confira se o microfone certo está como padrão nas configurações de som e se 
 
 Rode `opentars --explicar "o seu pedido"`: ele mostra o que cada camada achou, a tarefa decidida, a fila de modelos e o placar de cada um no seu PC.
 
-Pra medir o acerto geral, use `opentars --avaliar-classificador`: ele mostra quanto cada camada acerta sozinha (Murph, embeddings, ajudante), quanto o modo AUTO acerta com todas juntas e em quais frases erra. Se o ajudante antigo acertar menos que a Murph sozinha, o modo AUTO para de consultá-lo. Sem modelo de embeddings, rode `ollama pull granite-embedding:278m`. Os exemplos de cada tipo de pedido ficam em `tars_exemplos.py` e `tars_exemplos_mais.py`: acrescentar ali uma frase real que caiu no lugar errado já corrige casos parecidos (a Murph aprende com elas quando é retreinada: `python3 murph/treinar_murph.py`, que precisa do scikit-learn). Pra comparar com o classificador antigo no seu PC: `TARS_MURPH=off opentars --avaliar-classificador`. Também dá pra fixar um modelo no seletor **IA** da janela.
+Pra medir o acerto geral, use `opentars --avaliar-classificador`: ele mostra quanto a Murph acerta sozinha, quanto o modo AUTO acerta com todas as camadas juntas e em quais frases erra. Os exemplos de cada tipo de pedido ficam em `tars_exemplos.py` e `tars_exemplos_mais.py`: acrescentar ali uma frase real que caiu no lugar errado já corrige casos parecidos (a Murph aprende com elas quando é retreinada: `python3 murph/treinar_murph.py`, que precisa do scikit-learn). Pra ver como fica sem a Murph: `TARS_MURPH=off opentars --avaliar-classificador`. Também dá pra fixar um modelo no seletor **IA** da janela.
 </details>
 
 <details>
@@ -507,8 +523,11 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        elementos, ferramentas, selecao, prompt, chat, rotinas, gargantua, voz, terminal), todas no
+                        elementos, ferramentas, selecao, prompt, chat, memoria, desfazer, utilidades,
+                        gargantua, voz, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
+nucleo/desfazer.py      Neo: lixeira, "desfaz" e as ferramentas move_to_trash / undo_last_action
+nucleo/utilidades.py    Neo: área de transferência (read/write_clipboard) e aviso de versão nova
 nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
 gargantua/              kit de treino do Gargantua (coleta numa tela virtual, treino QLoRA, GGUF, prova);
                         comece pelo gargantua/TUTORIAL.md
@@ -516,16 +535,16 @@ tars_gui.py             janela e barra rápida (Tkinter), usa o tars.py por baix
 tars_i18n.py            idiomas: carrega idiomas/*.json e guarda a escolha
 tars_acessibilidade.py  clique pelo nome (AT-SPI)
 tars_escolha.py         camadas de escolha da tarefa, pedidos com várias etapas, histórico dos modelos
-tars_embeddings.py      classifica o pedido pelo sentido (embeddings + calibração)
 tars_murph.py           Murph (3.0.4): decide o tipo do pedido; o modelo fica em modelos/murph.json
 murph/                  treino da Murph (não vai no pacote): frases geradas, treinar_murph.py, comparar.py
-tars_classificador.py   classificador antigo (Naive Bayes), usado se a Murph faltar
 tars_exemplos.py        frases de exemplo de cada tipo de pedido
 tars_exemplos_mais.py   mais frases por idioma (2.9.1)
 tars_ocr.py             lê a tela (tesseract) e acha ícones com um modelo de visão em grade
 tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta do clique, confere se a tela mudou
-tars_voz.py             voz: microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
-tars_rotinas.py         rotinas agendadas e memória de preferências
+tars_voz.py             voz (só inglês): microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
+tars_memoria.py         memória de preferências (até a 4.0 era o tars_rotinas.py, com as rotinas)
+tars_desfazer.py        Neo: lixeira freedesktop, diário de desfazer e leitura de rm/mv/mkdir/cp/touch
+tars_atualizacao.py     Neo: aviso de versão nova (lê a REVISAO do tars.py publicado, 1x por dia)
 tars_openai.py          servidores compatíveis com a OpenAI (vLLM, LM Studio, llama.cpp)
 tars_descoberta.py      3.1: acha servidores ligados e .gguf de outros programas; importa no Ollama
 tars_wayland.py         mouse e teclado pelo ydotool no Wayland
@@ -545,7 +564,7 @@ python3 tests/run_all.py        # testes
 bash empacotamento/build.sh     # gera o .deb em dist/
 ```
 
-A versão fica na constante `VERSAO` do `tars.py` (o `build.sh` lê de lá) e no topo de `empacotamento/doc/changelog`.
+A versão fica nas constantes `VERSAO` e `CODINOME` do `tars.py` (o `build.sh` lê de lá) e no topo de `empacotamento/doc/changelog`. A `REVISAO` (AAAAMMDDNN) é o que o aviso de versão nova compara: aumente a cada publicação.
 
 **Atenção ao formato do Gargantua:** `SISTEMA_GARGANTUA`, `DESCRICOES_CURTAS`, o `contexto_sistema()` e as ferramentas são exatamente o que ele viu no treino. O `tests/test_gargantua_v40.py` compara o openTARS com o kit byte a byte; mudar qualquer um deles pede um treino novo.
 
