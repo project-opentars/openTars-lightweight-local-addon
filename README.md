@@ -70,9 +70,10 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 |---|---|
 | 👁️ **Cooper, o modelo que olha a tela** | Um Qwen3-VL 2B ajustado pela equipe do openTARS pra responder sobre um print: **onde está** um botão, **o que diz** um campo, quais janelas estão abertas. O openTARS pergunta primeiro a ele quando precisa clicar num ícone sem texto ou descrever a tela pra uma IA que não enxerga; as posições vêm em milésimos da imagem (0 a 1000) e viram pixels sozinhas. Com ele instalado, **nenhum outro modelo de visão é chamado** (nem Bonsai, nem LM Studio): ele tenta duas vezes e, se disser "não está na tela", a IA é avisada. [Detalhes](#cooper-o-modelo-que-olha-a-tela) |
 | 🪟 **WSL** | Roda no WSL 1 e 2. Com **WSLg** (Windows 11) a janela abre normalmente; sem ele, vai pro terminal. Acha sozinho o **Ollama que roda no Windows** (pelo IP do Windows visto do WSL2) e abre links no navegador do Windows (`wslview` ou `explorer.exe`). Caminhos do Windows (`C:\Users\eu\a.pdf`) funcionam nos anexos |
-| 🖥️ **Linux sem interface gráfica** | Servidor, SSH, contêiner, WSL sem WSLg: sem `DISPLAY`, o openTARS vira um assistente de terminal. **`opentars --chat`** conversa com a IA, roda comandos, mexe em arquivos (com lixeira e desfazer) e usa os anexos. As ferramentas de tela e mouse saem da lista da IA, e o `--diagnostico` deixa de tratar a falta de tela como defeito. `TARS_SEM_INTERFACE=1` força esse modo mesmo com tela |
+| 🖥️ **Linux sem interface gráfica** | Servidor, SSH, contêiner, WSL sem WSLg: sem `DISPLAY`, o openTARS vira um assistente de terminal. **`opentars --chat`** conversa com a IA, roda comandos, mexe em arquivos e usa os anexos. As ferramentas de tela e mouse saem da lista da IA, e o `--diagnostico` deixa de tratar a falta de tela como defeito. `TARS_SEM_INTERFACE=1` força esse modo mesmo com tela |
 | 📎 **Anexar arquivos pra IA** | Na janela, o botão **+ Anexar** (e soltar arquivos, se o pacote `tkdnd` estiver instalado). No terminal, `/anexar arquivo`, `@arquivo` no meio da frase ou arrastar o arquivo pro terminal. Vale imagem (PNG, JPG, WebP...), texto, código, CSV, JSON, logs, **PDF**, **DOCX/ODT** e pasta (lista os arquivos). Imagem vai direto pra IA que enxerga; pra IA que não enxerga, um modelo de visão descreve. Texto grande é cortado, e o contexto da IA sobe sozinho se precisar |
 | 🌱 **Tudo sob demanda** | Nada é carregado ao abrir o openTARS. O Cooper e os modelos de visão saem da memória 2 min depois do último uso e o modelo da conversa 5 min depois (eram 30 min para todos), então um PC de pouca RAM/VRAM fica livre quando você não está usando. Ao começar a digitar, o modelo da conversa é carregado de volta enquanto você escreve. A janela parada também gasta menos CPU: a checagem da fila caiu de 25 para 4 vezes por segundo e a animação de "trabalhando" só roda durante o trabalho. |
+| ✂️ **Mais leve: 28 → 19 ferramentas** | Saíram a lixeira, o desfazer e a área de transferência (módulos inteiros: ~430 linhas e as ferramentas `move_to_trash`, `undo_last_action`, `read_clipboard`, `write_clipboard`) e as ferramentas que o terminal já faz (`list_files`, `pc_info`, `wait_seconds`); `double_click` e `hotkey` foram fundidas em `click_mouse` e `press_key`. O `rm` agora apaga de verdade (comandos perigosos continuam pedindo confirmação); para mandar pra lixeira a IA usa `gio trash`. São ~600 linhas a menos e a lista de ferramentas que vai em cada pedido fica ~27% menor no Gargantua (1.703 → 1.245 tokens) |
 | 🛠️ **Revisão geral** | Mais de 40 correções e ajustes de velocidade, entre eles: o botão **Parar** vale também enquanto o modelo carrega; o print que a IA tira não apaga mais o texto dos arquivos anexados; um clique fora da tela não trava mais o mouse e o teclado (o `pyautogui` entra em modo de segurança nas quinas); **clique direito** de verdade; teclas inexistentes dão erro em vez de "ok"; `close_application` não fecha mais processos que só têm o nome na pasta; o Cooper e os modelos de embedding nunca viram IA de conversa nem ajudante de nomes de app; a conversa curta reaproveita o modelo que já está na placa de vídeo (menos troca de modelo); o Ollama deixa de ser consultado de novo sem necessidade; modelos que raciocinam sem terem sido pedidos (um `think: false` ignorado) são cortados e refeitos com `/no_think`; o servidor extra (llama.cpp, LM Studio) continua valendo se o Ollama cair; e a janela não congela mais ao fechar ou ao atualizar a lista de modelos |
 | 🧰 **Instalação mais enxuta** | As partes só da área de trabalho (`python3-tk`, `python3-gi`, AT-SPI, `xclip`...) agora são *recomendadas*, não obrigatórias: `sudo apt install --no-install-recommends ./opentars_4.5_all.deb` instala só o necessário pro terminal |
 | 🌎 **Português e inglês** | A interface ficou só nas duas línguas mais usadas; espanhol, francês e alemão saíram |
@@ -83,13 +84,10 @@ Quem já usa: rode o mesmo comando de instalação. O Cooper **não** é baixado
 
 | | |
 |---|---|
-| 🗑️ **Nada some de vez** | Quando a IA apaga arquivos da sua pasta pessoal (pela ferramenta nova `move_to_trash` ou com um `rm` no terminal), eles vão pra **lixeira**: a mesma do gerenciador de arquivos, dá pra recuperar por lá. Comandos perigosos continuam pedindo confirmação antes |
-| ↩️ **Desfazer** | Diga **"desfaz"** (ou `/desfazer`) e a última mudança em arquivos volta na hora, sem passar pela IA: o que foi pra lixeira volta pro lugar, o que foi movido/renomeado volta, pasta e arquivo criados saem (pra lixeira). Vale pra `rm`, `mv`, `mkdir`, `cp` e `touch`, um de cada vez, do mais novo pro mais antigo (guarda as últimas 30) |
-| 📋 **Área de transferência** | "resume o texto que eu copiei", "o que tem no meu ctrl+c?", "copia esse comando pra mim": ferramentas novas `read_clipboard` e `write_clipboard` (xclip, xsel ou wl-clipboard). Só entram quando o pedido fala de copiar/colar, pra não confundir os modelos pequenos |
 | 🔔 **Aviso de versão nova** | Uma vez por dia, no máximo, ele confere no GitHub se saiu openTARS mais novo e avisa na janela e no `--diagnostico`. Só lê o `tars.py` publicado, não manda nada do seu PC. `TARS_SEM_AVISO_VERSAO=1` desliga |
 | 🪶 **Mais leve** | Saíram o modelo de embeddings (`granite-embedding:278m`, ~560 MB a menos pra baixar), o classificador antigo (Naive Bayes) e o ajudante `qwen2.5:0.5b`: quem decide o tipo do pedido são as palavras-chave, o contexto, o formato, a **helper Murph** e os seus apps. Saíram também as **rotinas agendadas** (a **memória** continua) |
 | 🇺🇸 **Voz só em inglês** | A voz (Kokoro + Whisper) fica só em inglês, onde ela acerta de verdade: com a interface em português, o botão **Voz** some e o `--voz` explica como trocar (`/idioma en`) |
-| 🌀 **Gargantua: treino novo recomendado** | A lista de ferramentas mudou (saíram as 3 de rotina, entraram as 4 novas, 28 no total). O Gargantua publicado continua funcionando, mas um treino novo com o kit atualizado deixa ele usar as ferramentas novas sem tropeçar |
+| 🌀 **Gargantua: treino novo recomendado** | A lista de ferramentas caiu de 28 para **19** (saíram `double_click`, `hotkey`, `list_files`, `pc_info`, `wait_seconds`, `move_to_trash`, `undo_last_action`, `read_clipboard` e `write_clipboard`; `double_click` virou `click_mouse` com `clicks=2` e `hotkey` virou `press_key`, que aceita `ctrl+s`). O Gargantua 1.1 foi treinado com as 28 e continua funcionando: o openTARS traduz as chamadas antigas para as ferramentas que ficaram. Um treino novo com o kit do Lab 1.3.7 (`gargantua.py ferramentas`, depois `coletar` e `treinar`) deixa ele no formato novo e tira ~27% dos tokens de ferramentas de cada pedido |
 
 Quem já usa: rode o mesmo comando de instalação. O histórico, a memória e os seus modelos continuam. As rotinas que você tinha ficam guardadas em `~/.config/opentars/rotinas.json`, mas não rodam mais. O `granite-embedding:278m` não é apagado do Ollama; se quiser o espaço de volta: `ollama rm granite-embedding:278m`.
 
@@ -280,11 +278,6 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
   - **Responde rápido (3.0 Miller):** os modelos já ficam carregados; o nome é conferido enquanto você ainda fala (a tela mostra na hora que ouviu); no fim da frase só falta entender o pedido. "TARS" sozinho: ele responde **"Sim?"** e espera o pedido. Depois de responder falando, dá pra continuar a conversa **sem dizer "TARS"** por alguns segundos.
 - **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`. (As rotinas agendadas saíram na Neo.)
 
-### Lixeira, desfazer e área de transferência (Neo)
-
-- **Lixeira:** apagar arquivo da pasta pessoal vira "mandar pra lixeira" (`~/.local/share/Trash`, a mesma do Nautilus/Nemo). Funciona tanto pela ferramenta `move_to_trash` quanto por um `rm` que a IA rode no terminal (`rm`, `rm -r`, `rmdir`, juntos com `&&`). Fora da pasta pessoal, o comando roda como sempre (com a confirmação de perigo).
-- **Desfazer:** `mv`, `mkdir`, `cp` e `touch` simples ficam anotados em `~/.cache/opentars/desfazer.json` com o que mudou de verdade. **"desfaz"**, **"desfaz isso"** ou `/desfazer` voltam a última mudança na hora, sem chamar a IA; a IA também pode desfazer com `undo_last_action`. Comando com pipe, `;`, `$()` ou redirecionamento roda normalmente, só que sem desfazer.
-- **Área de transferência:** `read_clipboard` lê o texto que você copiou (até 6.000 caracteres) e `write_clipboard` copia um texto pra você colar com `Ctrl+V`.
 ### Voz natural e ouvir melhor (4.0, só em inglês)
 
 A fala é do **Kokoro**, com vozes que soam como gente, e o Whisper que ouve você ficou maior. Na Neo, ouvir e falar é só em inglês (a interface precisa estar em inglês). Instale uma vez com `opentars --instalar-voz` (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, mais ~1 GB) e ligue no botão **Voz** da janela, ou use `opentars --voz` sem janela.
@@ -389,7 +382,6 @@ No KDE e em outros ambientes, cadastre à mão um atalho com o comando `opentars
 | menu **PT-BR ▾** no topo | `/idioma <código>` | troca o idioma |
 | **Nova conversa** | `/limpar` | começa do zero (a conversa fica salva entre usos) |
 | **Voz ▾** · `Ctrl+M` | | fala o pedido; liga "Ouvir TARS" e "Responder falando" (só com a interface em inglês) |
-| | `desfaz` · `/desfazer` | volta a última mudança em arquivos (lixeira, mover, criar) |
 
 Outros comandos:
 
@@ -434,7 +426,6 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 
 - Tudo roda localmente. O openTARS não manda dados pra nenhum servidor (a única conexão própria é o aviso de versão nova, que só baixa).
 - Comandos que apagam dados ou mexem no sistema (`rm -r`, `mkfs`, `dd`, `git reset --hard`, desligar o PC...) só rodam depois da sua confirmação.
-- Arquivos apagados da pasta pessoal vão pra lixeira, e "desfaz" volta a última mudança (Neo).
 - O aviso de versão nova só lê o `tars.py` publicado no GitHub, uma vez por dia; não manda nada. `TARS_SEM_AVISO_VERSAO=1` desliga.
 - Comandos que pedem senha (`sudo`) não travam: falham na hora, e a IA mostra o comando pra você rodar.
 - Fechar um programa é como clicar no X: se ele perguntar "salvar alterações?", o openTARS não força.
@@ -579,13 +570,12 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        cooper, elementos, ferramentas, selecao, prompt, chat, anexos, memoria, desfazer, utilidades,
+                        cooper, elementos, ferramentas, selecao, prompt, chat, anexos, memoria, utilidades,
                         gargantua, voz, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
 nucleo/cooper.py        4.5: o Cooper no clique por ícone e na descrição da tela
 nucleo/anexos.py        4.5: arquivos anexados ao pedido (texto na mensagem, imagem, contexto maior)
-nucleo/desfazer.py      Neo: lixeira, "desfaz" e as ferramentas move_to_trash / undo_last_action
-nucleo/utilidades.py    Neo: área de transferência (read/write_clipboard) e aviso de versão nova
+nucleo/utilidades.py    aviso de versão nova e o filtro das ferramentas quando não há interface gráfica
 nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
 gargantua/              kit de treino do Gargantua (coleta numa tela virtual, treino QLoRA, GGUF, prova);
                         comece pelo gargantua/TUTORIAL.md
@@ -601,7 +591,6 @@ tars_ocr.py             lê a tela (tesseract) e acha ícones com um modelo de v
 tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta do clique, confere se a tela mudou
 tars_voz.py             voz (só inglês): microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
 tars_memoria.py         memória de preferências (até a 4.0 era o tars_rotinas.py, com as rotinas)
-tars_desfazer.py        Neo: lixeira freedesktop, diário de desfazer e leitura de rm/mv/mkdir/cp/touch
 tars_ambiente.py        4.5: WSL, sem interface gráfica, caminhos do Windows, Ollama do Windows (puro)
 tars_cooper.py          4.5: perguntas do Cooper no formato do treino, leitura das respostas, milésimos -> pixels (puro)
 tars_anexos.py          4.5: ler arquivos anexados (texto, imagem, PDF, DOCX/ODT, pasta) e montar a mensagem (puro)
