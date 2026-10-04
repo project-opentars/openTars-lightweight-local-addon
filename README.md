@@ -68,7 +68,7 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 
 | | |
 |---|---|
-| 👁️ **Cooper, o modelo que olha a tela** | Um Qwen3-VL 2B ajustado pela equipe do openTARS pra responder sobre um print: **onde está** um botão, **o que diz** um campo, quais janelas estão abertas. O openTARS pergunta primeiro a ele quando precisa clicar num ícone sem texto ou descrever a tela pra uma IA que não enxerga; as posições vêm em milésimos da imagem (0 a 1000) e viram pixels sozinhas. Se ele diz "não está na tela" ou erra o formato, entram a grade e o modelo de visão de sempre. [Detalhes](#cooper-o-modelo-que-olha-a-tela) |
+| 👁️ **Cooper, o modelo que olha a tela** | Um Qwen3-VL 2B ajustado pela equipe do openTARS pra responder sobre um print: **onde está** um botão, **o que diz** um campo, quais janelas estão abertas. O openTARS pergunta primeiro a ele quando precisa clicar num ícone sem texto ou descrever a tela pra uma IA que não enxerga; as posições vêm em milésimos da imagem (0 a 1000) e viram pixels sozinhas. Com ele instalado, **nenhum outro modelo de visão é chamado** (nem Bonsai, nem LM Studio): ele tenta duas vezes e, se disser "não está na tela", a IA é avisada. [Detalhes](#cooper-o-modelo-que-olha-a-tela) |
 | 🪟 **WSL** | Roda no WSL 1 e 2. Com **WSLg** (Windows 11) a janela abre normalmente; sem ele, vai pro terminal. Acha sozinho o **Ollama que roda no Windows** (pelo IP do Windows visto do WSL2) e abre links no navegador do Windows (`wslview` ou `explorer.exe`). Caminhos do Windows (`C:\Users\eu\a.pdf`) funcionam nos anexos |
 | 🖥️ **Linux sem interface gráfica** | Servidor, SSH, contêiner, WSL sem WSLg: sem `DISPLAY`, o openTARS vira um assistente de terminal. **`opentars --chat`** conversa com a IA, roda comandos, mexe em arquivos (com lixeira e desfazer) e usa os anexos. As ferramentas de tela e mouse saem da lista da IA, e o `--diagnostico` deixa de tratar a falta de tela como defeito. `TARS_SEM_INTERFACE=1` força esse modo mesmo com tela |
 | 📎 **Anexar arquivos pra IA** | Na janela, o botão **+ Anexar** (e soltar arquivos, se o pacote `tkdnd` estiver instalado). No terminal, `/anexar arquivo`, `@arquivo` no meio da frase ou arrastar o arquivo pro terminal. Vale imagem (PNG, JPG, WebP...), texto, código, CSV, JSON, logs, **PDF**, **DOCX/ODT** e pasta (lista os arquivos). Imagem vai direto pra IA que enxerga; pra IA que não enxerga, um modelo de visão descreve. Texto grande é cortado, e o contexto da IA sobe sozinho se precisar |
@@ -121,7 +121,9 @@ O Cooper **não conversa nem clica**: recebe um print e uma pergunta e responde 
 
 O `--diagnostico` mostra se ele está instalado. `TARS_COOPER=0` desliga o uso (ele fica instalado). Ele nunca entra na escolha de IA de conversa do modo AUTO.
 
-> **Primeira versão:** o Cooper foi treinado só com telas sintéticas e ainda não foi medido em telas reais. Por isso o openTARS sempre tem o plano B (a grade com o modelo de visão geral) e confere o resultado do clique.
+**Com o Cooper instalado, ele é o único modelo que olha a tela e as imagens anexadas.** Nenhum outro modelo de visão (LM Studio, llama.cpp, Bonsai...) é chamado de reserva: se o Cooper diz que o botão não está na tela, o openTARS avisa a IA em vez de pedir uma segunda opinião a outro modelo. Se o Cooper não responde de primeira, ele tenta de novo uma vez. Quem prefere o plano B (outro modelo de visão quando o Cooper falha) define `TARS_COOPER_EXCLUSIVO=0`. Sem o Cooper instalado, tudo funciona como antes.
+
+> **Primeira versão:** o Cooper foi treinado só com telas sintéticas e ainda não foi medido em telas reais. Por isso o openTARS confere o resultado de cada clique. Quem quiser um plano B (a grade com outro modelo de visão quando o Cooper falha) define `TARS_COOPER_EXCLUSIVO=0`.
 
 ## Instalação
 
