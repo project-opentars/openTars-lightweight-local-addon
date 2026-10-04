@@ -8,9 +8,9 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.0 Endurance Neo:** o **Gargantua** é a IA oficial, nada some de vez (lixeira e **desfazer**), ele lê e escreve a área de transferência e avisa quando sai versão nova.
+**4.5 Endurance:** o **Cooper** (um modelo só pra olhar a tela), conversa **no terminal** (WSL e Linux sem interface gráfica) e **arquivos anexados** pra IA. O **Gargantua** continua sendo a IA oficial.
 
-[![Versão 4.0 Endurance Neo](https://img.shields.io/badge/vers%C3%A3o-4.0%20Endurance%20Neo-5FD97A?style=flat-square)](#instalação)
+[![Versão 4.5 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.5%20Endurance-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
@@ -18,7 +18,7 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Novidades da Neo](#novidades-da-40-endurance-neo) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da 4.5](#novidades-da-45-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -64,6 +64,19 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </tr>
 </table>
 
+## Novidades da 4.5 Endurance
+
+| | |
+|---|---|
+| 👁️ **Cooper, o modelo que olha a tela** | Um Qwen3-VL 2B ajustado pela equipe do openTARS pra responder sobre um print: **onde está** um botão, **o que diz** um campo, quais janelas estão abertas. O openTARS pergunta primeiro a ele quando precisa clicar num ícone sem texto ou descrever a tela pra uma IA que não enxerga; as posições vêm em milésimos da imagem (0 a 1000) e viram pixels sozinhas. Se ele diz "não está na tela" ou erra o formato, entram a grade e o modelo de visão de sempre. [Detalhes](#cooper-o-modelo-que-olha-a-tela) |
+| 🪟 **WSL** | Roda no WSL 1 e 2. Com **WSLg** (Windows 11) a janela abre normalmente; sem ele, vai pro terminal. Acha sozinho o **Ollama que roda no Windows** (pelo IP do Windows visto do WSL2) e abre links no navegador do Windows (`wslview` ou `explorer.exe`). Caminhos do Windows (`C:\Users\eu\a.pdf`) funcionam nos anexos |
+| 🖥️ **Linux sem interface gráfica** | Servidor, SSH, contêiner, WSL sem WSLg: sem `DISPLAY`, o openTARS vira um assistente de terminal. **`opentars --chat`** conversa com a IA, roda comandos, mexe em arquivos (com lixeira e desfazer) e usa os anexos. As ferramentas de tela e mouse saem da lista da IA, e o `--diagnostico` deixa de tratar a falta de tela como defeito. `TARS_SEM_INTERFACE=1` força esse modo mesmo com tela |
+| 📎 **Anexar arquivos pra IA** | Na janela, o botão **+ Anexar** (e soltar arquivos, se o pacote `tkdnd` estiver instalado). No terminal, `/anexar arquivo`, `@arquivo` no meio da frase ou arrastar o arquivo pro terminal. Vale imagem (PNG, JPG, WebP...), texto, código, CSV, JSON, logs, **PDF**, **DOCX/ODT** e pasta (lista os arquivos). Imagem vai direto pra IA que enxerga; pra IA que não enxerga, um modelo de visão descreve. Texto grande é cortado, e o contexto da IA sobe sozinho se precisar |
+| 🧰 **Instalação mais enxuta** | As partes só da área de trabalho (`python3-tk`, `python3-gi`, AT-SPI, `xclip`...) agora são *recomendadas*, não obrigatórias: `sudo apt install --no-install-recommends ./opentars_4.5_all.deb` instala só o necessário pro terminal |
+| 🌎 **Português e inglês** | A interface ficou só nas duas línguas mais usadas; espanhol, francês e alemão saíram |
+
+Quem já usa: rode o mesmo comando de instalação. O Cooper **não** é baixado sozinho (são ~2,7 GB e num PC sem tela não serve): `ollama pull ProjectOpenTARS/cooper` ou `opentars --cooper`.
+
 ## Novidades da 4.0 Endurance Neo
 
 | | |
@@ -93,9 +106,22 @@ Quem já usa: rode o mesmo comando de instalação. O histórico, a memória e o
 | 📁 **Conhece as suas pastas** | A IA recebe o nome real da Área de Trabalho, Documentos e Downloads (lidos do `user-dirs.dirs`): "cria uma pasta na área de trabalho" acerta de primeira |
 | 📝 **"Editor de texto" certo** | Abre um editor de janela, não mais o Vim num terminal |
 | 📦 **Flatpak** | Acha os modelos do LM Studio, GPT4All e Jan instalados pelo Flatpak |
-| 🌎 **Português e inglês** | A interface ficou só nas duas línguas mais usadas; espanhol, francês e alemão saíram |
-
 O Gargantua é baixado na instalação se ainda não estiver no Ollama.
+
+## Cooper, o modelo que olha a tela
+
+```bash
+ollama pull ProjectOpenTARS/cooper     # ou: opentars --cooper
+```
+
+O Cooper **não conversa nem clica**: recebe um print e uma pergunta e responde sobre o que vê. Com ele instalado, o openTARS:
+
+- **acha ícones e botões sem texto** ("clique no ícone de engrenagem"): pergunta onde está e clica no ponto, depois confere se a tela mudou, como sempre;
+- **descreve a tela** pra uma IA que não enxerga, já com as posições em pixels do print.
+
+O `--diagnostico` mostra se ele está instalado. `TARS_COOPER=0` desliga o uso (ele fica instalado). Ele nunca entra na escolha de IA de conversa do modo AUTO.
+
+> **Primeira versão:** o Cooper foi treinado só com telas sintéticas e ainda não foi medido em telas reais. Por isso o openTARS sempre tem o plano B (a grade com o modelo de visão geral) e confere o resultado do clique.
 
 ## Instalação
 
@@ -113,10 +139,13 @@ Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que voc�
 - o leitor de texto da tela (OCR `tesseract`), pra clicar em apps que não mostram os botões pra acessibilidade
 - **as IAs que você já tem em outros programas (3.1)**: LM Studio, llama.cpp, Jan ou GPT4All ligados são usados direto, e os modelos `.gguf` que eles já baixaram podem entrar no Ollama (veja [IAs de outros programas](#ias-de-outros-programas-31))
 - **o Gargantua (4.0)**, a IA oficial do openTARS (~2,5 GB, `ProjectOpenTARS/Gargantua`), treinada pra usar as ferramentas dele. Veja [Gargantua](#gargantua-a-ia-oficial)
+- **o Cooper (4.5)**, opcional (~2,7 GB, `ProjectOpenTARS/cooper`): o instalador pergunta quando roda num terminal com sessão gráfica; senão mostra o comando. `TARS_COM_COOPER=1` baixa sem perguntar, `TARS_SEM_COOPER=1` pula. Veja [Cooper](#cooper-o-modelo-que-olha-a-tela)
 - **um modelo de conversa escolhido pelo seu hardware**, só se o Gargantua não tiver baixado e você ainda não tiver nenhum outro: `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
 - o atalho no menu de aplicativos
 
 Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote. A **voz** (só em inglês) é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
+
+**WSL ou servidor sem interface gráfica:** o mesmo comando serve; pra instalar só o necessário pro terminal, troque o `apt install -y --reinstall` por `apt install -y --no-install-recommends --reinstall`. No WSL sem systemd, inicie o Ollama em outro terminal (`ollama serve`) e rode `opentars --setup` de novo; se o seu Ollama roda no Windows, defina `OLLAMA_HOST=0.0.0.0` lá (o openTARS acha o endereço sozinho). Depois: `opentars --chat`.
 
 O instalador fala o idioma do seu sistema. Pra **atualizar**, rode o mesmo comando: o histórico de conversas e as suas escolhas são mantidos.
 
@@ -294,7 +323,7 @@ Todos os modelos compartilham a mesma conversa: trocar de IA no meio não faz el
 
 ## Uso
 
-Abra o **openTARS** no menu de aplicativos, ou rode `opentars-gui`. Pra usar só a voz: `opentars --voz`. O `opentars` sozinho, no terminal, confere se está tudo certo com o ambiente.
+Abra o **openTARS** no menu de aplicativos, ou rode `opentars-gui`. Pra usar só a voz: `opentars --voz`. Sem interface gráfica (servidor, SSH, WSL): `opentars --chat`. O `opentars` sozinho, no terminal, confere se está tudo certo com o ambiente.
 
 <img src="boas-vindas.png" width="620" alt="Tela inicial com quatro sugestões de pedido e o menu de idioma (PT-BR) no topo">
 
@@ -308,6 +337,22 @@ A tela inicial traz quatro sugestões pra clicar (no idioma escolhido), uma de c
 | Quanto de memória e disco estou usando? | lê o estado do PC |
 
 Outros exemplos: `feche o spotify e abra o discord`, `o que tem na minha tela?`, `como vejo meu IP no linux?`.
+
+### Anexar arquivos
+
+Na janela, clique em **+ Anexar** (ou solte os arquivos nela, se o `tkdnd` estiver instalado): os arquivos aparecem acima da caixa de texto, com um **×** pra tirar, e vão junto com o próximo pedido. Pode mandar só os arquivos, sem texto: ele olha e conta o que são.
+
+```text
+$ opentars --chat
+Você> /anexar relatorio.pdf "planilha de vendas.csv"
+  📎 anexado: relatorio.pdf (212.4 KB)
+  📎 anexado: planilha de vendas.csv (8.1 KB)
+Você> compare os dois e liste as diferenças
+Você> resuma @notas.txt em 3 linhas          # @arquivo dentro da frase também anexa
+$ opentars --chat -a foto.png "o que tem nesta imagem?"     # um pedido só, e sai
+```
+
+Comandos da conversa no terminal: `/anexar`, `/anexos`, `/desanexar [número|todos]`, `/modelos`, `/modelo <nome>`, `/auto`, `/limpar`, `/ajuda`, `/sair`. Limites: 8 arquivos por mensagem; cerca de 20 mil caracteres por arquivo de texto e 30 mil no total (mais, se a sua placa tiver 16 GB ou mais); imagens são reduzidas a 1600 px. O conteúdo fica na conversa, então as perguntas seguintes ainda enxergam o arquivo.
 
 ### Código com botão de copiar
 
@@ -377,6 +422,9 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | **GPU** | NVIDIA, AMD ou só CPU | sem GPU, o modo automático evita modelos grandes demais |
 | **Gargantua** | placa com ~3 GB livres, ou CPU com 8 GB de RAM | na CPU ele funciona, só que mais devagar; treinar o seu precisa de NVIDIA com 6 GB |
 | **Ollama** | local, Docker ou outra máquina | outro endereço: variável `OLLAMA_HOST` |
+| **WSL 1 e 2** | conversa no terminal (`opentars --chat`), comandos, arquivos, anexos; janela e prints com WSLg | o Ollama pode estar no Windows (achado sozinho; lá, `OLLAMA_HOST=0.0.0.0`) ou no próprio WSL. Sem systemd: `ollama serve` em outro terminal |
+| **Sem interface gráfica** | `opentars --chat`: conversa, comandos, arquivos, anexos, busca (devolve o link) | sem mouse, teclado, janelas, prints nem abrir programas gráficos |
+| **Cooper** | opcional, ~2,7 GB (`ollama pull ProjectOpenTARS/cooper`) | só serve com tela; precisa do Ollama 0.12.7 ou mais novo |
 
 ## Segurança e privacidade
 
@@ -523,9 +571,11 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        elementos, ferramentas, selecao, prompt, chat, memoria, desfazer, utilidades,
+                        cooper, elementos, ferramentas, selecao, prompt, chat, anexos, memoria, desfazer, utilidades,
                         gargantua, voz, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
+nucleo/cooper.py        4.5: o Cooper no clique por ícone e na descrição da tela
+nucleo/anexos.py        4.5: arquivos anexados ao pedido (texto na mensagem, imagem, contexto maior)
 nucleo/desfazer.py      Neo: lixeira, "desfaz" e as ferramentas move_to_trash / undo_last_action
 nucleo/utilidades.py    Neo: área de transferência (read/write_clipboard) e aviso de versão nova
 nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
@@ -544,6 +594,9 @@ tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta d
 tars_voz.py             voz (só inglês): microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
 tars_memoria.py         memória de preferências (até a 4.0 era o tars_rotinas.py, com as rotinas)
 tars_desfazer.py        Neo: lixeira freedesktop, diário de desfazer e leitura de rm/mv/mkdir/cp/touch
+tars_ambiente.py        4.5: WSL, sem interface gráfica, caminhos do Windows, Ollama do Windows (puro)
+tars_cooper.py          4.5: perguntas do Cooper no formato do treino, leitura das respostas, milésimos -> pixels (puro)
+tars_anexos.py          4.5: ler arquivos anexados (texto, imagem, PDF, DOCX/ODT, pasta) e montar a mensagem (puro)
 tars_atualizacao.py     Neo: aviso de versão nova (lê a REVISAO do tars.py publicado, 1x por dia)
 tars_openai.py          servidores compatíveis com a OpenAI (vLLM, LM Studio, llama.cpp)
 tars_descoberta.py      3.1: acha servidores ligados e .gguf de outros programas; importa no Ollama
