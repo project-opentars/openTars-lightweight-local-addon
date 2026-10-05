@@ -8,9 +8,9 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.5 Endurance:** o **Cooper** (um modelo só pra olhar a tela), conversa **no terminal** (WSL e Linux sem interface gráfica) e **arquivos anexados** pra IA. O **Gargantua** continua sendo a IA oficial.
+**4.6 Endurance:** a versão **mais leve**: menos código, menos pacote, só o Ollama, e o **Cooper** como único modelo que olha a tela. O **Gargantua** continua sendo a IA oficial.
 
-[![Versão 4.5 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.5%20Endurance-5FD97A?style=flat-square)](#instalação)
+[![Versão 4.6 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.6%20Endurance-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
@@ -18,7 +18,7 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Novidades da 4.5](#novidades-da-45-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da 4.6](#novidades-da-46-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -63,6 +63,21 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </td>
 </tr>
 </table>
+
+## Novidades da 4.6 Endurance
+
+A 4.6 não acrescenta recursos: **tira** o que pesava e o que o Gargantua não usa. O pacote e o código ficam menores e a IA tem menos caminhos pra se perder.
+
+| | |
+|---|---|
+| ✂️ **Só o Ollama** | Saíram os servidores externos (`--servidor`, `api:<nome>`: vLLM, LM Studio, llama.cpp...) e a importação de `.gguf` de outros programas. Os modelos vêm do Ollama |
+| 👁️ **Só o Cooper olha a tela** | Saíram o OCR (`tesseract`), a grade com zoom e o modelo de visão de reserva. Clicar num ícone sem texto: acessibilidade → Cooper. Se o Cooper falhar ou não estiver instalado, a tela mostra o motivo em vez de tentar outro caminho |
+| 🔇 **Sem voz (volta na 5.0)** | Saíram o Whisper, o Kokoro, o "TARS, ..." falado e as rotinas por voz |
+| 📎 **Sem anexos de arquivo** | Saiu o botão **+ Anexar**, o `/anexar` e o `-a arquivo`. A IA continua lendo arquivos pelo terminal |
+| 🧹 **Menos código morto** | Funções sem uso saíram; as opções de linha de comando duplicadas em português e inglês também (ficam as que aparecem no `--help`) |
+| 🧪 **Frases da Murph fora do pacote** | `tars_exemplos*.py` (só servem pra treinar a Murph) foram pra `murph/`, no código-fonte |
+
+Quem já usa: rode o mesmo comando de instalação. Os modelos do Ollama, a memória e o histórico continuam. O que saiu (voz, anexos, servidores, importação) volta só se você ficar na 4.5.
 
 ## Novidades da 4.5 Endurance
 
@@ -121,9 +136,9 @@ O Cooper **não conversa nem clica**: recebe um print e uma pergunta e responde 
 
 O `--diagnostico` mostra se ele está instalado. `TARS_COOPER=0` desliga o uso (ele fica instalado). Ele nunca entra na escolha de IA de conversa do modo AUTO.
 
-**Com o Cooper instalado, ele é sempre o primeiro a olhar a tela e as imagens anexadas.** Se ele responde, a resposta vale: um "esse botão não está na tela" dele não é contestado por outro modelo de visão (LM Studio, llama.cpp, Bonsai...). Outro modelo só entra se o Cooper **falhar de verdade** (erro do Ollama ou prazo estourado), e aí o openTARS mostra o motivo na tela (`Cooper não respondeu (HTTP 500 ...)`). Depois de estourar o prazo o Cooper descansa uns 4 minutos, para os passos seguintes não esperarem de novo. Prints grandes (4K) são reduzidos antes de ir pra ele. Cada chamada de IA que passa de 1,5 s mostra onde o tempo foi (`load` = modelo sendo carregado na placa, `read` = imagem/prompt sendo lido, `answer` = texto sendo gerado); `TARS_TEMPOS=0` esconde. O Cooper é carregado em segundo plano ao abrir o openTARS quando cabe na placa de vídeo junto com o modelo da conversa (se não cabe, ele só é carregado na hora de olhar a tela, para não expulsar o modelo da conversa), as respostas dele têm tamanho máximo (ele não fica escrevendo até estourar o prazo) e o prazo é de 5 minutos na primeira olhada e 2 nas seguintes. `TARS_COOPER_EXCLUSIVO=0` faz outro modelo conferir também quando o Cooper diz "não está". Sem o Cooper instalado, tudo funciona como antes.
+**O Cooper é o único modelo que olha a tela.** Se ele responde, a resposta vale. Se falhar (ou não estiver instalado), o openTARS mostra o motivo e a IA recebe a orientação de usar `list_elements` e `click_element`. Não há modelo de visão de reserva.
 
-> **Primeira versão:** o Cooper foi treinado só com telas sintéticas e ainda não foi medido em telas reais. Por isso o openTARS confere o resultado de cada clique. Quem quiser um plano B (a grade com outro modelo de visão quando o Cooper falha) define `TARS_COOPER_EXCLUSIVO=0`.
+> **Primeira versão:** o Cooper foi treinado só com telas sintéticas e ainda não foi medido em telas reais. Por isso o openTARS confere o resultado de cada clique.
 
 ## Instalação
 
@@ -138,14 +153,12 @@ Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que voc�
 - todas as dependências do sistema, pelo apt (inclusive a de acessibilidade, pro clique pelo nome)
 - o Ollama (ou usa o que já estiver rodando, inclusive em Docker)
 - um ambiente Python isolado
-- o leitor de texto da tela (OCR `tesseract`), pra clicar em apps que não mostram os botões pra acessibilidade
-- **as IAs que você já tem em outros programas (3.1)**: LM Studio, llama.cpp, Jan ou GPT4All ligados são usados direto, e os modelos `.gguf` que eles já baixaram podem entrar no Ollama (veja [IAs de outros programas](#ias-de-outros-programas-31))
 - **o Gargantua (4.0)**, a IA oficial do openTARS (~2,5 GB, `ProjectOpenTARS/Gargantua`), treinada pra usar as ferramentas dele. Veja [Gargantua](#gargantua-a-ia-oficial)
 - **o Cooper (4.5)**, opcional (~2,7 GB, `ProjectOpenTARS/cooper`): o instalador pergunta quando roda num terminal com sessão gráfica; senão mostra o comando. `TARS_COM_COOPER=1` baixa sem perguntar, `TARS_SEM_COOPER=1` pula. Veja [Cooper](#cooper-o-modelo-que-olha-a-tela)
 - **um modelo de conversa escolhido pelo seu hardware**, só se o Gargantua não tiver baixado e você ainda não tiver nenhum outro: `qwen3:8b` com placa de vídeo de 6 GB ou mais, `qwen3:4b` com 12 GB de RAM ou mais, e `qwen3:1.7b` nos demais
 - o atalho no menu de aplicativos
 
-Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote. A **voz** (só em inglês) é opcional: instale pelo botão **Voz** da janela ou com `opentars --instalar-voz`.
+Nenhum modelo ajudante é baixado: quem decide o tipo de cada pedido é a **helper Murph 1.0**, que já vem no pacote.
 
 **WSL ou servidor sem interface gráfica:** o mesmo comando serve; pra instalar só o necessário pro terminal, troque o `apt install -y --reinstall` por `apt install -y --no-install-recommends --reinstall`. No WSL sem systemd, inicie o Ollama em outro terminal (`ollama serve`) e rode `opentars --setup` de novo; se o seu Ollama roda no Windows, defina `OLLAMA_HOST=0.0.0.0` lá (o openTARS acha o endereço sozinho). Depois: `opentars --chat`.
 
@@ -208,7 +221,7 @@ flowchart LR
     P([Seu pedido]) --> L{{"Camadas<br/>palavras · contexto · formato<br/>helper Murph · apps"}}
     L --> M["Fila de modelos<br/>Gargantua primeiro nas ações<br/>tamanho · VRAM · acertos no seu PC"]
     M --> IA["IA de conversa<br/>pensa antes se tiver várias etapas"]
-    IA --> F["Ferramentas<br/>acessibilidade · OCR · visão · teclado · terminal · web"]
+    IA --> F["Ferramentas<br/>acessibilidade · Cooper · teclado · terminal · web"]
     F -- "nada funcionou" --> M
     F --> S([Resposta])
 ```
@@ -255,14 +268,13 @@ O openTARS escolhe entre os modelos que você tem, pelo tamanho e pelo que cabe 
 O clique pelo nome tenta, nesta ordem:
 
 1. **Acessibilidade:** aperta o botão pelo nome, sem mouse e sem print (apps GTK, Qt, Firefox, LibreOffice…).
-2. **Texto na tela (OCR):** apps que não expõem os botões (Claude, Discord, VS Code, jogos, apps Java) têm a janela lida pelo `tesseract`, e o clique vai onde o texto está escrito. O `list_elements` devolve os textos que a janela mostra, e o `type_in_element` acha o campo pelo texto dele ("Pergunte algo…"), clica, digita e envia.
-3. **Visão, em grade:** ícone sem texto ("ícone de enviar")? Um modelo com visão, se você tiver um, aponta o lugar numa grade (A1, B2…) em rodadas de zoom (mais rodadas enquanto a célula ainda for grande, até achar um X de aba de 14 px), e o openTARS mira no centro do ícone. Funciona com qualquer modelo com visão, porque ele só precisa dizer a célula, não coordenadas.
-4. **Teclado:** sem nada disso, a IA escreve no campo que tem o foco.
+2. **Cooper:** ícone sem texto ("ícone de enviar")? O Cooper olha o print e diz onde está; o openTARS clica no ponto e confere se a tela mudou.
+3. **Teclado:** sem nada disso, a IA escreve no campo que tem o foco.
 
 #### Mouse preciso
 
 - **Arrastar de verdade:** `drag_mouse` segura o botão, sai devagar do lugar (o Chrome/Brave só entende que é arrasto depois de uns pixels) e solta no destino: um lugar da tela ("top-left", "direita", "centro", "metade esquerda"), outro elemento ("Lixeira") ou um ponto. A origem pode ser descrita ("aba do YouTube"): o openTARS acha sozinho.
-- **Mira com zoom:** o `click_mouse` recebe o que se quer clicar (`target="X da aba do YouTube"`). A coordenada que a IA chuta costuma errar por 10–40 px; o openTARS dá zoom em volta dela e acha o alvo exato com a visão em grade. Sem modelo de visão, um clique que caiu do lado de um botão encaixa nele.
+- **Mira:** o `click_mouse` recebe o que se quer clicar (`target="X da aba do YouTube"`). A coordenada que a IA chuta costuma errar por 10–40 px; com o Cooper instalado ele aponta o ponto exato (só vale se estiver perto do chute). Sem ele, um clique que caiu do lado de um botão encaixa nele.
 - **Move janela de verdade:** "arraste a janela do openTARS pro topo esquerdo", "põe o Firefox na metade direita", "maximiza o terminal": o openTARS pede ao gerenciador de janelas (`move_window`), em vez de arrastar o que está escrito dentro dela.
 - **Confere o clique:** compara a tela antes e depois. Se nada mudou, a IA recebe "o clique ERROU" em vez de dizer que fez.
 
@@ -272,55 +284,21 @@ Apps Electron (Claude, Discord, VS Code…) abertos **pelo openTARS** já saem c
 
 Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** numerado, que aparece na tela e vai pra IA. Se ela tentar encerrar antes de fazer todas as etapas, recebe o plano de volta com o que falta. Clique que não mudou nada na tela seguido de "Pronto!" é cobrado, e cliques no nada em sequência contam como andar em círculos: outro modelo assume ou a IA explica o que travou.
 
-### 6. Voz e memória
+### 6. Memória
 
-- **Voz, 100% local:** diga **"TARS, open Firefox"**. Um Whisper pequeno fica ouvindo só o nome; o pedido é transcrito por um maior (faster-whisper: large-v3-turbo na placa ou small.en no processador). **Na Neo, a voz é só em inglês:** com a interface em português o botão **Voz** some; troque com `/idioma en`, e a resposta sai falada pelo Kokoro. `Ctrl+M` (ou **Voz ▾ → Falar agora**) fala sem precisar dizer "TARS". Liga no botão **Voz** da janela, ou com `opentars --voz` pra usar só a voz, sem janela.
-  - **Responde rápido (3.0 Miller):** os modelos já ficam carregados; o nome é conferido enquanto você ainda fala (a tela mostra na hora que ouviu); no fim da frase só falta entender o pedido. "TARS" sozinho: ele responde **"Sim?"** e espera o pedido. Depois de responder falando, dá pra continuar a conversa **sem dizer "TARS"** por alguns segundos.
 - **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`. (As rotinas agendadas saíram na Neo.)
 
-### Voz natural e ouvir melhor (4.0, só em inglês)
+### 7. Wayland (3.0)
 
-A fala é do **Kokoro**, com vozes que soam como gente, e o Whisper que ouve você ficou maior. Na Neo, ouvir e falar é só em inglês (a interface precisa estar em inglês). Instale uma vez com `opentars --instalar-voz` (Whisper + Kokoro, tudo local, ~1 GB; com placa NVIDIA, mais ~1 GB) e ligue no botão **Voz** da janela, ou use `opentars --voz` sem janela.
-
-**Escolher a voz e a velocidade:**
-
-```bash
-opentars --voz-escolher            # lista as vozes
-opentars --voz-escolher michael    # troca e fala um exemplo (todas as vozes vêm no mesmo arquivo)
-opentars --voz-velocidade 1.15     # 0.7 a 1.6 (1.0 = normal)
-opentars --voz-testar              # ouvir um exemplo
-```
-
-Na janela: **Voz ▾ → Voz** e **Voz ▾ → Velocidade da fala**. As vozes (Kokoro): **Heart** (feminina, a padrão), **Bella** (feminina), **Michael** (masculina) e **Emma** (feminina, britânica).
-
-**Ouvir:** o Whisper é escolhido pelo seu hardware. Com placa NVIDIA e memória sobrando (uns 4,5 GB livres numa placa de 6 GB), usa o **large-v3-turbo** na placa (~1 GB); senão, o **small.en** no processador (os modelos `.en` acertam mais em inglês). Pra forçar: `TARS_WHISPER_DISPOSITIVO=cpu` ou `cuda`. Os nomes dos apps instalados entram como vocabulário (ele erra menos "Steam", "Discord", "Spotify"), e se o "TARS" sair parecido ("Taz"), o modelo bom confere antes de ignorar.
-
-### 7. Outros servidores e Wayland (3.0)
-
-- **vLLM, LM Studio, llama.cpp, LocalAI...:** `opentars --servidor http://localhost:1234/v1` e os modelos desse servidor aparecem na escolha de IA como `api:<nome>`, com ferramentas, streaming e tudo. Junto com os do Ollama. `opentars --servidor off` desliga.
 - **Wayland de verdade (experimental):** com o `ydotool` 1.0+ e o serviço `ydotoold` rodando, mouse e teclado alcançam qualquer janela, não só as XWayland. Deixe a aceleração do mouse desligada pra mais precisão.
 
-### 8. IAs de outros programas (3.1)
-
-Já baixou modelos no **LM Studio**, **GPT4All**, **Jan**, **llama.cpp** ou pelo **Hugging Face**? O openTARS acha e usa:
-
-- **Servidor ligado, sem copiar nada.** Com o servidor do LM Studio ligado (aba *Developer* → *Start Server*), ou um llama-server, Jan, GPT4All, KoboldCpp ou vLLM nas portas padrão (1234, 8080, 1337, 4891, 5001, 8000), os modelos dele aparecem sozinhos na escolha de IA como `api:<nome>`. Fechou o programa, eles somem; abriu de novo, voltam (confere a cada minuto). Um endereço fixo (`opentars --servidor <url>`) tem prioridade; `opentars --servidor off` desliga a procura e `opentars --servidor auto` religa.
-- **Arquivos `.gguf` importados no Ollama.** Funcionam sem o outro programa aberto. Na janela: escolha de IA → **＋ Importar de outros programas…**, marque os modelos e clique em **Importar selecionados**. No terminal: `opentars --procurar-modelos` (lista numerada; responda `1,3`, `2-4` ou `todos`).
-
-  Onde ele procura: `~/.lmstudio/models` (ou a pasta que você escolheu no LM Studio), `~/.cache/lm-studio`, `~/.local/share/nomic.ai/GPT4All`, `~/jan` e `~/.local/share/Jan`, `~/.cache/huggingface/hub`, `~/.cache/llama.cpp`, `~/models` e a pasta de Downloads. Outras pastas: `TARS_PASTAS_MODELOS=/mnt/hd/modelos:/outra/pasta`.
-
-  **Importar copia o arquivo** pra pasta do Ollama (um modelo de 5 GB passa a ocupar 10 GB). Por isso é sempre você quem escolhe, o espaço livre aparece antes, e o openTARS não importa se o disco for ficar com menos de 2 GB livres. Depois de importar, dá pra apagar o original no outro programa. Modelos com visão levam junto o `mmproj` da mesma pasta (se o Ollama não aceitar, entra só o texto). Arquivos divididos em partes (`-00001-of-00003.gguf`) o Ollama não importa.
-- **Na instalação:** se você não tem nenhum modelo de conversa no Ollama (nem o Gargantua, por exemplo com `TARS_SEM_GARGANTUA=1`) mas tem IA em outro programa, o instalador pergunta quais importar (no terminal) e **não baixa** o `qwen3` à toa.
-
-  Versões **Flatpak** (4.0) também contam: `~/.var/app/ai.lmstudio.LMStudio`, `~/.var/app/io.gpt4all.gpt4all` e `~/.var/app/ai.jan.Jan`.
-
-### 9. Uma conversa só
+### 8. Uma conversa só
 
 Todos os modelos compartilham a mesma conversa: trocar de IA no meio não faz ela esquecer o que você pediu antes. Quando o pedido passa do Gargantua pra outro modelo (ou volta), o formato troca junto.
 
 ## Uso
 
-Abra o **openTARS** no menu de aplicativos, ou rode `opentars-gui`. Pra usar só a voz: `opentars --voz`. Sem interface gráfica (servidor, SSH, WSL): `opentars --chat`. O `opentars` sozinho, no terminal, confere se está tudo certo com o ambiente.
+Abra o **openTARS** no menu de aplicativos, ou rode `opentars-gui`. Sem interface gráfica (servidor, SSH, WSL): `opentars --chat`. O `opentars` sozinho, no terminal, confere se está tudo certo com o ambiente.
 
 <img src="boas-vindas.png" width="620" alt="Tela inicial com quatro sugestões de pedido e o menu de idioma (PT-BR) no topo">
 
@@ -334,22 +312,6 @@ A tela inicial traz quatro sugestões pra clicar (no idioma escolhido), uma de c
 | Quanto de memória e disco estou usando? | lê o estado do PC |
 
 Outros exemplos: `feche o spotify e abra o discord`, `o que tem na minha tela?`, `como vejo meu IP no linux?`.
-
-### Anexar arquivos
-
-Na janela, clique em **+ Anexar** (ou solte os arquivos nela, se o `tkdnd` estiver instalado): os arquivos aparecem acima da caixa de texto, com um **×** pra tirar, e vão junto com o próximo pedido. Pode mandar só os arquivos, sem texto: ele olha e conta o que são.
-
-```text
-$ opentars --chat
-Você> /anexar relatorio.pdf "planilha de vendas.csv"
-  📎 anexado: relatorio.pdf (212.4 KB)
-  📎 anexado: planilha de vendas.csv (8.1 KB)
-Você> compare os dois e liste as diferenças
-Você> resuma @notas.txt em 3 linhas          # @arquivo dentro da frase também anexa
-$ opentars --chat -a foto.png "o que tem nesta imagem?"     # um pedido só, e sai
-```
-
-Comandos da conversa no terminal: `/anexar`, `/anexos`, `/desanexar [número|todos]`, `/modelos`, `/modelo <nome>`, `/auto`, `/limpar`, `/ajuda`, `/sair`. Limites: 8 arquivos por mensagem; cerca de 20 mil caracteres por arquivo de texto e 30 mil no total (mais, se a sua placa tiver 16 GB ou mais); imagens são reduzidas a 1600 px. O conteúdo fica na conversa, então as perguntas seguintes ainda enxergam o arquivo.
 
 ### Código com botão de copiar
 
@@ -381,7 +343,6 @@ No KDE e em outros ambientes, cadastre à mão um atalho com o comando `opentars
 | seletor **IA** no topo | `/modelo <nome>` · `/modelo auto` | fixa um modelo ou volta pro automático |
 | menu **PT-BR ▾** no topo | `/idioma <código>` | troca o idioma |
 | **Nova conversa** | `/limpar` | começa do zero (a conversa fica salva entre usos) |
-| **Voz ▾** · `Ctrl+M` | | fala o pedido; liga "Ouvir TARS" e "Responder falando" (só com a interface em inglês) |
 
 Outros comandos:
 
@@ -391,10 +352,6 @@ Outros comandos:
 | `opentars --autoteste` | diagnóstico + precisão da escolha da tarefa + o teste real com a calculadora |
 | `opentars --avaliar-classificador` | mede o quanto cada camada (e o modo AUTO) acerta no seu PC |
 | `opentars --explicar "pedido"` | mostra, camada por camada, como a tarefa e o modelo são escolhidos |
-| `opentars --instalar-voz` | instala a voz (Whisper + Kokoro, ~1 GB, tudo local, na sua pasta) |
-| `opentars --voz-escolher [nome]` | lista ou troca a voz (Heart, Bella, Michael, Emma; só em inglês); `--voz-velocidade 1.1` muda a velocidade |
-| `opentars --servidor <url>` | usa um servidor vLLM / LM Studio / llama.cpp fixo (`auto` procura sozinho, o padrão; `off` desliga) |
-| `opentars --procurar-modelos` | acha os `.gguf` do LM Studio, GPT4All, Jan... e importa os que você escolher no Ollama |
 | `opentars --setup` | instala o que estiver faltando (Ollama, modelos...) |
 | `opentars --help` | todos os comandos |
 
@@ -418,8 +375,8 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | **GPU** | NVIDIA, AMD ou só CPU | sem GPU, o modo automático evita modelos grandes demais |
 | **Gargantua** | placa com ~3 GB livres, ou CPU com 8 GB de RAM | na CPU ele funciona, só que mais devagar; treinar o seu precisa de NVIDIA com 6 GB |
 | **Ollama** | local, Docker ou outra máquina | outro endereço: variável `OLLAMA_HOST` |
-| **WSL 1 e 2** | conversa no terminal (`opentars --chat`), comandos, arquivos, anexos; janela e prints com WSLg | o Ollama pode estar no Windows (achado sozinho; lá, `OLLAMA_HOST=0.0.0.0`) ou no próprio WSL. Sem systemd: `ollama serve` em outro terminal |
-| **Sem interface gráfica** | `opentars --chat`: conversa, comandos, arquivos, anexos, busca (devolve o link) | sem mouse, teclado, janelas, prints nem abrir programas gráficos |
+| **WSL 1 e 2** | conversa no terminal (`opentars --chat`), comandos, arquivos; janela e prints com WSLg | o Ollama pode estar no Windows (achado sozinho; lá, `OLLAMA_HOST=0.0.0.0`) ou no próprio WSL. Sem systemd: `ollama serve` em outro terminal |
+| **Sem interface gráfica** | `opentars --chat`: conversa, comandos, arquivos, busca (devolve o link) | sem mouse, teclado, janelas, prints nem abrir programas gráficos |
 | **Cooper** | opcional, ~2,7 GB (`ollama pull ProjectOpenTARS/cooper`) | só serve com tela; precisa do Ollama 0.12.7 ou mais novo |
 
 ## Segurança e privacidade
@@ -430,7 +387,7 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 - Comandos que pedem senha (`sudo`) não travam: falham na hora, e a IA mostra o comando pra você rodar.
 - Fechar um programa é como clicar no X: se ele perguntar "salvar alterações?", o openTARS não força.
 - Pro clique pelo nome, o openTARS liga a acessibilidade da sessão (a mesma que um leitor de tela usa) só quando precisa, e ela volta ao normal ao sair da sessão.
-- A leitura da tela (OCR) e a visão rodam no seu PC, como todo o resto.
+- A visão (Cooper) roda no seu PC, como todo o resto.
 - O histórico de acertos dos modelos fica em `~/.cache/opentars/historico_modelos.json` (apague pra zerar).
 - Tudo que ele executa fica registrado em `~/.tars_log/tars.log`.
 
@@ -442,10 +399,6 @@ A IA responde no idioma escolhido. Espanhol, francês e alemão saíram da inter
 | `OLLAMA_HOST` | endereço do Ollama | `127.0.0.1:11434` |
 | `TARS_SEM_GARGANTUA=1` | não baixa o Gargantua na instalação e o AUTO não dá preferência pra ele | Gargantua ligado |
 | `TARS_MODELO_GARGANTUA` | outro nome pro Gargantua (ex: um que você treinou) | `ProjectOpenTARS/Gargantua` |
-| `TARS_SERVIDOR_API` / `TARS_CHAVE_API` | servidor compatível com a OpenAI e a chave dele | o de `opentars --servidor` |
-| `TARS_AUTODETECTAR=off` | não procura LM Studio / llama.cpp / Jan ligados | procura |
-| `TARS_PASTAS_MODELOS` | pastas a mais onde procurar `.gguf` (separadas por `:`) | só as dos programas conhecidos |
-| `TARS_WHISPER` / `TARS_WHISPER_ATIVACAO` | modelos do Whisper pro pedido e pro "TARS" | escolhidos pelo hardware: `large-v3-turbo`/`base.en` na placa, `small.en`/`base.en` no processador |
 | `TARS_YDOTOOL=0` | não usa o ydotool no Wayland | ligado se disponível |
 | `TARS_MURPH=off` | desliga a Murph (só palavras-chave, contexto, formato e apps decidem), pra comparar | Murph ligada |
 | `TARS_SEM_AVISO_VERSAO=1` | não confere se saiu versão nova | confere 1x por dia |
@@ -490,18 +443,18 @@ O openTARS lembra ela das ferramentas e, se ela recusar de novo, passa o pedido 
 <details>
 <summary><b>O clique pelo nome não acha os botões de um app</b></summary>
 
-Quando o app não mostra os botões pra acessibilidade, o openTARS lê o texto da tela. Se nem isso achar, confira:
+Quando o app não mostra os botões pra acessibilidade, o openTARS pede ao Cooper pra achar o lugar. Se nem isso funcionar, confira:
 
-- **É um ícone sem texto?** Tenha um modelo com visão (`ollama pull qwen3-vl:8b`, ou `gemma3:4b` com pouca VRAM) e peça descrevendo o ícone ("clica no ícone de enviar").
+- **É um ícone sem texto?** Instale o Cooper (`opentars --cooper`) e peça descrevendo o ícone ("clica no ícone de enviar").
 - **É um app Electron** (Claude, Discord, VS Code…) que já estava aberto? Feche e peça pro openTARS abrir: aberto por ele, o app sai com a acessibilidade ligada.
-- **Sessão Wayland?** O clique lendo a tela precisa de X11. Na tela de login, escolha "Ubuntu on Xorg" (ou equivalente).
-- Rode `opentars --diagnostico` e veja as linhas "Clique pelo nome" e "OCR". Apps Qt/KDE passam a aparecer depois da primeira vez que o openTARS usa a acessibilidade (reabra o app).
+- **Sessão Wayland?** O clique pela visão precisa de X11. Na tela de login, escolha "Ubuntu on Xorg" (ou equivalente).
+- Rode `opentars --diagnostico` e veja a linha "Clique pelo nome". Apps Qt/KDE passam a aparecer depois da primeira vez que o openTARS usa a acessibilidade (reabra o app).
 </details>
 
 <details>
 <summary><b>"Multimodal data provided, but model does not support multimodal requests"</b></summary>
 
-Resolvido na 2.5.2. Quando o modelo da conversa não enxerga imagens (qwen3, llama…), o print não é mais mandado pra ele: um modelo com visão instalado (`gemma3`, `qwen2.5vl`, `llava`…) descreve a tela em texto. Se você não tiver nenhum, a IA lê os botões pela acessibilidade (`list_elements`). Pra ter a descrição, rode `ollama pull gemma3:4b`.
+Quando o modelo da conversa não enxerga imagens (qwen3, llama…), o print não é mandado pra ele: o Cooper descreve a tela em texto. Se ele não estiver instalado, a IA lê os botões pela acessibilidade (`list_elements`). Pra ter a descrição, rode `opentars --cooper`.
 </details>
 
 <details>
@@ -523,17 +476,11 @@ Inicie o serviço com `sudo systemctl start ollama`. Se ele roda em Docker ou em
 </details>
 
 <details>
-<summary><b>A voz não ouve nada</b></summary>
-
-Confira se o microfone certo está como padrão nas configurações de som e se o `arecord` existe (`sudo apt install alsa-utils`). A voz é só em inglês: a interface precisa estar em inglês (`/idioma en`). Fale o nome no começo: "TARS, open Firefox". Num lugar com barulho, prefira o `Ctrl+M`, que não depende do nome.
-</details>
-
-<details>
 <summary><b>A IA escolhe um modelo estranho pro pedido</b></summary>
 
 Rode `opentars --explicar "o seu pedido"`: ele mostra o que cada camada achou, a tarefa decidida, a fila de modelos e o placar de cada um no seu PC.
 
-Pra medir o acerto geral, use `opentars --avaliar-classificador`: ele mostra quanto a Murph acerta sozinha, quanto o modo AUTO acerta com todas as camadas juntas e em quais frases erra. Os exemplos de cada tipo de pedido ficam em `tars_exemplos.py` e `tars_exemplos_mais.py`: acrescentar ali uma frase real que caiu no lugar errado já corrige casos parecidos (a Murph aprende com elas quando é retreinada: `python3 murph/treinar_murph.py`, que precisa do scikit-learn). Pra ver como fica sem a Murph: `TARS_MURPH=off opentars --avaliar-classificador`. Também dá pra fixar um modelo no seletor **IA** da janela.
+Pra medir o acerto geral, use `opentars --avaliar-classificador`: ele mostra quanto a Murph acerta sozinha, quanto o modo AUTO acerta com todas as camadas juntas e em quais frases erra. Os exemplos de cada tipo de pedido ficam em `murph/tars_exemplos.py` e `murph/tars_exemplos_mais.py` (só no código-fonte; não vão no pacote .deb): acrescentar ali uma frase real que caiu no lugar errado já corrige casos parecidos (a Murph aprende com elas quando é retreinada: `python3 murph/treinar_murph.py`, que precisa do scikit-learn). Pra ver como fica sem a Murph: `TARS_MURPH=off opentars --avaliar-classificador`. Também dá pra fixar um modelo no seletor **IA** da janela.
 </details>
 
 <details>
@@ -570,11 +517,10 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        cooper, elementos, ferramentas, selecao, prompt, chat, anexos, memoria, utilidades,
-                        gargantua, voz, terminal), todas no
+                        cooper, elementos, ferramentas, selecao, prompt, chat, memoria, utilidades,
+                        gargantua, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
 nucleo/cooper.py        4.5: o Cooper no clique por ícone e na descrição da tela
-nucleo/anexos.py        4.5: arquivos anexados ao pedido (texto na mensagem, imagem, contexto maior)
 nucleo/utilidades.py    aviso de versão nova e o filtro das ferramentas quando não há interface gráfica
 nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
 gargantua/              kit de treino do Gargantua (coleta numa tela virtual, treino QLoRA, GGUF, prova);
@@ -585,18 +531,11 @@ tars_acessibilidade.py  clique pelo nome (AT-SPI)
 tars_escolha.py         camadas de escolha da tarefa, pedidos com várias etapas, histórico dos modelos
 tars_murph.py           Murph (3.0.4): decide o tipo do pedido; o modelo fica em modelos/murph.json
 murph/                  treino da Murph (não vai no pacote): frases geradas, treinar_murph.py, comparar.py
-tars_exemplos.py        frases de exemplo de cada tipo de pedido
-tars_exemplos_mais.py   mais frases por idioma (2.9.1)
-tars_ocr.py             lê a tela (tesseract) e acha ícones com um modelo de visão em grade
-tars_mouse.py           mouse preciso: arrasto, lugares da tela, zoom em volta do clique, confere se a tela mudou
-tars_voz.py             voz (só inglês): microfone em trechos, "TARS", Whisper (placa ou processador), Kokoro (Piper de reserva)
+tars_mouse.py           mouse preciso: arrasto, lugares da tela, encaixe no botão, confere se a tela mudou
 tars_memoria.py         memória de preferências (até a 4.0 era o tars_rotinas.py, com as rotinas)
 tars_ambiente.py        4.5: WSL, sem interface gráfica, caminhos do Windows, Ollama do Windows (puro)
 tars_cooper.py          4.5: perguntas do Cooper no formato do treino, leitura das respostas, milésimos -> pixels (puro)
-tars_anexos.py          4.5: ler arquivos anexados (texto, imagem, PDF, DOCX/ODT, pasta) e montar a mensagem (puro)
 tars_atualizacao.py     Neo: aviso de versão nova (lê a REVISAO do tars.py publicado, 1x por dia)
-tars_openai.py          servidores compatíveis com a OpenAI (vLLM, LM Studio, llama.cpp)
-tars_descoberta.py      3.1: acha servidores ligados e .gguf de outros programas; importa no Ollama
 tars_wayland.py         mouse e teclado pelo ydotool no Wayland
 tars_atalho.py          atalho global (GNOME, Cinnamon, MATE, XFCE)
 tars_instancia.py       instância única (a barra abre na hora)
