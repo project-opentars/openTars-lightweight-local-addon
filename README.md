@@ -8,9 +8,9 @@
 
 Você pede do seu jeito. Ele abre programas, clica nos botões pelo nome, digita, pesquisa, olha a tela e roda comandos.<br>
 Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
-**4.6 Endurance:** a versão **mais leve**: menos código, menos pacote, só o Ollama, e o **Cooper** como único modelo que olha a tela. O **Gargantua** continua sendo a IA oficial.
+**5.0 Tesseract:** a janela nova, em Qt: primeiro uso, conversa, voz, memória visível e nuvem opcional. Por baixo, segue a base leve da 4.6: só o Ollama, e o **Cooper** como único modelo que olha a tela. O **Gargantua** continua sendo a IA oficial.
 
-[![Versão 4.6 Endurance](https://img.shields.io/badge/vers%C3%A3o-4.6%20Endurance-5FD97A?style=flat-square)](#instalação)
+[![Versão 5.0 Tesseract](https://img.shields.io/badge/vers%C3%A3o-5.0%20Tesseract-5FD97A?style=flat-square)](#instalação)
 [![IA oficial: Gargantua](https://img.shields.io/badge/IA%20oficial-Gargantua-5FD97A?style=flat-square)](#gargantua-a-ia-oficial)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibilidade)
@@ -18,7 +18,7 @@ Tudo na sua máquina, via Ollama: sem nuvem, sem conta, sem mensalidade.<br>
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%C2%B7%20EN-1A2446?style=flat-square)](#idiomas)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Novidades da 4.6](#novidades-da-46-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
+[Novidades da 5.0](#novidades-da-50-tesseract) · [4.6](#novidades-da-46-endurance) · [Instalar](#instalação) · [Gargantua](#gargantua-a-ia-oficial) · [Treinar o seu](gargantua/TUTORIAL.md) · [Como funciona](#como-funciona) · [Usar](#uso) · [Idiomas](#idiomas) · [Problemas comuns](#problemas-comuns) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -64,6 +64,29 @@ Nada do que você digita ou mostra sai da sua máquina. Comandos perigosos pedem
 </tr>
 </table>
 
+## Novidades da 5.0 Tesseract
+
+A 5.0 troca a janela por uma nova, feita em **Qt (PySide6)**, igual ao desenho aprovado. Por baixo, o núcleo é o da 4.6 (só o Ollama, Cooper olhando a tela) com a **voz**, os **anexos** e a **nuvem opcional** de volta.
+
+| | |
+|---|---|
+| 🧭 **Primeiro uso** | 5 passos: idioma, Ollama, nuvem (opcional), baixar o Gargantua e um teste rápido. Procura o Ollama, instala se faltar (pede a senha do sistema), baixa o modelo com barra de progresso (dá pra pausar e retomar) e confere com uma conta simples |
+| 💬 **Janela principal** | Barra lateral com o **histórico por dia** (busca, apagar, abrir devolve o contexto exato à IA), pílula do modelo (Automático, locais ou nuvem), botão **Parar**, balões, raciocínio recolhido, ferramentas com tempo e avisos. Atalhos: `Ctrl+N` nova conversa, `Ctrl+K` buscar, `Ctrl+,` configurações, `Ctrl+M` microfone, `Esc` para |
+| ✅ **Lista de etapas** | Em tarefas longas, o cartão **Etapas** mostra o que falta; cada ação concluída marca uma etapa (é uma aproximação: olhar a tela não conta) e no fim tudo fecha. Quando precisa de você, aparece "espera por você" |
+| 🛡️ **Pergunta antes de ação arriscada** | Comando perigoso vira um cartão com **Permitir** / **Negar** (mostra 3 linhas e "Ver tudo"). Parar também nega o que estava esperando |
+| 🎙️ **Voz com 3 modos** | **Segurar** para falar, **Contínua** e palavra **"TARS"**, tudo local (faster-whisper + Kokoro). Português e inglês (a voz em português é menos natural que a em inglês). Tela de voz com ondas, "você disse", silenciar e parar. Sem a voz instalada, o microfone leva a **Configurações → Voz** para instalar |
+| 📎 **Anexos** | Clipe ou arrastar arquivos para a janela; texto e imagem (só para modelo que enxerga) |
+| 🧠 **Memória visível** | **Configurações → Memória e privacidade** lista o que o TARS lembra, esquece item a item, exporta as conversas e apaga histórico/memória (com confirmação) |
+| ☁️ **Nuvem, só se você quiser** | O padrão é **"Não, só no meu computador"**. Se quiser, use Ollama Cloud, Groq, Cerebras ou outro endereço compatível com a API da OpenAI, com a **sua** chave, guardada só neste computador (permissão 0600) e nunca mostrada. Modelo da nuvem nunca entra na escolha automática; quando você escolhe um, o rodapé avisa que o texto vai ao provedor. *O endereço do Ollama Cloud e os limites gratuitos ainda estão "a confirmar".* |
+| 🔄 **Atualização com um clique** | Aviso na barra lateral; **Atualizar** baixa, **confere o SHA-256** e instala (AppImage troca o arquivo; .deb pede a senha do sistema). Nada é automático e só fala com `github.com` |
+| 🔤 **Fontes junto** | IBM Plex (licença OFL) vai dentro do pacote |
+| 🛟 **Sem Qt, tudo segue** | Se o PySide6 não estiver instalado (ou com `--tk`), abre a janela da 4.6 como antes. `TARS_SEM_ASSISTENTE=1` pula o assistente. A barra rápida (`--rapido`) também é em Qt; com `--tk` volta a da 4.6 |
+| ⏰ **Rotinas agendadas** | **Configurações → Rotinas**: "todo dia às 8h, abre o jornal". Diária, dias da semana, a cada N minutos (5 ou mais) ou uma vez. Cada rotina roda numa conversa própria (⏰ no histórico), sem falar em voz alta, e anota o resultado (feita, parou, não terminou). **Só roda com o openTARS aberto**: com rotinas ligadas, fechar a janela deixa o app na bandeja do sistema (se o ambiente tiver bandeja). Computador ou app desligado na hora: a rotina é **pulada** (passou de 10 min) e você é avisado. Ao criar, você marca o que ela pode fazer **sem perguntar** (apagar arquivos, enviar/publicar, instalar/mudar o sistema); fora disso ela **para e avisa**, nunca decide sozinha. Uma rotina criada pela IA na conversa nasce **desligada** até você aprovar. (O Gargantua não conhece essas ferramentas: ele foi treinado com uma lista fixa; use o formulário.) Fica em `~/.config/opentars/agenda.json` |
+| ⚡ **Barra rápida em Qt** | `Ctrl+Alt+Espaço` (ou `opentars-gui --rapido`): caixa flutuante, pergunta, resposta no lugar, `Esc` fecha, `Ctrl+Enter` abre a janela. Perguntas seguidas continuam a mesma conversa; ação arriscada traz a janela com o cartão Permitir/Negar. Aberto só pela barra, encerra sozinho depois de 30 min parado |
+| 📦 **AppImage (testado)** | Um arquivo só (~60 MB), com Python 3.12, PySide6 e as bibliotecas dentro (feito em Ubuntu 22.04, roda em distros com glibc 2.35 ou mais nova). `chmod +x openTARS-5.0-x86_64.AppImage && ./openTARS-5.0-x86_64.AppImage`. Para montar: `sudo bash empacotamento/appimage/build.sh` (veja o topo do script). **Testado só aqui**: abre e roda sob Xvfb; ainda não foi visto em outras distros nem em máquina virtual limpa |
+
+**Ainda não está na 5.0:** melhoria do Cooper (precisa de treino com GPU, que não dá para fazer neste ambiente; o Cooper continua o mesmo da 4.6) e validação em máquina virtual limpa, em outras distros (AppImage) e no Wayland. A voz com microfone de verdade também ainda não foi testada.
+
 ## Novidades da 4.6 Endurance
 
 A 4.6 não acrescenta recursos: **tira** o que pesava e o que o Gargantua não usa. O pacote e o código ficam menores e a IA tem menos caminhos pra se perder.
@@ -72,8 +95,8 @@ A 4.6 não acrescenta recursos: **tira** o que pesava e o que o Gargantua não u
 |---|---|
 | ✂️ **Só o Ollama** | Saíram os servidores externos (`--servidor`, `api:<nome>`: vLLM, LM Studio, llama.cpp...) e a importação de `.gguf` de outros programas. Os modelos vêm do Ollama |
 | 👁️ **Só o Cooper olha a tela** | Saíram o OCR (`tesseract`), a grade com zoom e o modelo de visão de reserva. Clicar num ícone sem texto: acessibilidade → Cooper. Se o Cooper falhar ou não estiver instalado, a tela mostra o motivo em vez de tentar outro caminho |
-| 🔇 **Sem voz (volta na 5.0)** | Saíram o Whisper, o Kokoro, o "TARS, ..." falado e as rotinas por voz |
-| 📎 **Sem anexos de arquivo** | Saiu o botão **+ Anexar**, o `/anexar` e o `-a arquivo`. A IA continua lendo arquivos pelo terminal |
+| 🔇 **Sem voz (voltou na 5.0)** | Saíram o Whisper, o Kokoro, o "TARS, ..." falado e as rotinas por voz |
+| 📎 **Sem anexos de arquivo (voltaram na 5.0)** | Saiu o botão **+ Anexar**, o `/anexar` e o `-a arquivo`. A IA continua lendo arquivos pelo terminal |
 | 🧹 **Menos código morto** | Funções sem uso saíram; as opções de linha de comando duplicadas em português e inglês também (ficam as que aparecem no `--help`) |
 | 🧪 **Frases da Murph fora do pacote** | `tars_exemplos*.py` (só servem pra treinar a Murph) foram pra `murph/`, no código-fonte |
 
@@ -100,11 +123,11 @@ Quem já usa: rode o mesmo comando de instalação. O Cooper **não** é baixado
 | | |
 |---|---|
 | 🔔 **Aviso de versão nova** | Uma vez por dia, no máximo, ele confere no GitHub se saiu openTARS mais novo e avisa na janela e no `--diagnostico`. Só lê o `tars.py` publicado, não manda nada do seu PC. `TARS_SEM_AVISO_VERSAO=1` desliga |
-| 🪶 **Mais leve** | Saíram o modelo de embeddings (`granite-embedding:278m`, ~560 MB a menos pra baixar), o classificador antigo (Naive Bayes) e o ajudante `qwen2.5:0.5b`: quem decide o tipo do pedido são as palavras-chave, o contexto, o formato, a **helper Murph** e os seus apps. Saíram também as **rotinas agendadas** (a **memória** continua) |
+| 🪶 **Mais leve** | Saíram o modelo de embeddings (`granite-embedding:278m`, ~560 MB a menos pra baixar), o classificador antigo (Naive Bayes) e o ajudante `qwen2.5:0.5b`: quem decide o tipo do pedido são as palavras-chave, o contexto, o formato, a **helper Murph** e os seus apps. As **rotinas agendadas** saíram na 4.6 e **voltaram na 5.0** (a **memória** continua) |
 | 🇺🇸 **Voz só em inglês** | A voz (Kokoro + Whisper) fica só em inglês, onde ela acerta de verdade: com a interface em português, o botão **Voz** some e o `--voz` explica como trocar (`/idioma en`) |
 | 🌀 **Gargantua: treino novo recomendado** | A lista de ferramentas caiu de 28 para **19** (saíram `double_click`, `hotkey`, `list_files`, `pc_info`, `wait_seconds`, `move_to_trash`, `undo_last_action`, `read_clipboard` e `write_clipboard`; `double_click` virou `click_mouse` com `clicks=2` e `hotkey` virou `press_key`, que aceita `ctrl+s`). O Gargantua 1.1 foi treinado com as 28 e continua funcionando: o openTARS traduz as chamadas antigas para as ferramentas que ficaram. Um treino novo com o kit do Lab 1.3.7 (`gargantua.py ferramentas`, depois `coletar` e `treinar`) deixa ele no formato novo e tira ~27% dos tokens de ferramentas de cada pedido |
 
-Quem já usa: rode o mesmo comando de instalação. O histórico, a memória e os seus modelos continuam. As rotinas que você tinha ficam guardadas em `~/.config/opentars/rotinas.json`, mas não rodam mais. O `granite-embedding:278m` não é apagado do Ollama; se quiser o espaço de volta: `ollama rm granite-embedding:278m`.
+Quem já usa: rode o mesmo comando de instalação. O histórico, a memória e os seus modelos continuam. As rotinas antigas (`~/.config/opentars/rotinas.json`) não são lidas pela 5.0: recrie em Configurações → Rotinas. O `granite-embedding:278m` não é apagado do Ollama; se quiser o espaço de volta: `ollama rm granite-embedding:278m`.
 
 ## Novidades da 4.0 Endurance
 
@@ -286,7 +309,7 @@ Pedido com várias etapas ("abre o gmail e depois o spotify") vira um **plano** 
 
 ### 6. Memória
 
-- **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`. (As rotinas agendadas saíram na Neo.)
+- **Memória:** "lembra que meu navegador é o Brave", "minha pasta de projetos é ~/dev". Vale pra toda conversa daqui pra frente; "esquece o do Brave" apaga. Fica em `~/.config/opentars/memoria.json`. (As rotinas agendadas voltaram na 5.0: Configurações → Rotinas.)
 
 ### 7. Wayland (3.0)
 
@@ -517,22 +540,29 @@ O Ollama, os modelos baixados e os seus dados (`~/.tars_sessoes.json`, `~/.tars_
 ```
 tars.py                 começo do núcleo: sessão gráfica, configuração, e carrega as partes de nucleo/
 nucleo/                 o núcleo em partes (registro, ollama, hardware, aplicacoes, controle, janelas,
-                        cooper, elementos, ferramentas, selecao, prompt, chat, memoria, utilidades,
-                        gargantua, terminal), todas no
+                        cooper, elementos, ferramentas, selecao, prompt, chat, nuvem, anexos, memoria, utilidades,
+                        gargantua, voz, terminal), todas no
                         mesmo namespace: tars.<nome> continua valendo pra tudo
 nucleo/cooper.py        4.5: o Cooper no clique por ícone e na descrição da tela
 nucleo/utilidades.py    aviso de versão nova e o filtro das ferramentas quando não há interface gráfica
 nucleo/gargantua.py     4.0: formato curto do Gargantua (igual ao do treino) e a preferência dele no AUTO
 gargantua/              kit de treino do Gargantua (coleta numa tela virtual, treino QLoRA, GGUF, prova);
                         comece pelo gargantua/TUTORIAL.md
-tars_gui.py             janela e barra rápida (Tkinter), usa o tars.py por baixo
+tars_qt/                5.0: a janela em Qt (principal, conversa, configurações, barra rápida, voz, primeiro uso, tema)
+tars_gui.py             janela da 4.6 (Tkinter, `--tk`), usa o tars.py por baixo
+tars_historico.py       5.0: histórico das conversas (por dia, busca, exportar)
+tars_primeiro_uso.py    5.0: a lógica do primeiro uso e da nuvem (sem Qt)
+tars_openai.py          5.0: conversa com servidores compatíveis com a OpenAI (nuvem)
+tars_voz.py             5.0: voz (reconhecimento e fala locais)
+tars_anexos.py          5.0: anexos de arquivo
 tars_i18n.py            idiomas: carrega idiomas/*.json e guarda a escolha
 tars_acessibilidade.py  clique pelo nome (AT-SPI)
 tars_escolha.py         camadas de escolha da tarefa, pedidos com várias etapas, histórico dos modelos
 tars_murph.py           Murph (3.0.4): decide o tipo do pedido; o modelo fica em modelos/murph.json
 murph/                  treino da Murph (não vai no pacote): frases geradas, treinar_murph.py, comparar.py
 tars_mouse.py           mouse preciso: arrasto, lugares da tela, encaixe no botão, confere se a tela mudou
-tars_memoria.py         memória de preferências (até a 4.0 era o tars_rotinas.py, com as rotinas)
+tars_memoria.py         memória de preferências
+tars_rotinas.py         5.0: rotinas agendadas (agenda, horários, pré-aprovação; puro)
 tars_ambiente.py        4.5: WSL, sem interface gráfica, caminhos do Windows, Ollama do Windows (puro)
 tars_cooper.py          4.5: perguntas do Cooper no formato do treino, leitura das respostas, milésimos -> pixels (puro)
 tars_atualizacao.py     Neo: aviso de versão nova (lê a REVISAO do tars.py publicado, 1x por dia)
@@ -548,7 +578,8 @@ logo.svg, *.png         imagens deste README (janela.png, boas-vindas.png, barra
 
 ```bash
 python3 tars.py                 # diagnóstico e opções de linha de comando (precisa de requests, psutil, pyautogui, pillow, python3-tk e python3-gi)
-python3 tars_gui.py             # interface gráfica
+python3 -m tars_qt              # janela em Qt (5.0)
+python3 tars_gui.py             # janela da 4.6 (Tkinter)
 python3 tests/run_all.py        # testes
 bash empacotamento/build.sh     # gera o .deb em dist/
 ```
