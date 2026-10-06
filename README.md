@@ -168,7 +168,7 @@ O `--diagnostico` mostra se ele está instalado. `TARS_COOPER=0` desliga o uso (
 Pra Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS e derivados. Cole no terminal:
 
 ```bash
-wget -O /tmp/opentars.deb https://github.com/enzorcasao-ctrl/openTars-lightweight-local-addon/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
+wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
 ```
 
 Pronto: esse comando instala **tudo** que o openTARS precisa, pulando o que você já tiver:
@@ -205,7 +205,7 @@ Pra escolher outro modelo de conversa na instalação, coloque `TARS_MODELO_CONV
 <details>
 <summary>Prefere baixar o arquivo manualmente?</summary>
 
-Clique em [`opentars_all.deb`](https://github.com/enzorcasao-ctrl/openTars-lightweight-local-addon/raw/main/opentars_all.deb) e, na pasta onde ele foi salvo (normalmente `~/Downloads`):
+Clique em [`opentars_all.deb`](https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb) e, na pasta onde ele foi salvo (normalmente `~/Downloads`):
 
 ```bash
 sudo apt install -y --reinstall ./opentars_all.deb
