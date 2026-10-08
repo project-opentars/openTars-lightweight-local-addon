@@ -364,7 +364,7 @@ All models share the same conversation: switching AI midway does not make it for
 
 ## Usage
 
-Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal shows the openTARS logo and checks that your environment is healthy. Redirected output (a pipe or a script) gets the check without the logo.
+Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal shows the openTARS logo and opens the chat right there (the same as `opentars --chat`). In a script or a pipe it only checks that your environment is healthy, like `opentars --diagnostico`.
 
 <img src="docs/img/01-home.png" width="760" alt="The home screen with four suggestions to click">
 
@@ -414,7 +414,7 @@ Other commands:
 
 | Command | What it does |
 |---|---|
-| `opentars` | shows the logo and checks the setup (chatting is in the window) |
+| `opentars` | shows the logo and opens the chat in the terminal (in a script or a pipe, it checks the setup instead) |
 | `opentars-gui` | opens the window |
 | `opentars-gui --rapido` | opens the quick bar |
 | `opentars --chat` | chats in the terminal (WSL, SSH, no graphical session) |
