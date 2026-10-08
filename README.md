@@ -364,7 +364,7 @@ All models share the same conversation: switching AI midway does not make it for
 
 ## Usage
 
-Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal checks that your environment is healthy.
+Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal shows the openTARS logo and checks that your environment is healthy. Redirected output (a pipe or a script) gets the check without the logo.
 
 <img src="docs/img/01-home.png" width="760" alt="The home screen with four suggestions to click">
 
@@ -414,11 +414,20 @@ Other commands:
 
 | Command | What it does |
 |---|---|
+| `opentars` | shows the logo and checks the setup (chatting is in the window) |
+| `opentars-gui` | opens the window |
+| `opentars-gui --rapido` | opens the quick bar |
+| `opentars --chat` | chats in the terminal (WSL, SSH, no graphical session) |
+| `opentars --chat "request"` | answers one request in the terminal and exits |
+| `opentars --idioma <code>` | changes the language (`pt_BR` or `en`) |
+| `opentars --atalho [keys\|off]` | shows, changes or removes the global shortcut |
+| `opentars --cooper` | downloads Cooper, the model that looks at the screen |
 | `opentars --diagnostico` | checks Ollama, models, GPU, screen, windows, accessibility and shortcut (changes nothing) |
 | `opentars --autoteste` | diagnosis + task-choice accuracy + the real calculator test |
 | `opentars --avaliar-classificador` | measures how well each layer (and AUTO mode) does on your PC |
 | `opentars --explicar "request"` | shows, layer by layer, how the task and the model are chosen |
 | `opentars --setup` | installs whatever is missing (Ollama, models...) |
+| `opentars --version` | shows the version |
 | `opentars --help` | all commands |
 
 ## Languages
