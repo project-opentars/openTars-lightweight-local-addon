@@ -201,7 +201,7 @@ That single command installs **everything** openTARS needs, skipping what you al
 - Ollama (or uses the one already running, Docker included)
 - an isolated Python environment (with PySide6 for the new window)
 - **Gargantua (4.0)**, the official AI (~2.5 GB, `ProjectOpenTARS/Gargantua`), trained to use its tools. See [Gargantua](#gargantua-the-official-ai)
-- **Cooper (4.5)**, optional (~2.7 GB, `ProjectOpenTARS/cooper`): the installer asks when run in a terminal with a graphical session; otherwise it prints the command. `TARS_COM_COOPER=1` downloads without asking, `TARS_SEM_COOPER=1` skips it. See [Cooper](#cooper-the-model-that-looks-at-the-screen)
+- **Cooper (4.5)**, optional (~2.7 GB, `ProjectOpenTARS/cooper`): the first-run window offers to download it right after Gargantua (ticked when both fit on the disk; untick it to skip, and if it fails or is paused you can still continue); the installer also asks when run in a terminal with a graphical session, and otherwise prints the command. `TARS_COM_COOPER=1` downloads without asking, `TARS_SEM_COOPER=1` skips it. See [Cooper](#cooper-the-model-that-looks-at-the-screen)
 - **a chat model chosen for your hardware**, only if Gargantua was not downloaded and you have no other model yet: `qwen3:8b` with a 6 GB+ graphics card, `qwen3:4b` with 12 GB+ of RAM and `qwen3:1.7b` otherwise
 - the application-menu shortcut
 
