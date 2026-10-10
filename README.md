@@ -91,11 +91,14 @@ Nothing you type or show leaves your machine. Dangerous commands ask for confirm
 | 🔄 **Automatic update detection** | Upload a new `opentars_all.deb` to the repository and every installed copy notices it on its own: no release, tag or checksum file to maintain. See [Updates](#updates) |
 | ⏰ **Scheduled routines** | **Settings → Routines**: "every day at 8, open the newspaper". Daily, weekdays, every N minutes (5 or more) or once. Each routine runs in its own chat (⏰ in the history), without speaking aloud, and records the result (done, stopped, unfinished). **It only runs while openTARS is open**: with routines on, closing the window leaves the app in the system tray (if your desktop has one). If the computer or the app was off at the time, the routine is **skipped** (more than 10 min late) and you are told. When you create one, you tick what it may do **without asking** (delete files, send/publish, install/change the system); anything else makes it **stop and tell you**, it never decides alone. A routine created by the AI in chat starts **disabled** until you approve it. (Gargantua does not know these tools, since it was trained on a fixed list; use the form.) Stored in `~/.config/opentars/agenda.json` |
 | ⚡ **Quick bar in Qt** | `Ctrl+Alt+Space` (or `opentars-gui --rapido`): floating box, ask, answer in place, `Esc` closes, `Ctrl+Enter` opens the window. Follow-up questions continue the same chat; a risky action brings up the window with the Allow/Deny card. Opened only by the bar, it quits by itself after 30 min idle |
-| 🤖 **Mascot** | The monolith from the logo, in pixel art, walks along the chat above the input box, gives tips (click it for one) and reacts with its body to what the AI is doing: sways while thinking, pumps its columns while working, waves when it needs your permission, cheers when it is done and slumps when something fails. Turn it off in **Settings → General**, from its right-click menu or with `TARS_SEM_MASCOTE=1`. [See it move](docs/img/16-mascot.gif) |
+| 🤖 **Mascot** | The monolith from the logo, in pixel art, walks along the chat above the input box, looks where it is going, gives tips (click it for one) and reacts with its face and body to what the AI is doing: dots over its head while thinking, a focused frown while working, wide eyes and a "!" when it needs your permission, a smile when it is done and a sad face when something fails. After a few quiet minutes it naps (no walking, no tips); any request or a click wakes it up. Turn it off in **Settings → General**, from its right-click menu or with `TARS_SEM_MASCOTE=1`. [See its moods](docs/img/16-mascot.gif) |
+| 🖥️ **A modern terminal** | `opentars` in a terminal opens a chat styled like today's AI command-line tools: the logo, a welcome panel with the Ollama status and the model in use, each step as `●` with its result under `⎿`, a spinner while it works (`ctrl+c` stops it), the `❯` prompt and a clear `/help`. See [Terminal](#terminal) |
 | 🔤 **Fonts included** | IBM Plex (OFL license) ships inside the package |
 | 🛟 **Without Qt, everything still works** | If PySide6 is missing (or with `--tk`), the 4.6 window opens as before. `TARS_SEM_ASSISTENTE=1` skips the first-run assistant. With `--tk` the quick bar is the 4.6 one |
 | 📦 **Package: .deb only** | 5.0 ships as a **.deb** (Ubuntu, Zorin, Mint, Debian, Pop!_OS). The AppImage was built and tested (~60 MB) but **left out of the delivery**; the recipe stays in `empacotamento/appimage/` for anyone who wants to build it (`sudo bash empacotamento/appimage/build.sh`) |
 | 🔍 **Full code audit** | About 50 fixes across the core, the window, routines and the updater: atomic writes for every settings file (with `.corrompido` backups of broken ones), `rm` with wildcards, `find -exec rm`, `curl \| sh` and `ssh` now ask first, typing a dangerous command into a terminal asks too, the cloud key no longer leaks to child processes, a command that starts a background app no longer hangs the turn, an Ollama stream that ends without `done` is an error instead of a half answer, a routine never runs twice for the same slot, and more |
+
+<p align="center"><img src="docs/img/16-mascot.gif" width="760" alt="The mascot's moods: idle, thinking, working, needs you, oops, done and napping"></p>
 
 **Not in 5.0 yet:** Cooper improvement (needs GPU training, which cannot be done in the development environment; Cooper is still the 4.6 one), validation on a clean virtual machine and on Wayland, voice with a real microphone, and an end-to-end test of the update flow against the real GitHub repository.
 
@@ -365,18 +368,17 @@ All models share the same conversation: switching AI midway does not make it for
 
 ## Usage
 
-Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal shows the openTARS logo and opens the chat right there (the same as `opentars --chat`). In a script or a pipe it only checks that your environment is healthy, like `opentars --diagnostico`.
+Open **openTARS** from the application menu, or run `opentars-gui`. Without a GUI (server, SSH, WSL): `opentars --chat`. Running plain `opentars` in a terminal opens the chat right there (see [Terminal](#terminal)). In a script or a pipe it only checks that your environment is healthy, like `opentars --diagnostico`.
 
-<img src="docs/img/01-home.png" width="760" alt="The home screen with four suggestions to click">
+<img src="docs/img/01-home.png" width="760" alt="The home screen with three suggestions to click">
 
-The home screen offers four suggestions to click (in your language), one for each kind of thing it does:
+The home screen offers three suggestions to click (in your language):
 
 | Suggestion | What it shows |
 |---|---|
-| Open the calculator and do 12 × 8 with the buttons | clicks buttons by name |
-| Which windows are open right now? | sees what is open |
-| Search YouTube for lasagna recipe videos | searches the web |
-| How much memory and disk am I using? | reads the PC's state |
+| Open the browser and look up the supermarket hours | opens an app and searches the web |
+| Organize my Downloads folder by type | works with your files (and asks before changing anything important) |
+| What time is it and what's the temperature here? | answers a quick question |
 
 More examples: `close spotify and open discord`, `what is on my screen?`, `how do I see my IP on linux?`.
 
@@ -400,6 +402,31 @@ opentars --atalho off            # remove
 ```
 
 On KDE and other environments, register by hand a shortcut running `opentars-gui --rapido`.
+
+### Terminal
+
+<img src="docs/img/17-cli.png" width="620" align="right" alt="The openTARS terminal: the logo, the welcome panel, a plan, tool steps with their results and the spinner">
+
+`opentars` (or `opentars --chat`) opens the chat in the terminal, on a desktop or over SSH, WSL and servers without a GUI:
+
+- **Welcome panel:** whether Ollama is connected and which model is in use.
+- **Steps you can follow:** each action is a `●` line (opening app, clicking, running command) and its result hangs under it with `⎿` (`✓` and the time, or `✗` and why).
+- **A spinner while it works:** it says what is happening (loading the model, thinking, running a tool) and for how long. `ctrl+c` stops the answer; twice in a row leaves.
+- **Risky commands still ask first**, right in the terminal, before anything runs.
+- `↑` / `↓` bring back earlier requests.
+
+| In the chat | What it does |
+|---|---|
+| `/help` | lists the commands |
+| `/models` · `/model <name>` · `/model auto` | lists, pins or unpins a model |
+| `/clear` | starts a new conversation |
+| `/language <code>` | changes the language |
+| `/unload` | unloads every model from memory |
+| `/exit` | leaves |
+
+`opentars --chat "request"` answers one request and exits with an error code if it failed, which is handy in scripts. `NO_COLOR=1` turns colors, the logo and the spinner off.
+
+<br clear="right">
 
 ### Controls
 
