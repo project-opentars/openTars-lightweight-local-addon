@@ -222,6 +222,52 @@ footer nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 footer a { color: #E8ECF4; }
 footer a:hover { color: var(--signal-on-slab); }
 footer :focus-visible { outline-color: var(--signal-on-slab); }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.hero .roles {
+  grid-column: 1 / -1; margin: clamp(1.5rem, 4vw, 3rem) 0 0; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+  font-variation-settings: "wdth" 112; font-weight: 600; font-size: clamp(1.1rem, 2vw, 1.45rem); color: var(--ink);
+}
+
+/* Demo */
+.demo { padding-block: 0 clamp(4rem, 9vw, 7rem); }
+.demo-frame { margin: 0; }
+.demo-screen, .demo-video {
+  aspect-ratio: 16 / 9; width: 100%; border-radius: 10px; background: var(--slab);
+  box-shadow: 0 0 0 1px var(--rule), 0 30px 60px -30px rgba(0, 0, 0, .6);
+}
+.demo-screen { display: grid; place-content: center; gap: .75rem; text-align: center; padding: 1.5rem; }
+.demo-say { margin: 0; font-variation-settings: "wdth" 125; font-weight: 800; letter-spacing: -.02em; font-size: clamp(1.6rem, 5vw, 3.6rem); line-height: 1.05; }
+.demo-soon { margin: 0; color: var(--steel); }
+.demo-frame figcaption { text-align: center; }
+
+/* Segurança */
+.layers { list-style: none; margin: 0; padding: 0; display: grid; gap: 2rem; }
+.layers li > p { color: var(--steel); margin: 0; max-width: var(--measure); }
+.layers h3 { font-size: 1.35rem; }
+.layers .asks { margin-top: 1rem; }
+.cloud { margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--rule); border-radius: 10px; }
+.cloud p { color: var(--steel); margin: 0; }
+.safe { align-items: start; }
+
+/* Modelos */
+.models { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 60rem) { .models { grid-template-columns: 1fr; } }
+.model .role { margin: 0 0 .25rem; color: var(--signal); font-weight: 600; font-variation-settings: "wdth" 112; }
+.lite { margin-top: 2rem; color: var(--steel); max-width: 44rem; }
+.lite strong { color: var(--ink); }
+
+/* Instalação */
+.get { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+@media (max-width: 60rem) { .get { grid-template-columns: 1fr; } }
+.btn.big { font-size: 1.25rem; padding: 1.15rem 1.8rem; margin-bottom: 1rem; }
+.get .or { margin-top: 2.25rem; }
+.get .cmd + p { margin-top: 1.25rem; }
+.tested { padding: 1.75rem; background: var(--slab); border-radius: 10px; box-shadow: 0 0 0 1px var(--rule); }
+.tested ul { list-style: none; margin: 1rem 0 1.25rem; padding: 0; display: grid; gap: .6rem; }
+.tested li { font-weight: 600; font-size: 1.1rem; font-variation-settings: "wdth" 110; }
+.tested li::before { content: "✓"; color: var(--signal); margin-right: .7rem; font-weight: 700; }
+.tested p { margin: 0; font-size: .95rem; }
 </style>
 </head>
 <body>
@@ -245,8 +291,8 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
         <h1 class="display">Tell your Linux desktop what to do.</h1>
         <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. The AI runs on your own machine.</p>
         <div class="actions">
-          <a class="btn" href="#install">Install openTARS</a>
-          <a class="link" href="https://github.com/project-opentars/openTars-lightweight-local-addon">Read the source</a>
+          <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download the .deb</a>
+          <a class="link" href="#install">Or install with one command</a>
         </div>
         <p class="facts">Version 5.0 Tesseract. Free and open source under the MIT license, for Ubuntu, Debian, Mint, Zorin and Pop!_OS.</p>
       </div>
@@ -262,8 +308,26 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
         <span class="line final" style="--d:5.4s">Done. 7 + 2 = 9, and Calculator is still open.</span>
         <span class="line" style="--d:5.8s"><span class="p">❯ </span><span class="cursor"></span></span>
       </div>
+      <p class="roles">Gargantua thinks. Cooper sees. Murph picks the right model for each request.</p>
     </div>
   </div>
+
+  <section class="demo" aria-labelledby="demo-t">
+    <div class="wrap">
+      <h2 id="demo-t" class="visually-hidden">Demo</h2>
+      <!-- Demo de 15 s: grave o pedido "open Spotify and play lofi", salve como docs/img/demo.mp4
+           (ou demo.gif) e troque o bloco .demo-frame inteiro por:
+           <video class="demo-video" src="img/demo.mp4" autoplay muted loop playsinline width="1600" height="900"></video>
+           ou <img class="demo-video" src="img/demo.gif" width="1600" height="900" alt="openTARS opening Spotify and playing lofi"> -->
+      <figure class="demo-frame">
+        <div class="demo-screen">
+          <p class="demo-say">“Open Spotify and play lofi”</p>
+          <p class="demo-soon">A 15-second recording of this request is on its way.</p>
+        </div>
+        <figcaption>One sentence in, Spotify playing out. No setup between the two.</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <section class="band" aria-labelledby="ask">
     <div class="wrap">
@@ -306,45 +370,78 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
   </section>
 
   <section class="band" aria-labelledby="safe">
-    <div class="wrap safe">
-      <div>
-        <h2 id="safe" class="display">Nothing risky happens without you.</h2>
-        <p class="lede quiet" style="margin-top:1.25rem">When a command could delete data or change the system, openTARS stops and waits for your answer. Stopping a reply also denies whatever was waiting. These always ask first:</p>
-        <ul class="asks">
-          <li>rm -r</li><li>rm *</li><li>find -exec rm</li><li>curl | sh</li><li>sudo</li><li>ssh</li><li>dd</li><li>mkfs</li><li>git reset --hard</li><li>shutdown</li>
-        </ul>
-        <p class="quiet" style="margin-top:1.75rem">The cloud is off unless you turn it on. If you do, your key stays on this computer and the window warns you whenever your text goes to a provider.</p>
+    <div class="wrap">
+      <div class="head">
+        <h2 id="safe" class="display">How it stays safe.</h2>
+        <p class="lede quiet">An assistant that can run commands has to know when to stop and ask. openTARS has three checks, and none of them can be talked out of by the AI.</p>
       </div>
-      <div class="shot"><img src="img/03-approval.png" loading="lazy" width="1770" height="1140" alt="An approval card asking to allow or deny a sudo command"></div>
+      <div class="safe">
+        <div>
+          <ol class="layers">
+            <li>
+              <h3>Risky commands wait for you</h3>
+              <p>Before anything runs, every command is matched against a fixed list of dangerous patterns. These are plain rules, not AI, so they cannot be argued with. A match turns into a card with Allow and Deny, and nothing happens until you click.</p>
+              <ul class="asks">
+                <li>rm -r</li><li>rm *</li><li>find -exec rm</li><li>curl | sh</li><li>sudo</li><li>ssh</li><li>dd</li><li>mkfs</li><li>git reset --hard</li><li>shutdown</li>
+              </ul>
+            </li>
+            <li>
+              <h3>It checks its own work</h3>
+              <p>When a task has several steps, the AI has to compare what you asked with what it actually did before it says “done”. If something is missing, it goes back and finishes.</p>
+            </li>
+            <li>
+              <h3>Routines never decide alone</h3>
+              <p>A scheduled routine can only delete, send or install if you allowed that when you created it. Anything else makes it stop and tell you.</p>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <div class="shot"><img src="img/03-approval.png" loading="lazy" width="1770" height="1140" alt="An approval card asking to allow or deny a sudo command"></div>
+          <div class="cloud">
+            <h3>The cloud is off by default</h3>
+            <p>Everything runs on your PC. If you want a bigger model, you can switch on Ollama Cloud with your own account. Your key stays on this computer and is never shown or logged, and the window warns you whenever your text goes to a provider.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="models" aria-labelledby="mod">
     <div class="wrap">
       <div class="head">
-        <h2 id="mod" class="display">Two models made for it.</h2>
-        <p class="lede quiet">Both are downloaded by the installer through Ollama. You can still use any other Ollama model next to them.</p>
+        <h2 id="mod" class="display">Three models, one crew.</h2>
+        <p class="lede quiet">Each one has a single job. The installer downloads them through Ollama, and you can still add any other Ollama model next to them.</p>
       </div>
       <div class="models">
         <article class="model">
+          <p class="role">Thinks</p>
           <h3>Gargantua</h3>
-          <p>The official AI. A Qwen3 4B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool openTARS gives it.</p>
+          <p>The main AI. A Qwen3 4B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool it can use: opening apps, clicking, typing, running commands.</p>
           <dl>
             <dt>Size</dt><dd>about 2.5 GB</dd>
             <dt>Runs on</dt><dd>a graphics card with ~3 GB free, or the CPU with 8 GB of RAM</dd>
-            <dt>Get it</dt><dd><code>ProjectOpenTARS/Gargantua</code></dd>
           </dl>
         </article>
         <article class="model">
+          <p class="role">Sees</p>
           <h3>Cooper</h3>
-          <p>An optional vision model that only looks at the screen. It finds the button you meant in apps that do not expose their controls to accessibility.</p>
+          <p>A vision model that only looks at the screen. When an app does not tell Linux what its buttons are, Cooper finds the one you meant from a screenshot.</p>
           <dl>
-            <dt>Size</dt><dd>about 2.7 GB</dd>
-            <dt>Needs</dt><dd>a graphical session and Ollama 0.12.7 or newer</dd>
-            <dt>Get it</dt><dd><code>ProjectOpenTARS/cooper</code></dd>
+            <dt>Size</dt><dd>about 2.7 GB, optional</dd>
+            <dt>Needs</dt><dd>a graphical session</dd>
+          </dl>
+        </article>
+        <article class="model">
+          <p class="role">Routes</p>
+          <h3>Murph</h3>
+          <p>A tiny classifier in plain Python. It reads each request in about 0.2 ms and decides what kind it is (an action, a search, something on screen, code) so the right model answers.</p>
+          <dl>
+            <dt>Size</dt><dd>about 4 MB</dd>
+            <dt>Runs on</dt><dd>the CPU, in RAM. It never touches the graphics card</dd>
           </dl>
         </article>
       </div>
+      <p class="lite">Coming next: <strong>Gargantua Lite</strong>, a smaller model for computers without a graphics card and with little memory. It is still in training.</p>
     </div>
   </section>
 
@@ -366,33 +463,28 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
   <section id="install" aria-labelledby="ins">
     <div class="wrap">
       <div class="head">
-        <h2 id="ins" class="display">Install in one command.</h2>
-        <p class="lede quiet">It installs only what is missing: system packages, Ollama, its own Python environment and Gargantua. Updating keeps your chats and settings.</p>
+        <h2 id="ins" class="display">Install it in a minute.</h2>
+        <p class="lede quiet">One package installs everything openTARS needs: system packages, Ollama, its own Python environment and the models. If you can copy and paste, you can install it.</p>
       </div>
-      <ol class="steps">
-        <li>
-          <div>
-            <h3>Paste this in a terminal</h3>
-            <div class="cmd">
-              <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
-              <button type="button" data-copy="cmd">Copy</button>
-            </div>
+      <div class="get">
+        <div class="get-main">
+          <a class="btn big" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download opentars_all.deb</a>
+          <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved.</p>
+          <h3 class="or">Or paste one line in a terminal</h3>
+          <div class="cmd">
+            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+            <button type="button" data-copy="cmd">Copy</button>
           </div>
-        </li>
-        <li>
-          <div>
-            <h3>Open openTARS from your app menu</h3>
-            <p>The first run picks your language, checks Ollama and downloads Gargantua with a progress bar you can pause.</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <h3>Run the self-test once</h3>
-            <p><code>opentars --autoteste</code> checks your setup and asks the AI to open the calculator and do 7 + 2.</p>
-          </div>
-        </li>
-      </ol>
-      <p class="quiet" style="margin-top:2.5rem">New versions are noticed by the app itself and installed after you confirm.</p>
+          <p class="quiet">Then open openTARS from your app menu. The first run checks Ollama, downloads Gargantua with a progress bar you can pause, and tests it with a quick sum. Updating later keeps your chats and settings.</p>
+        </div>
+        <div class="tested">
+          <h3>Tested on</h3>
+          <ul>
+            <li>Ubuntu</li><li>Debian</li><li>Linux Mint</li><li>Zorin OS</li><li>Pop!_OS</li>
+          </ul>
+          <p class="quiet">Any distro with apt should work. X11 and Wayland, NVIDIA, AMD or CPU only.</p>
+        </div>
+      </div>
     </div>
   </section>
 
