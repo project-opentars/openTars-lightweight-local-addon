@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>openTARS</title>
+<meta name="description" content="openTARS: a local AI assistant for Linux. It opens programs, clicks buttons by name, types, runs commands and looks at the screen, all on your machine through Ollama.">
+<meta property="og:title" content="openTARS">
+<meta property="og:description" content="The local AI assistant for Linux, with an AI trained just for it.">
+<meta property="og:image" content="img/02-conversation.png">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D1326;
+  --bg-2: #131B35;
+  --card: #1A2446;
+  --line: #2A3560;
+  --text: #E8ECF4;
+  --muted: #A3ADC6;
+  --green: #5FD97A;
+  --green-dim: rgba(95, 217, 122, .12);
+  --radius: 14px;
+  --wrap: 1120px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 17px/1.6 "IBM Plex Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--green); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+
+/* Topo */
+header.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(13, 19, 38, .85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; font-size: 18px; }
+.brand:hover { text-decoration: none; }
+.brand img { width: 30px; height: 30px; }
+nav.links { display: flex; gap: 22px; font-size: 15px; }
+nav.links a { color: var(--muted); }
+nav.links a:hover { color: var(--text); text-decoration: none; }
+@media (max-width: 720px) { nav.links .opt { display: none; } }
+
+/* Abertura */
+.hero { padding: 72px 0 40px; text-align: center; }
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  background: var(--green-dim); color: var(--green);
+  font: 500 13px/1.6 "IBM Plex Mono", monospace; letter-spacing: .02em;
+}
+.hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.08; margin: 18px 0 16px; letter-spacing: -.02em; }
+.hero h1 span { color: var(--green); }
+.hero p.lead { max-width: 720px; margin: 0 auto; color: var(--muted); font-size: clamp(17px, 2.2vw, 20px); }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 16px;
+  border: 1px solid var(--line); color: var(--text); background: var(--card);
+}
+.btn:hover { text-decoration: none; border-color: var(--green); }
+.btn.primary { background: var(--green); color: #0D1326; border-color: var(--green); }
+.btn.primary:hover { filter: brightness(1.08); }
+.shot {
+  margin: 48px auto 0; max-width: 980px;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+}
+
+/* Seções */
+section { padding: 72px 0; }
+section.alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+h2 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 10px; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 0 0 36px; max-width: 720px; }
+
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px;
+}
+.card h3 { margin: 0 0 8px; font-size: 18px; }
+.card p { margin: 0; color: var(--muted); font-size: 15.5px; }
+.card .ico { font-size: 22px; margin-bottom: 10px; }
+
+.gallery { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+figure { margin: 0; }
+figure img { border: 1px solid var(--line); border-radius: 10px; }
+figcaption { color: var(--muted); font-size: 14px; margin-top: 8px; text-align: center; }
+
+.split { display: grid; gap: 40px; grid-template-columns: 1fr 1fr; align-items: center; }
+@media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+ul.ticks { list-style: none; padding: 0; margin: 0; }
+ul.ticks li { padding-left: 28px; position: relative; margin: 10px 0; color: var(--muted); }
+ul.ticks li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+ul.ticks li b { color: var(--text); font-weight: 600; }
+
+/* Instalação */
+.code {
+  position: relative; background: #080C1A; border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 56px 18px 18px; overflow-x: auto;
+}
+.code pre { margin: 0; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; color: var(--text); }
+.copy {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--card); color: var(--muted); border: 1px solid var(--line); border-radius: 8px;
+  padding: 6px 10px; font: 500 13px "IBM Plex Sans", sans-serif; cursor: pointer;
+}
+.copy:hover { color: var(--text); border-color: var(--green); }
+.note { color: var(--muted); font-size: 15px; margin-top: 14px; }
+
+.roadmap .card { border-style: dashed; }
+.tag { display: inline-block; font: 500 12px "IBM Plex Mono", monospace; color: var(--green); margin-bottom: 8px; }
+
+footer { padding: 40px 0 60px; color: var(--muted); font-size: 15px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+footer a { color: var(--muted); }
+footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="logo.svg" alt="">openTARS</a>
+    <nav class="links">
+      <a class="opt" href="#features">Features</a>
+      <a class="opt" href="#gargantua">Gargantua</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero wrap">
+    <span class="badge">5.0 Tesseract · MIT · Linux</span>
+    <h1>The local AI assistant<br>for <span>Linux</span>.</h1>
+    <p class="lead">Ask in your own words. openTARS opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands. It runs on your machine through Ollama, with an AI trained just for it.</p>
+    <div class="cta">
+      <a class="btn primary" href="#install">Install</a>
+      <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon">View on GitHub</a>
+    </div>
+    <div class="shot">
+      <img src="img/02-conversation.png" width="1770" height="1140" alt="The openTARS window: history sidebar, the request, the steps card, tool calls with timings and the answer with a code block">
+    </div>
+  </div>
+
+  <section id="features" class="alt">
+    <div class="wrap">
+      <h2>Why openTARS</h2>
+      <p class="sub">A desktop assistant that acts, not just chats, and keeps your data on your PC.</p>
+      <div class="grid">
+        <div class="card"><div class="ico">🧠</div><h3>Its own AI</h3><p>Gargantua was trained on thousands of requests solved inside openTARS and checked one by one. It opens, clicks, calculates and creates files on the first try, on a 6 GB graphics card.</p></div>
+        <div class="card"><div class="ico">🧭</div><h3>Picks the AI by itself</h3><p>Several layers read each request in milliseconds and route it to the best model you already have: the one that sees the screen, the coding one, the general one or the fastest.</p></div>
+        <div class="card"><div class="ico">🖱️</div><h3>Clicks by name</h3><p>It presses buttons by the text they show ("7", "=", "Save") through Linux accessibility: no coordinates, in milliseconds, even on Wayland.</p></div>
+        <div class="card"><div class="ico">🔒</div><h3>Local by default</h3><p>Everything runs on your PC through Ollama. A cloud model is used only if you turn it on, with your own key. Risky commands always ask first.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>What's in 5.0 Tesseract</h2>
+      <p class="sub">A new Qt window on top of the same lean core: Ollama underneath, Cooper looking at the screen and Gargantua as the official AI.</p>
+      <div class="grid">
+        <div class="card"><h3>💬 New window</h3><p>History by day with search, a model pill (automatic, local or cloud), a Stop button, steps you can follow and tools with timings.</p></div>
+        <div class="card"><h3>🛡️ Asks before risky actions</h3><p>A dangerous command becomes a card with Allow and Deny. Deleting, <code>curl | sh</code>, <code>ssh</code> and <code>sudo</code> never run on their own.</p></div>
+        <div class="card"><h3>🎙️ Voice, 3 modes</h3><p>Hold to talk, continuous, or the wake word "TARS". Fully local with faster-whisper and Kokoro, in English and Portuguese.</p></div>
+        <div class="card"><h3>⏰ Routines</h3><p>"Every day at 8, open the newspaper." A routine never decides alone: anything you did not pre-approve makes it stop and tell you.</p></div>
+        <div class="card"><h3>⚡ Quick bar</h3><p><code>Ctrl+Alt+Space</code> opens a floating box. Ask, get the answer in place, press <code>Esc</code> to close.</p></div>
+        <div class="card"><h3>🧠 Visible memory</h3><p>See what TARS remembers, forget items one by one, export your chats or erase everything.</p></div>
+        <div class="card"><h3>☁️ Cloud, only if you want</h3><p>The default is local only. If you choose, use Ollama Cloud, Groq or any OpenAI-compatible address with your own key, stored only on your PC.</p></div>
+        <div class="card"><h3>🔄 Updates on its own</h3><p>A new package in the repository is noticed automatically, verified against GitHub's hash and installed with your permission.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2>See it</h2>
+      <p class="sub">Screenshots generated from the real window.</p>
+      <div class="gallery">
+        <figure><img src="img/01-home.png" loading="lazy" alt="Home screen with suggestions and the history sidebar"><figcaption>Home: history by day and suggestions</figcaption></figure>
+        <figure><img src="img/03-approval.png" loading="lazy" alt="Approval card for a sudo command"><figcaption>Risky actions ask first</figcaption></figure>
+        <figure><img src="img/12-voice.png" loading="lazy" alt="Voice screen listening"><figcaption>Voice mode</figcaption></figure>
+        <figure><img src="img/13-quick-bar.png" loading="lazy" alt="Quick bar with an answer"><figcaption>Quick bar</figcaption></figure>
+        <figure><img src="img/07-settings-memory.png" loading="lazy" alt="Settings: memory and privacy"><figcaption>Memory and privacy</figcaption></figure>
+        <figure><img src="img/08-settings-routines.png" loading="lazy" alt="Settings: routines"><figcaption>Scheduled routines</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div>
+        <h2>Meet the mascot</h2>
+        <p class="sub">The monolith from the logo walks along the chat and reacts to what the AI is doing: thinking, working, asking for permission, done, or a sad face when something fails. After a few quiet minutes, it naps.</p>
+      </div>
+      <figure><img src="img/16-mascot.gif" loading="lazy" alt="The mascot's moods: idle, thinking, working, needs you, oops, done and napping"></figure>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap split">
+      <figure><img src="img/17-cli.png" loading="lazy" alt="The openTARS terminal with the logo, welcome panel, tool steps and spinner"></figure>
+      <div>
+        <h2>Also in the terminal</h2>
+        <p class="sub">Run <code>opentars</code> for a chat styled like today's AI command-line tools. It works on a desktop and over SSH, WSL and servers without a GUI.</p>
+        <ul class="ticks">
+          <li><b>Steps you can follow:</b> each action is a <code>●</code> line with its result under <code>⎿</code>.</li>
+          <li><b>Risky commands still ask first</b>, right in the terminal.</li>
+          <li><b>Scriptable:</b> <code>opentars --chat "request"</code> answers once and exits.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="gargantua">
+    <div class="wrap split">
+      <div>
+        <h2>Gargantua, the official AI</h2>
+        <p class="sub">A Qwen3 4B model fine-tuned on real openTARS sessions, so it already knows every tool. It is about 2.5 GB, runs on a card with ~3 GB free or on the CPU with 8 GB of RAM, and the installer downloads it for you.</p>
+        <ul class="ticks">
+          <li><b>Trained only on open models' answers</b>, never on closed models.</li>
+          <li><b>Cooper</b>, an optional companion model (~2.7 GB), looks at the screen to find buttons in apps without accessibility.</li>
+        </ul>
+      </div>
+      <figure><img src="img/15-first-run-model.png" loading="lazy" alt="First run: downloading Gargantua with a progress bar"><figcaption>The first run downloads Gargantua and tests it</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="install" class="alt">
+    <div class="wrap">
+      <h2>Install</h2>
+      <p class="sub">For Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. Paste in a terminal:</p>
+      <div class="code">
+        <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+        <button class="copy" type="button" data-copy="cmd" aria-label="Copy the install command">Copy</button>
+      </div>
+      <p class="note">One command installs everything: system dependencies, Ollama (or uses the one you have), an isolated Python environment and Gargantua. Your history and settings are kept when you update. Then run <code>opentars --autoteste</code> once to check that everything works.</p>
+    </div>
+  </section>
+
+  <section class="roadmap">
+    <div class="wrap">
+      <h2>Coming in 5.1</h2>
+      <p class="sub">In planning. The list may change before release.</p>
+      <div class="grid">
+        <div class="card"><span class="tag">STABILITY</span><h3>Polish and validation</h3><p>End-to-end checks of updates, Wayland and fresh installs, plus fixes from 5.0.</p></div>
+        <div class="card"><span class="tag">INTERFACE</span><h3>Simple and advanced modes</h3><p>A simpler window for everyday use and a mode with every setting, chosen on first run.</p></div>
+        <div class="card"><span class="tag">MODELS</span><h3>Gargantua Lite</h3><p>A smaller Gargantua for computers without a graphics card and with little memory.</p></div>
+        <div class="card"><span class="tag">CLOUD</span><h3>Easier cloud setup</h3><p>Sign in to Ollama Cloud without copying keys. Still off by default and always your choice.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>openTARS · <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a></div>
+    <div><a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a> · <a href="https://www.instagram.com/open.tars/">Instagram @open.tars</a></div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var texto = document.getElementById(b.dataset.copy).textContent;
+    navigator.clipboard.writeText(texto).then(function () {
+      b.textContent = 'Copied';
+      setTimeout(function () { b.textContent = 'Copy'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>
