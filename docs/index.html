@@ -4,285 +4,434 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>openTARS</title>
-<meta name="description" content="openTARS: a local AI assistant for Linux. It opens programs, clicks buttons by name, types, runs commands and looks at the screen, all on your machine through Ollama.">
+<meta name="description" content="openTARS is a local AI assistant for Linux. Ask in your own words and it opens programs, clicks buttons by name, runs commands and looks at the screen, on your own machine through Ollama.">
 <meta property="og:title" content="openTARS">
-<meta property="og:description" content="The local AI assistant for Linux, with an AI trained just for it.">
+<meta property="og:description" content="A local AI assistant for Linux that does the work on your desktop.">
 <meta property="og:image" content="img/02-conversation.png">
+<meta name="theme-color" content="#E7E9EC">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0D1326;
-  --bg-2: #131B35;
-  --card: #1A2446;
-  --line: #2A3560;
-  --text: #E8ECF4;
-  --muted: #A3ADC6;
-  --green: #5FD97A;
-  --green-dim: rgba(95, 217, 122, .12);
-  --radius: 14px;
-  --wrap: 1120px;
+  --hull: #E7E9EC;
+  --hull-2: #DCDFE4;
+  --ink: #16203F;
+  --slab: #1A2446;
+  --steel: #5B6478;
+  --rule: #C3C8D1;
+  --signal: #237A44;
+  --signal-on-slab: #5FD97A;
+  --caution: #9A6410;
+  --caution-on-slab: #E7A93B;
+  --paper: #F4F5F7;
+  --measure: 34rem;
+  --wrap: 72rem;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 400 17px/1.6 "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--hull);
+  color: var(--ink);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-size: 1.0625rem;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-img { max-width: 100%; height: auto; display: block; }
-a { color: var(--green); text-decoration: none; }
-a:hover { text-decoration: underline; }
-code, pre { font-family: "IBM Plex Mono", ui-monospace, monospace; }
-.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+a:hover { color: var(--signal); }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
+code, kbd, .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .92em; }
+p { margin: 0 0 1em; }
+.wrap { width: min(var(--wrap), 100% - 2rem); margin-inline: auto; }
 
-/* Topo */
-header.nav {
-  position: sticky; top: 0; z-index: 10;
-  background: rgba(13, 19, 38, .85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+/* Wide display type: the TARS slab feel lives here */
+.display {
+  font-variation-settings: "wdth" 125;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: .98;
+  margin: 0;
 }
-header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
-.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; font-size: 18px; }
-.brand:hover { text-decoration: none; }
-.brand img { width: 30px; height: 30px; }
-nav.links { display: flex; gap: 22px; font-size: 15px; }
-nav.links a { color: var(--muted); }
-nav.links a:hover { color: var(--text); text-decoration: none; }
-@media (max-width: 720px) { nav.links .opt { display: none; } }
+h2.display { font-size: clamp(2rem, 4.6vw, 3.4rem); max-width: 18ch; }
+h3 { font-variation-settings: "wdth" 112; font-weight: 700; font-size: 1.2rem; line-height: 1.25; margin: 0 0 .4rem; }
+.lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem); max-width: var(--measure); color: var(--ink); }
+.quiet { color: var(--steel); }
 
-/* Abertura */
-.hero { padding: 72px 0 40px; text-align: center; }
-.badge {
-  display: inline-block; padding: 4px 12px; border-radius: 999px;
-  background: var(--green-dim); color: var(--green);
-  font: 500 13px/1.6 "IBM Plex Mono", monospace; letter-spacing: .02em;
-}
-.hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.08; margin: 18px 0 16px; letter-spacing: -.02em; }
-.hero h1 span { color: var(--green); }
-.hero p.lead { max-width: 720px; margin: 0 auto; color: var(--muted); font-size: clamp(17px, 2.2vw, 20px); }
-.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+/* Header */
+.top { padding-block: 1.25rem; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.mark { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 700; font-variation-settings: "wdth" 115; font-size: 1.15rem; }
+.mark img { width: 2rem; height: 2rem; }
+.top nav { display: flex; gap: 1.5rem; font-size: .98rem; }
+.top nav a { text-decoration: none; color: var(--steel); }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 40rem) { .top nav .hide-s { display: none; } }
+
+/* Hero */
+.hero { padding-block: clamp(2.5rem, 7vw, 6rem) clamp(3rem, 7vw, 6rem); }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+@media (max-width: 60rem) { .hero .wrap { grid-template-columns: 1fr; } }
+.hero h1 { font-size: clamp(2.6rem, 6.4vw, 5.2rem); }
+.hero .lede { margin-top: 1.5rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; margin-top: 2rem; }
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 16px;
-  border: 1px solid var(--line); color: var(--text); background: var(--card);
+  display: inline-block; padding: .85rem 1.3rem; border-radius: 6px;
+  background: var(--slab); color: #fff; text-decoration: none; font-weight: 600;
+  font-variation-settings: "wdth" 108;
 }
-.btn:hover { text-decoration: none; border-color: var(--green); }
-.btn.primary { background: var(--green); color: #0D1326; border-color: var(--green); }
-.btn.primary:hover { filter: brightness(1.08); }
-.shot {
-  margin: 48px auto 0; max-width: 980px;
-  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+.btn:hover { color: #fff; background: #263362; }
+.link { font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--rule); padding-bottom: 2px; }
+.link:hover { border-color: var(--signal); color: var(--ink); }
+.facts { margin-top: 2.25rem; color: var(--steel); font-size: .95rem; max-width: var(--measure); }
+
+/* The transcript: the one moving thing on the page */
+.term {
+  position: relative;
+  background: var(--slab); color: #E8ECF4;
+  border-radius: 10px 10px 10px 10px;
+  padding: 2.4rem 1.5rem 1.6rem;
+  font-family: "IBM Plex Mono", monospace; font-size: clamp(.82rem, 1.1vw, .95rem); line-height: 1.75;
+  box-shadow: 0 1px 0 #0e1530, 0 28px 60px -28px rgba(22, 32, 63, .55);
 }
-
-/* Seções */
-section { padding: 72px 0; }
-section.alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-h2 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 10px; letter-spacing: -.01em; }
-.sub { color: var(--muted); margin: 0 0 36px; max-width: 720px; }
-
-.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-.card {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 22px;
+/* four slabs from the logo, as the window's grip */
+.term::before {
+  content: ""; position: absolute; top: .9rem; left: 1.5rem;
+  width: 3.1rem; height: .5rem;
+  background:
+    linear-gradient(#E8ECF4, #E8ECF4) 0 0 / .62rem 100% no-repeat,
+    linear-gradient(#E8ECF4, #E8ECF4) .83rem 0 / .62rem 100% no-repeat,
+    linear-gradient(#E8ECF4, #E8ECF4) 1.66rem 0 / .62rem 100% no-repeat,
+    linear-gradient(#E8ECF4, #E8ECF4) 2.49rem 0 / .62rem 100% no-repeat;
+  opacity: .35; border-radius: 1px;
 }
-.card h3 { margin: 0 0 8px; font-size: 18px; }
-.card p { margin: 0; color: var(--muted); font-size: 15.5px; }
-.card .ico { font-size: 22px; margin-bottom: 10px; }
+.term .line { display: block; white-space: pre-wrap; }
+@media (max-width: 30rem) { .term { padding-inline: 1rem; font-size: .74rem; } .term::before { left: 1rem; } }
+.term .ask { color: #fff; }
+.term .p { color: var(--signal-on-slab); }
+.term .dot { color: #fff; }
+.term .res { color: #9AA6C2; }
+.term .ok { color: var(--signal-on-slab); }
+.term .final { color: #fff; margin-top: .9rem; }
+.term .cursor { display: inline-block; width: .55em; height: 1.1em; vertical-align: -.2em; background: var(--signal-on-slab); }
 
-.gallery { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+@media (prefers-reduced-motion: no-preference) {
+  .term.play .line { opacity: 0; animation: show .01s linear forwards; animation-delay: var(--d); }
+  .term.play .typed {
+    display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom;
+    width: 0; animation: type 1.5s steps(var(--n)) .5s forwards;
+  }
+  .term.play .cursor { animation: blink 1s steps(1) infinite; }
+}
+@keyframes show { to { opacity: 1; } }
+@keyframes type { to { width: calc(var(--n) * 1ch); } }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Sections */
+section { padding-block: clamp(4rem, 9vw, 7.5rem); }
+.band { background: var(--paper); }
+.head { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+@media (max-width: 52rem) { .head { grid-template-columns: 1fr; } }
+.head p { margin: 0; max-width: var(--measure); }
+
+/* Requests ledger */
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.ledger li {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: .5rem 3rem;
+  padding-block: 1.6rem; border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 52rem) { .ledger li { grid-template-columns: 1fr; } }
+.ledger q {
+  font-variation-settings: "wdth" 112; font-weight: 600;
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem); line-height: 1.2; quotes: "“" "”";
+}
+.ledger p { margin: 0; color: var(--steel); max-width: var(--measure); }
+.ledger .stop q { color: var(--caution); }
+
+/* Window showcase */
+.show { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+@media (max-width: 60rem) { .show { grid-template-columns: 1fr; } }
+.shot { border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--rule), 0 30px 60px -30px rgba(22, 32, 63, .45); background: var(--slab); }
+.notes { margin: 0; }
+.notes dt { font-weight: 700; font-variation-settings: "wdth" 112; margin-top: 1.5rem; }
+.notes dt:first-child { margin-top: 0; }
+.notes dd { margin: .25rem 0 0; color: var(--steel); }
+.strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: clamp(2rem, 4vw, 3rem); }
+@media (max-width: 52rem) { .strip { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 34rem) { .strip { grid-template-columns: 1fr; } }
 figure { margin: 0; }
-figure img { border: 1px solid var(--line); border-radius: 10px; }
-figcaption { color: var(--muted); font-size: 14px; margin-top: 8px; text-align: center; }
+figcaption { font-size: .92rem; color: var(--steel); margin-top: .6rem; }
 
-.split { display: grid; gap: 40px; grid-template-columns: 1fr 1fr; align-items: center; }
-@media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
-ul.ticks { list-style: none; padding: 0; margin: 0; }
-ul.ticks li { padding-left: 28px; position: relative; margin: 10px 0; color: var(--muted); }
-ul.ticks li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
-ul.ticks li b { color: var(--text); font-weight: 600; }
+/* Safety */
+.safe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+@media (max-width: 60rem) { .safe { grid-template-columns: 1fr; } }
+.asks { list-style: none; padding: 0; margin: 1.75rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.asks li { font-family: "IBM Plex Mono", monospace; font-size: .88rem; padding: .3rem .6rem; border: 1px solid var(--caution); color: var(--caution); border-radius: 4px; }
 
-/* Instalação */
-.code {
-  position: relative; background: #080C1A; border: 1px solid var(--line); border-radius: 10px;
-  padding: 18px 56px 18px 18px; overflow-x: auto;
+/* Models */
+.models { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); }
+@media (max-width: 52rem) { .models { grid-template-columns: 1fr; } }
+.model { background: var(--slab); color: #E8ECF4; border-radius: 10px; padding: clamp(1.5rem, 3vw, 2.25rem); }
+.model h3 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-variation-settings: "wdth" 125; font-weight: 800; letter-spacing: -.02em; margin-bottom: .75rem; }
+.model p { color: #B9C2D9; max-width: var(--measure); }
+.model dl { display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.25rem; margin: 1.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid #2E3B69; font-size: .95rem; }
+.model dt { color: #8F9BB8; }
+.model dd { margin: 0; }
+.model code { color: var(--signal-on-slab); }
+
+/* Mascot + terminal */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (max-width: 52rem) { .pair { grid-template-columns: 1fr; } }
+.pair h3 { font-size: 1.5rem; margin-top: 1.5rem; }
+.pair p { color: var(--steel); max-width: var(--measure); }
+.pair img { border-radius: 8px; box-shadow: 0 0 0 1px var(--rule); }
+.pair .cli { width: 100%; max-height: 24rem; object-fit: cover; object-position: top; background: var(--slab); }
+
+/* Install */
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 2.25rem; max-width: 52rem; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 3.5rem 1fr; gap: 1rem; }
+.steps li::before {
+  content: counter(s); font-variation-settings: "wdth" 125; font-weight: 800; font-size: 2.4rem; line-height: 1;
+  color: var(--slab);
 }
-.code pre { margin: 0; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; color: var(--text); }
-.copy {
-  position: absolute; top: 10px; right: 10px;
-  background: var(--card); color: var(--muted); border: 1px solid var(--line); border-radius: 8px;
-  padding: 6px 10px; font: 500 13px "IBM Plex Sans", sans-serif; cursor: pointer;
+.steps p { margin: .35rem 0 0; color: var(--steel); }
+.cmd { display: flex; align-items: stretch; margin-top: .9rem; background: var(--slab); border-radius: 8px; overflow: hidden; }
+.cmd pre { margin: 0; padding: 1rem 1.1rem; color: #E8ECF4; font-family: "IBM Plex Mono", monospace; font-size: .88rem; line-height: 1.6; white-space: pre-wrap; word-break: break-all; flex: 1; }
+.cmd button {
+  flex: none; border: 0; border-left: 1px solid #2E3B69; background: transparent; color: #E8ECF4;
+  font: 600 .9rem "Archivo", sans-serif; padding: 0 1.1rem; cursor: pointer; min-width: 5.5rem;
 }
-.copy:hover { color: var(--text); border-color: var(--green); }
-.note { color: var(--muted); font-size: 15px; margin-top: 14px; }
+.cmd button:hover { background: #263362; }
+.cmd button:focus-visible { outline-offset: -4px; outline-color: var(--signal-on-slab); }
 
-.roadmap .card { border-style: dashed; }
-.tag { display: inline-block; font: 500 12px "IBM Plex Mono", monospace; color: var(--green); margin-bottom: 8px; }
+/* Next */
+.next { columns: 2 22rem; column-gap: 4rem; margin: 0; padding: 0; list-style: none; }
+.next li { break-inside: avoid; padding: 1.2rem 0; border-top: 1px solid var(--rule); }
+.next p { margin: .2rem 0 0; color: var(--steel); }
 
-footer { padding: 40px 0 60px; color: var(--muted); font-size: 15px; border-top: 1px solid var(--line); }
-footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-footer a { color: var(--muted); }
-footer a:hover { color: var(--text); }
+/* Footer */
+footer { background: var(--slab); color: #B9C2D9; padding-block: 3.5rem; font-size: .95rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; align-items: end; }
+footer .big { font-variation-settings: "wdth" 125; font-weight: 800; font-size: clamp(2.6rem, 8vw, 6rem); letter-spacing: -.03em; line-height: .9; color: #E8ECF4; margin: 0; }
+footer nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+footer a { color: #E8ECF4; }
+footer a:hover { color: var(--signal-on-slab); }
+footer :focus-visible { outline-color: var(--signal-on-slab); }
 </style>
 </head>
 <body>
 
-<header class="nav">
+<header class="top">
   <div class="wrap">
-    <a class="brand" href="#top"><img src="logo.svg" alt="">openTARS</a>
-    <nav class="links">
-      <a class="opt" href="#features">Features</a>
-      <a class="opt" href="#gargantua">Gargantua</a>
+    <a class="mark" href="#"><img src="logo.svg" alt="" width="32" height="32">openTARS</a>
+    <nav aria-label="Main">
+      <a class="hide-s" href="#window">Screenshots</a>
+      <a class="hide-s" href="#models">Models</a>
       <a href="#install">Install</a>
       <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
     </nav>
   </div>
 </header>
 
-<main id="top">
-  <div class="hero wrap">
-    <span class="badge">5.0 Tesseract · MIT · Linux</span>
-    <h1>The local AI assistant<br>for <span>Linux</span>.</h1>
-    <p class="lead">Ask in your own words. openTARS opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands. It runs on your machine through Ollama, with an AI trained just for it.</p>
-    <div class="cta">
-      <a class="btn primary" href="#install">Install</a>
-      <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon">View on GitHub</a>
-    </div>
-    <div class="shot">
-      <img src="img/02-conversation.png" width="1770" height="1140" alt="The openTARS window: history sidebar, the request, the steps card, tool calls with timings and the answer with a code block">
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1 class="display">Tell your Linux desktop what to do.</h1>
+        <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. The AI runs on your own machine.</p>
+        <div class="actions">
+          <a class="btn" href="#install">Install openTARS</a>
+          <a class="link" href="https://github.com/project-opentars/openTars-lightweight-local-addon">Read the source</a>
+        </div>
+        <p class="facts">Version 5.0 Tesseract. Free and open source under the MIT license, for Ubuntu, Debian, Mint, Zorin and Pop!_OS.</p>
+      </div>
+
+      <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
+        <span class="line" style="--d:0s"><span class="p">❯ </span><span class="typed ask" style="--n:38">open the calculator and work out 7 + 2</span></span>
+        <span class="line" style="--d:2.3s"><span class="dot">●</span> Opening Calculator</span>
+        <span class="line res" style="--d:2.9s">  ⎿ <span class="ok">✓</span> 0.4 s</span>
+        <span class="line" style="--d:3.4s"><span class="dot">●</span> Pressing “7”, “+”, “2”</span>
+        <span class="line res" style="--d:3.9s">  ⎿ <span class="ok">✓</span> by name, no coordinates</span>
+        <span class="line" style="--d:4.4s"><span class="dot">●</span> Pressing “=”</span>
+        <span class="line res" style="--d:4.8s">  ⎿ <span class="ok">✓</span> display shows 9</span>
+        <span class="line final" style="--d:5.4s">Done. 7 + 2 = 9, and Calculator is still open.</span>
+        <span class="line" style="--d:5.8s"><span class="p">❯ </span><span class="cursor"></span></span>
+      </div>
     </div>
   </div>
 
-  <section id="features" class="alt">
+  <section class="band" aria-labelledby="ask">
     <div class="wrap">
-      <h2>Why openTARS</h2>
-      <p class="sub">A desktop assistant that acts, not just chats, and keeps your data on your PC.</p>
-      <div class="grid">
-        <div class="card"><div class="ico">🧠</div><h3>Its own AI</h3><p>Gargantua was trained on thousands of requests solved inside openTARS and checked one by one. It opens, clicks, calculates and creates files on the first try, on a 6 GB graphics card.</p></div>
-        <div class="card"><div class="ico">🧭</div><h3>Picks the AI by itself</h3><p>Several layers read each request in milliseconds and route it to the best model you already have: the one that sees the screen, the coding one, the general one or the fastest.</p></div>
-        <div class="card"><div class="ico">🖱️</div><h3>Clicks by name</h3><p>It presses buttons by the text they show ("7", "=", "Save") through Linux accessibility: no coordinates, in milliseconds, even on Wayland.</p></div>
-        <div class="card"><div class="ico">🔒</div><h3>Local by default</h3><p>Everything runs on your PC through Ollama. A cloud model is used only if you turn it on, with your own key. Risky commands always ask first.</p></div>
+      <div class="head">
+        <h2 id="ask" class="display">Ask the way you would ask a person.</h2>
+        <p class="lede quiet">In English or Portuguese, typed, spoken or from the terminal. A few things people ask, and what openTARS does with them:</p>
+      </div>
+      <ol class="ledger">
+        <li><q>Open the calculator and work out 7 + 2</q><p>Opens Calculator and presses each key by the text on it, through Linux accessibility. It works in milliseconds, even on Wayland.</p></li>
+        <li><q>Make a folder called Invoices in my Documents</q><p>Knows where your personal folders are, in your language, and creates it.</p></li>
+        <li><q>What is using all my memory?</q><p>Runs the command, reads the output and answers in plain words.</p></li>
+        <li class="stop"><q>Delete the old logs in Downloads</q><p>Stops first. It shows you the exact command with Allow and Deny, and nothing is removed until you choose.</p></li>
+        <li><q>Every weekday at 8, open the news</q><p>Saves a routine that runs while openTARS is open, and tells you if one was skipped.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="window" aria-labelledby="win">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="win" class="display">A window that shows its work.</h2>
+        <p class="lede quiet">Every action appears as a step with how long it took, so you can follow along and stop it at any moment.</p>
+      </div>
+      <div class="show">
+        <div class="shot"><img src="img/02-conversation.png" width="1770" height="1140" fetchpriority="high" alt="The openTARS window with the chat history on the left, a request, the list of steps, each tool call with its time, and the answer with a code block"></div>
+        <dl class="notes">
+          <dt>History by day</dt><dd>Search old chats. Opening one gives the AI the same context back.</dd>
+          <dt>Pick the model, or let it pick</dt><dd>On Automatic, each request goes to the model that suits it: the one that sees the screen, the coding one or the fastest.</dd>
+          <dt>A memory you can read</dt><dd>See everything it remembers about you and forget items one by one.</dd>
+          <dt>A quick bar on <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd></dt><dd>Ask from anywhere and get the answer in place, without opening the window.</dd>
+          <dt>Voice, if you want it</dt><dd>Hold to talk, keep listening, or say "TARS". Speech is recognised on your PC too.</dd>
+        </dl>
+      </div>
+      <div class="strip">
+        <figure><img src="img/12-voice.png" loading="lazy" width="1770" height="1140" alt="Voice screen listening, with sound waves"><figcaption>Talking to it</figcaption></figure>
+        <figure><img src="img/08-settings-routines.png" loading="lazy" width="1770" height="1140" alt="Settings page listing scheduled routines"><figcaption>Scheduled routines</figcaption></figure>
+        <figure><img src="img/07-settings-memory.png" loading="lazy" width="1770" height="1140" alt="Settings page for memory and privacy"><figcaption>Memory and privacy settings</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <h2>What's in 5.0 Tesseract</h2>
-      <p class="sub">A new Qt window on top of the same lean core: Ollama underneath, Cooper looking at the screen and Gargantua as the official AI.</p>
-      <div class="grid">
-        <div class="card"><h3>💬 New window</h3><p>History by day with search, a model pill (automatic, local or cloud), a Stop button, steps you can follow and tools with timings.</p></div>
-        <div class="card"><h3>🛡️ Asks before risky actions</h3><p>A dangerous command becomes a card with Allow and Deny. Deleting, <code>curl | sh</code>, <code>ssh</code> and <code>sudo</code> never run on their own.</p></div>
-        <div class="card"><h3>🎙️ Voice, 3 modes</h3><p>Hold to talk, continuous, or the wake word "TARS". Fully local with faster-whisper and Kokoro, in English and Portuguese.</p></div>
-        <div class="card"><h3>⏰ Routines</h3><p>"Every day at 8, open the newspaper." A routine never decides alone: anything you did not pre-approve makes it stop and tell you.</p></div>
-        <div class="card"><h3>⚡ Quick bar</h3><p><code>Ctrl+Alt+Space</code> opens a floating box. Ask, get the answer in place, press <code>Esc</code> to close.</p></div>
-        <div class="card"><h3>🧠 Visible memory</h3><p>See what TARS remembers, forget items one by one, export your chats or erase everything.</p></div>
-        <div class="card"><h3>☁️ Cloud, only if you want</h3><p>The default is local only. If you choose, use Ollama Cloud, Groq or any OpenAI-compatible address with your own key, stored only on your PC.</p></div>
-        <div class="card"><h3>🔄 Updates on its own</h3><p>A new package in the repository is noticed automatically, verified against GitHub's hash and installed with your permission.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="alt">
-    <div class="wrap">
-      <h2>See it</h2>
-      <p class="sub">Screenshots generated from the real window.</p>
-      <div class="gallery">
-        <figure><img src="img/01-home.png" loading="lazy" alt="Home screen with suggestions and the history sidebar"><figcaption>Home: history by day and suggestions</figcaption></figure>
-        <figure><img src="img/03-approval.png" loading="lazy" alt="Approval card for a sudo command"><figcaption>Risky actions ask first</figcaption></figure>
-        <figure><img src="img/12-voice.png" loading="lazy" alt="Voice screen listening"><figcaption>Voice mode</figcaption></figure>
-        <figure><img src="img/13-quick-bar.png" loading="lazy" alt="Quick bar with an answer"><figcaption>Quick bar</figcaption></figure>
-        <figure><img src="img/07-settings-memory.png" loading="lazy" alt="Settings: memory and privacy"><figcaption>Memory and privacy</figcaption></figure>
-        <figure><img src="img/08-settings-routines.png" loading="lazy" alt="Settings: routines"><figcaption>Scheduled routines</figcaption></figure>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap split">
+  <section class="band" aria-labelledby="safe">
+    <div class="wrap safe">
       <div>
-        <h2>Meet the mascot</h2>
-        <p class="sub">The monolith from the logo walks along the chat and reacts to what the AI is doing: thinking, working, asking for permission, done, or a sad face when something fails. After a few quiet minutes, it naps.</p>
-      </div>
-      <figure><img src="img/16-mascot.gif" loading="lazy" alt="The mascot's moods: idle, thinking, working, needs you, oops, done and napping"></figure>
-    </div>
-  </section>
-
-  <section class="alt">
-    <div class="wrap split">
-      <figure><img src="img/17-cli.png" loading="lazy" alt="The openTARS terminal with the logo, welcome panel, tool steps and spinner"></figure>
-      <div>
-        <h2>Also in the terminal</h2>
-        <p class="sub">Run <code>opentars</code> for a chat styled like today's AI command-line tools. It works on a desktop and over SSH, WSL and servers without a GUI.</p>
-        <ul class="ticks">
-          <li><b>Steps you can follow:</b> each action is a <code>●</code> line with its result under <code>⎿</code>.</li>
-          <li><b>Risky commands still ask first</b>, right in the terminal.</li>
-          <li><b>Scriptable:</b> <code>opentars --chat "request"</code> answers once and exits.</li>
+        <h2 id="safe" class="display">Nothing risky happens without you.</h2>
+        <p class="lede quiet" style="margin-top:1.25rem">When a command could delete data or change the system, openTARS stops and waits for your answer. Stopping a reply also denies whatever was waiting. These always ask first:</p>
+        <ul class="asks">
+          <li>rm -r</li><li>rm *</li><li>find -exec rm</li><li>curl | sh</li><li>sudo</li><li>ssh</li><li>dd</li><li>mkfs</li><li>git reset --hard</li><li>shutdown</li>
         </ul>
+        <p class="quiet" style="margin-top:1.75rem">The cloud is off unless you turn it on. If you do, your key stays on this computer and the window warns you whenever your text goes to a provider.</p>
       </div>
+      <div class="shot"><img src="img/03-approval.png" loading="lazy" width="1770" height="1140" alt="An approval card asking to allow or deny a sudo command"></div>
     </div>
   </section>
 
-  <section id="gargantua">
-    <div class="wrap split">
-      <div>
-        <h2>Gargantua, the official AI</h2>
-        <p class="sub">A Qwen3 4B model fine-tuned on real openTARS sessions, so it already knows every tool. It is about 2.5 GB, runs on a card with ~3 GB free or on the CPU with 8 GB of RAM, and the installer downloads it for you.</p>
-        <ul class="ticks">
-          <li><b>Trained only on open models' answers</b>, never on closed models.</li>
-          <li><b>Cooper</b>, an optional companion model (~2.7 GB), looks at the screen to find buttons in apps without accessibility.</li>
-        </ul>
-      </div>
-      <figure><img src="img/15-first-run-model.png" loading="lazy" alt="First run: downloading Gargantua with a progress bar"><figcaption>The first run downloads Gargantua and tests it</figcaption></figure>
-    </div>
-  </section>
-
-  <section id="install" class="alt">
+  <section id="models" aria-labelledby="mod">
     <div class="wrap">
-      <h2>Install</h2>
-      <p class="sub">For Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. Paste in a terminal:</p>
-      <div class="code">
-        <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
-        <button class="copy" type="button" data-copy="cmd" aria-label="Copy the install command">Copy</button>
+      <div class="head">
+        <h2 id="mod" class="display">Two models made for it.</h2>
+        <p class="lede quiet">Both are downloaded by the installer through Ollama. You can still use any other Ollama model next to them.</p>
       </div>
-      <p class="note">One command installs everything: system dependencies, Ollama (or uses the one you have), an isolated Python environment and Gargantua. Your history and settings are kept when you update. Then run <code>opentars --autoteste</code> once to check that everything works.</p>
+      <div class="models">
+        <article class="model">
+          <h3>Gargantua</h3>
+          <p>The official AI. A Qwen3 4B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool openTARS gives it.</p>
+          <dl>
+            <dt>Size</dt><dd>about 2.5 GB</dd>
+            <dt>Runs on</dt><dd>a graphics card with ~3 GB free, or the CPU with 8 GB of RAM</dd>
+            <dt>Get it</dt><dd><code>ProjectOpenTARS/Gargantua</code></dd>
+          </dl>
+        </article>
+        <article class="model">
+          <h3>Cooper</h3>
+          <p>An optional vision model that only looks at the screen. It finds the button you meant in apps that do not expose their controls to accessibility.</p>
+          <dl>
+            <dt>Size</dt><dd>about 2.7 GB</dd>
+            <dt>Needs</dt><dd>a graphical session and Ollama 0.12.7 or newer</dd>
+            <dt>Get it</dt><dd><code>ProjectOpenTARS/cooper</code></dd>
+          </dl>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="roadmap">
+  <section class="band" aria-label="Mascot and terminal">
+    <div class="wrap pair">
+      <figure>
+        <img src="img/16-mascot.gif" loading="lazy" width="1050" height="220" alt="The mascot's moods: idle, thinking, working, needs you, oops, done and napping">
+        <h3>A small monolith keeps you company</h3>
+        <p>It walks along the chat and shows what the AI is doing: thinking, working, waiting for your permission, done, or upset when something fails. After a few quiet minutes it naps. Turn it off in Settings.</p>
+      </figure>
+      <figure>
+        <img class="cli" src="img/17-cli.png" loading="lazy" width="816" height="1215" alt="The openTARS terminal with the welcome panel, tool steps and their results">
+        <h3>Also at home in the terminal</h3>
+        <p>Run <code>opentars</code> over SSH, in WSL or on a server without a screen. Risky commands still ask first, and <code>opentars --chat "request"</code> answers once for scripts.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="ins">
     <div class="wrap">
-      <h2>Coming in 5.1</h2>
-      <p class="sub">In planning. The list may change before release.</p>
-      <div class="grid">
-        <div class="card"><span class="tag">STABILITY</span><h3>Polish and validation</h3><p>End-to-end checks of updates, Wayland and fresh installs, plus fixes from 5.0.</p></div>
-        <div class="card"><span class="tag">INTERFACE</span><h3>Simple and advanced modes</h3><p>A simpler window for everyday use and a mode with every setting, chosen on first run.</p></div>
-        <div class="card"><span class="tag">MODELS</span><h3>Gargantua Lite</h3><p>A smaller Gargantua for computers without a graphics card and with little memory.</p></div>
-        <div class="card"><span class="tag">CLOUD</span><h3>Easier cloud setup</h3><p>Sign in to Ollama Cloud without copying keys. Still off by default and always your choice.</p></div>
+      <div class="head">
+        <h2 id="ins" class="display">Install in one command.</h2>
+        <p class="lede quiet">It installs only what is missing: system packages, Ollama, its own Python environment and Gargantua. Updating keeps your chats and settings.</p>
       </div>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>Paste this in a terminal</h3>
+            <div class="cmd">
+              <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+              <button type="button" data-copy="cmd">Copy</button>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Open openTARS from your app menu</h3>
+            <p>The first run picks your language, checks Ollama and downloads Gargantua with a progress bar you can pause.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Run the self-test once</h3>
+            <p><code>opentars --autoteste</code> checks your setup and asks the AI to open the calculator and do 7 + 2.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="quiet" style="margin-top:2.5rem">New versions are noticed by the app itself and installed after you confirm.</p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="nxt">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="nxt" class="display">Planned for 5.1</h2>
+        <p class="lede quiet">Work in progress. The plan may change before release.</p>
+      </div>
+      <ul class="next">
+        <li><h3>Steadier everywhere</h3><p>End-to-end checks of updates, Wayland and fresh installs.</p></li>
+        <li><h3>A simple mode and an advanced mode</h3><p>Chosen on first run, so the window shows only what you need.</p></li>
+        <li><h3>Gargantua Lite</h3><p>A smaller model for computers without a graphics card and with little memory.</p></li>
+        <li><h3>Easier cloud setup</h3><p>Sign in to Ollama Cloud without copying keys. Still off by default.</p></li>
+      </ul>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div>openTARS · <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a></div>
-    <div><a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a> · <a href="https://www.instagram.com/open.tars/">Instagram @open.tars</a></div>
+    <p class="big">openTARS</p>
+    <nav aria-label="Footer">
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+      <a href="https://www.instagram.com/open.tars/">Instagram</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a>
+    </nav>
   </div>
 </footer>
 
 <script>
-document.querySelectorAll('.copy').forEach(function (b) {
+document.querySelectorAll('[data-copy]').forEach(function (b) {
   b.addEventListener('click', function () {
-    var texto = document.getElementById(b.dataset.copy).textContent;
-    navigator.clipboard.writeText(texto).then(function () {
+    var text = document.getElementById(b.dataset.copy).textContent;
+    navigator.clipboard.writeText(text).then(function () {
       b.textContent = 'Copied';
-      setTimeout(function () { b.textContent = 'Copy'; }, 1500);
+      setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+    }, function () {
+      b.textContent = 'Select and copy';
     });
   });
 });
