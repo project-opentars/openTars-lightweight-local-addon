@@ -8,24 +8,23 @@
 <meta property="og:title" content="openTARS">
 <meta property="og:description" content="A local AI assistant for Linux that does the work on your desktop.">
 <meta property="og:image" content="img/02-conversation.png">
-<meta name="theme-color" content="#E7E9EC">
+<meta name="theme-color" content="#141C38">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --hull: #E7E9EC;
-  --hull-2: #DCDFE4;
-  --ink: #16203F;
-  --slab: #1A2446;
-  --steel: #5B6478;
-  --rule: #C3C8D1;
-  --signal: #237A44;
+  --hull: #141C38;
+  --ink: #E8ECF4;
+  --slab: #0D1329;
+  --steel: #9AA5BF;
+  --rule: #2C3760;
+  --signal: #5FD97A;
   --signal-on-slab: #5FD97A;
-  --caution: #9A6410;
+  --caution: #E7A93B;
   --caution-on-slab: #E7A93B;
-  --paper: #F4F5F7;
+  --paper: #18213F;
   --measure: 34rem;
   --wrap: 72rem;
 }
@@ -82,12 +81,13 @@ h3 { font-variation-settings: "wdth" 112; font-weight: 700; font-size: 1.2rem; l
 .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; margin-top: 2rem; }
 .btn {
   display: inline-block; padding: .85rem 1.3rem; border-radius: 6px;
-  background: var(--slab); color: #fff; text-decoration: none; font-weight: 600;
+  background: var(--ink); color: var(--hull); text-decoration: none; font-weight: 600;
   font-variation-settings: "wdth" 108;
 }
-.btn:hover { color: #fff; background: #263362; }
+.btn:hover { color: var(--hull); background: var(--signal); }
 .link { font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--rule); padding-bottom: 2px; }
 .link:hover { border-color: var(--signal); color: var(--ink); }
+.term, .model, .cmd, .shot { box-shadow: 0 0 0 1px var(--rule), 0 30px 60px -30px rgba(0, 0, 0, .6); }
 .facts { margin-top: 2.25rem; color: var(--steel); font-size: .95rem; max-width: var(--measure); }
 
 /* The transcript: the one moving thing on the page */
@@ -197,7 +197,7 @@ figcaption { font-size: .92rem; color: var(--steel); margin-top: .6rem; }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 3.5rem 1fr; gap: 1rem; }
 .steps li::before {
   content: counter(s); font-variation-settings: "wdth" 125; font-weight: 800; font-size: 2.4rem; line-height: 1;
-  color: var(--slab);
+  color: var(--signal);
 }
 .steps p { margin: .35rem 0 0; color: var(--steel); }
 .cmd { display: flex; align-items: stretch; margin-top: .9rem; background: var(--slab); border-radius: 8px; overflow: hidden; }
